@@ -1,0 +1,15 @@
+declare type AnyFunction = (...args: any[]) => any | Promise<any>;
+declare type AnyAsyncFunction = (...args: any[]) => Promise<any>;
+
+declare type ID = string;
+declare type Timestamp = string;
+declare type DateString = string;
+
+declare namespace NodeJS {
+  export interface ProcessEnv {
+    NEXTAUTH_URL: string;
+    NEXTAUTH_SECRET: string;
+    GITHUB_ID: string;
+    GITHUB_SECRET: string;
+  }
+}

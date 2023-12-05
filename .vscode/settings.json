@@ -1,0 +1,22 @@
+{
+  "workbench.editor.labelFormat": "short",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript", "typescript"],
+  "tsEssentialPlugins.autoImport.changeSorting": {
+    "createContext": ["react"]
+  },
+  "tsEssentialPlugins.patchOutline": true,
+  "editor.linkedEditing": true,
+  "tsEssentialPlugins.enableMethodSnippets": false,
+  "eslint.debug": false,
+  "eslint.format.enable": true,
+  "eslint.ignoreUntitled": true,
+  "eslint.lintTask.enable": true,
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.workingDirectories": [
+    { "mode": "auto" }
+  ],
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+}
