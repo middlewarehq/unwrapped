@@ -1,6 +1,6 @@
 # Year in review - for devs | By Middleware
 
--- image goes here --
+<image src="https://github.com/middlewarehq/year-in-review/assets/7949047/8984725a-dcd0-4568-9922-9e50db20313f" alt="YIR Banner" width="100%" />
 
 Welcome to **Year in review - for devs**! This app is designed to provide you with insights into your coding activities throughout the year, think Spotify Wrapped but for software developers.
 
