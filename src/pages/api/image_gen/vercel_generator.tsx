@@ -1,20 +1,21 @@
-import { MetricData } from '@/pages/api/types/images';
+import { MetricData, ImageFile } from '@/pages/api/types/images';
 import { ImageResponse } from '@vercel/og';
 import { arrayBufferToBuffer } from '@/pages/api/utils/general';
 import { v4 as uuid } from 'uuid';
 import fs from 'fs';
 import path from 'path';
 
-export const createImageUsingVercel = async (data: MetricData) => {
+export const createImageUsingVercel = async (
+  data: MetricData
+): Promise<ImageFile> => {
   const { metric_title, metric_username, metric_name, metric_stat } = data;
-  // read font file as buffer
   const fontForImages = fs.readFileSync(
     path.join(process.cwd(), 'public', 'assets', 'PressStart2P-Regular.ttf')
   );
 
   const fileName = uuid() + '.png';
 
-  const generatedImage = await new ImageResponse(
+  const generatedImage = new ImageResponse(
     (
       <main style={styles.intoWrapper}>
         <div style={styles.introWrapper}>

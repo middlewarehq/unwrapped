@@ -1,3 +1,5 @@
+import { ImageResponse } from '@vercel/og';
+
 export type MetricData = {
   metric_title: string;
   metric_username: string;
@@ -5,4 +7,8 @@ export type MetricData = {
   metric_stat: number;
 };
 
-export type ImageFile = { fileName: string; data: Buffer };
+export type ImageFile = {
+  fileName: string;
+  data: Buffer;
+  image?: ImageResponse;
+};
