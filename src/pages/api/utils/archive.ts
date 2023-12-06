@@ -1,25 +1,27 @@
 import archiver from 'archiver';
-import { ImageFile } from '@/pages/api/image_gen/index';
+import { ImageFile } from '../types/images';
 
 export async function archiveFiles(fileBuffers: ImageFile[]): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const archive = archiver('zip', { zlib: { level: 9 } });
-    const buffers: Buffer[] = [];
+    const bufferArray: Buffer[] = [];
 
     archive.on('data', (buffer: Buffer) => {
-      buffers.push(buffer);
+      bufferArray.push(buffer);
     });
 
     archive.on('end', () => {
-      const zipBuffer = Buffer.concat(buffers);
+      const zipBuffer = Buffer.concat(bufferArray);
       resolve(zipBuffer);
     });
 
     archive.on('error', (err) => reject(err));
 
-    fileBuffers.forEach(({ fileName, data }) => {
-      archive.append(data, { name: fileName });
-    });
+    Promise.all(
+      fileBuffers.map(({ fileName, data }) => {
+        archive.append(data, { name: fileName });
+      })
+    );
 
     archive.finalize();
   });
