@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { generateImages } from '@/pages/api/image_gen';
 import { runBenchmark } from '@/pages/api/utils/benchmarking';
+import chalk from 'chalk';
 
 const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
@@ -17,9 +18,10 @@ const fetchAndDownloadImageBuffer = async (
     );
     res.setHeader('Cache-Control', 'no-cache');
     res.send(imageBuffer);
-    console.log('\x1b[32m%s\x1b[0m', '\nSuccess!\n');
+    console.log(chalk.green('Successfully sent buffer to client'));
   } catch (error) {
-    console.error('Error fetching or sending buffer:', error);
+    // console.error('Error fetching or sending buffer:', error);
+    console.log(chalk.red('Error fetching or sending buffer:'), error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };

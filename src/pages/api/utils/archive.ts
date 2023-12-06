@@ -1,7 +1,9 @@
 import archiver from 'archiver';
 import { ImageFile } from '../types/images';
+import chalk from 'chalk';
 
 export async function archiveFiles(fileBuffers: ImageFile[]): Promise<Buffer> {
+  console.log(chalk.yellow('Archiving images...'));
   return new Promise((resolve, reject) => {
     const archive = archiver('zip', { zlib: { level: 9 } });
     const bufferArray: Buffer[] = [];

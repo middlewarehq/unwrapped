@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 function bytesToMegabytes(bytes: number): string {
   return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
 }
@@ -29,6 +31,8 @@ export const runBenchmark = async <T>(
     function: callback.name,
     response: JSON.stringify(res).slice(0, 100) + '...'
   };
-  console.log('\x1b[36m%s\x1b[0m', JSON.stringify(benchmarkResult, null, 2));
+  console.log(
+    chalk.cyan('Benchmark results', JSON.stringify(benchmarkResult, null, 2))
+  );
   return res;
 };

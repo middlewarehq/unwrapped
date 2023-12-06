@@ -3,6 +3,7 @@ import axios from 'axios';
 import { archiveFiles } from '@/pages/api/utils/archive';
 import { GithubData } from '../types/ApiResponses';
 import { createImageUsingVercel } from './vercel_generator';
+import chalk from 'chalk';
 
 const fetchData = async (isMockOn = false): Promise<GithubData> => {
   if (isMockOn) {
@@ -19,16 +20,15 @@ const fetchData = async (isMockOn = false): Promise<GithubData> => {
 };
 
 export const generateImages = async () => {
-  console.log('\x1b[33m%s\x1b[0m', 'Fetching data...');
+  console.log(chalk.yellow('Fetching data...'));
   const fetchedData = await fetchData(true);
-  console.log('\x1b[33m%s\x1b[0m', 'Generating images...');
+  console.log(chalk.yellow('Generating images...'));
   const imageFileBuffers = await Promise.all(
     fetchedData.data.map(async (data) => {
       const image = await createImageUsingVercel(data);
       return image;
     })
   );
-  console.log('\x1b[33m%s\x1b[0m', 'Archiving images...');
   const data = await archiveFiles(
     imageFileBuffers.map(({ data, fileName }) => ({ data, fileName }))
   );
