@@ -63,10 +63,16 @@ export const generateImages = async () => {
   for (const data of fetchedData.data) {
     const image = await convertHtmlToImage(data);
     imageBuffers.push(image);
-    console.log(`Exported to ${image.fileName}`);
+    const progress = Math.round(
+      (imageBuffers.length / fetchedData.data.length) * 100
+    );
+    const formattedProgress = `\x1b[33mProcessing: ${progress.toFixed(
+      0
+    )}%\x1b[0m`;
+    process.stdout.write(`\r${formattedProgress}`);
   }
 
   const data = await archiveFiles(imageBuffers);
-
+  console.log('\x1b[32m%s\x1b[0m', '\nSuccess!\n');
   return data;
 };
