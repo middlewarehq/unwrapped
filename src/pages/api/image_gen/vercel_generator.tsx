@@ -1,23 +1,23 @@
 import { MetricData } from '@/pages/api/types/images';
 import { ImageResponse } from '@vercel/og';
+import { arrayBufferToBuffer } from '@/pages/api/utils/general';
+import { v4 as uuid } from 'uuid';
+import fs from 'fs';
+import path from 'path';
 
 export const createImageUsingVercel = async (data: MetricData) => {
   const { metric_title, metric_username, metric_name, metric_stat } = data;
-  const fontForImages = await fetch(
-    new URL('public/assets/PressStart2P-Regular.ttf', import.meta.url)
-  ).then((res) => res.arrayBuffer());
+  // read font file as buffer
+  const fontForImages = fs.readFileSync(
+    path.join(process.cwd(), 'public', 'assets', 'PressStart2P-Regular.ttf')
+  );
 
-  return new ImageResponse(
+  const fileName = uuid() + '.png';
+
+  const generatedImage = await new ImageResponse(
     (
       <main style={styles.intoWrapper}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            margin: 'auto'
-          }}
-        >
+        <div style={styles.introWrapper}>
           <h1>{metric_title}</h1>
           <p>{metric_username}</p>
           <p style={styles.metricName}>{metric_name}</p>
@@ -38,10 +38,18 @@ export const createImageUsingVercel = async (data: MetricData) => {
       ]
     }
   );
+  let imageCopy = generatedImage.clone();
+  const imageArrayBuffer = await generatedImage.arrayBuffer();
+  const imageBuffer = arrayBufferToBuffer(imageArrayBuffer);
+  return {
+    data: imageBuffer,
+    fileName,
+    image: imageCopy
+  };
 };
 
 const styles: Record<string, React.CSSProperties> = {
-  intoWrapper: {
+  introWrapper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
