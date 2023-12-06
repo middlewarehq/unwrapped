@@ -5,10 +5,10 @@ export const config = {
 };
 
 const data = {
-  metric_name: 'Metric Name',
-  metric_stat: 1234,
-  metric_title: 'Metric Title',
-  metric_username: 'Metric Username'
+  metric_title: 'Development Metrics',
+  metric_username: '@john_dev',
+  metric_name: 'Master Bug Slayer',
+  metric_stat: 532
 };
 
 const generateUsingVercel = async () => {
