@@ -1,54 +1,26 @@
-import * as fs from 'fs';
 import archiver from 'archiver';
+import { ImageFile } from '@/pages/api/image_gen/index';
 
-export async function archiveFiles(
-  filePaths: string[],
-  outputZipPath: string
-): Promise<void> {
+export async function archiveFiles(fileBuffers: ImageFile[]): Promise<Buffer> {
   return new Promise((resolve, reject) => {
-    // Create a writable stream for the zip file
-    const output = fs.createWriteStream(outputZipPath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+    const buffers: Buffer[] = [];
 
-    // Create an archiver object with the desired format (zip in this case)
-    const archive = archiver('zip', {
-      zlib: { level: 9 } // Set compression level
+    archive.on('data', (buffer: Buffer) => {
+      buffers.push(buffer);
     });
 
-    // Pipe the output stream to the archive
-    archive.pipe(output);
-
-    // Add files to the archive
-    filePaths.forEach((filePath) => {
-      const fileName = filePath.split('/').pop(); // Extract the file name from the path
-      archive.file(filePath, { name: fileName as string });
+    archive.on('end', () => {
+      const zipBuffer = Buffer.concat(buffers);
+      resolve(zipBuffer);
     });
 
-    // Finalize the archive (write the zip file)
+    archive.on('error', (err) => reject(err));
+
+    fileBuffers.forEach(({ fileName, data }) => {
+      archive.append(data, { name: fileName });
+    });
+
     archive.finalize();
-
-    // Listen for events on the archive
-    output.on('close', () => {
-      console.log(`${archive.pointer()} total bytes`);
-      console.log(
-        'Archiver has been finalized, and the output file descriptor has closed.'
-      );
-      resolve();
-    });
-
-    output.on('end', () => {
-      console.log('Data has been drained');
-    });
-
-    archive.on('warning', (err) => {
-      if (err.code === 'ENOENT') {
-        console.warn('File not found:', err);
-      } else {
-        reject(err);
-      }
-    });
-
-    archive.on('error', (err) => {
-      reject(err);
-    });
   });
 }

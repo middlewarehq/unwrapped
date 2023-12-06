@@ -13,6 +13,8 @@ type MetricData = {
   metric_stat: '532';
 };
 
+export type ImageFile = { fileName: string; data: Buffer };
+
 const htmlFilePath = 'src/pages/api/templates/intro_slide/index.html';
 const rawHtmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
 
@@ -26,23 +28,22 @@ const cssContent =
 
 const completeHtml = `<style>${cssContent}</style>${rawHtmlContent}`;
 
-export async function convertHtmlToImage(data: MetricData): Promise<string> {
-  const outputImagePath = `src/pages/api/outputs/${uuid()}.png`;
+export async function convertHtmlToImage(data: MetricData): Promise<ImageFile> {
+  const outputImagePath = `${uuid()}.png`;
   let tempHtml = completeHtml;
+
   Object.entries(data).forEach(([key, value]) => {
     tempHtml = tempHtml.replace(`{{${key}}}`, value);
   });
 
-  // Use node-html-to-image to convert HTML to an image
   const imageBuffer = await nodeHtmlToImage({
-    output: outputImagePath,
     html: tempHtml
   });
 
-  // Save the image to a file
-  fs.writeFileSync(outputImagePath, imageBuffer as string);
-
-  return outputImagePath;
+  return {
+    fileName: outputImagePath,
+    data: imageBuffer as Buffer
+  };
 }
 
 const fetchData = async (isMockOn = false) => {
@@ -56,17 +57,16 @@ const fetchData = async (isMockOn = false) => {
 };
 
 export const generateImages = async () => {
-  const image_array: string[] = [];
+  const imageBuffers: ImageFile[] = [];
   const fetchedData = await fetchData(true);
 
   for (const data of fetchedData.data) {
     const image = await convertHtmlToImage(data);
-    image_array.push(image);
-    console.log(`Exported to ${image}`);
+    imageBuffers.push(image);
+    console.log(`Exported to ${image.fileName}`);
   }
-  const outputPath = `src/pages/api/outputs/${uuid()}.zip`;
 
-  await archiveFiles(image_array, outputPath);
+  const data = await archiveFiles(imageBuffers);
 
-  return { images: image_array, zip: outputPath };
+  return data;
 };

@@ -1,12 +1,28 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { generateImages } from '@/pages/api/image_gen/index';
+import { generateImages } from '@/pages/api/image_gen';
 
-const fetchAndGenerateImages = async (
+const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  const response = await generateImages();
-  return res.status(200).json(response);
+  try {
+    const imageBuffer = await generateImages(); // Assuming this returns the buffer
+    const fileName = 'middleware_unwrapped.zip'; // Specify a filename with the appropriate extension
+
+    // Set headers to indicate a downloadable file
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename=${encodeURIComponent(fileName)}`
+    );
+    res.setHeader('Cache-Control', 'no-cache');
+
+    // Send the buffer as the response
+    res.send(imageBuffer);
+  } catch (error) {
+    console.error('Error fetching or sending buffer:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
 
-export default fetchAndGenerateImages;
+export default fetchAndDownloadImageBuffer;
