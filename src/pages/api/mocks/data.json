@@ -1,0 +1,41 @@
+{
+    "data": [
+      {
+        "metric_title": "Development Metrics",
+        "metric_username": "@john_dev",
+        "metric_name": "Master Bug Slayer",
+        "metric_stat": "532"
+      },
+      {
+        "metric_title": "Collaboration Stats",
+        "metric_username": "@alice_collab",
+        "metric_name": "Code Review Ninja",
+        "metric_stat": "42"
+      },
+      {
+        "metric_title": "Commit Insights",
+        "metric_username": "@developer123",
+        "metric_name": "Git Commando",
+        "metric_stat": "236"
+      },
+      {
+        "metric_title": "PR Achievements",
+        "metric_username": "@gitmaster",
+        "metric_name": "Pull Request Maestro",
+        "metric_stat": "19"
+      },
+      {
+        "metric_title": "Testing Proficiency",
+        "metric_username": "@test_guru",
+        "metric_name": "Bug Dodger",
+        "metric_stat": "937"
+      },
+      {
+        "metric_title": "Code Production",
+        "metric_username": "@code_wizard",
+        "metric_name": "Code Sorcerer",
+        "metric_stat": "3087"
+      }
+    ]
+  }
+  

@@ -1,0 +1,27 @@
+.into-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.intro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+
+.metric-name {
+    font-size: 30px;
+    margin-bottom: -20px;
+}
+
+.stat{
+    font-size: 80px;
+}
+
+.times{
+    margin-top: -30px;
+}
