@@ -12,7 +12,7 @@ const data = {
 };
 
 const generateUsingVercel = async () => {
-  return (await createImageUsingVercel(data)).image;
+  return (await createImageUsingVercel(data, 'browser')).image;
 };
 
 export default generateUsingVercel;

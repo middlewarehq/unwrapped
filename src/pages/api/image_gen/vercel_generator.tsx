@@ -6,12 +6,22 @@ import fs from 'fs';
 import path from 'path';
 
 export const createImageUsingVercel = async (
-  data: MetricData
+  data: MetricData,
+  env?: 'node' | 'browser'
 ): Promise<ImageFile> => {
   const { metric_title, metric_username, metric_name, metric_stat } = data;
-  const fontForImages = fs.readFileSync(
-    path.join(process.cwd(), 'public', 'assets', 'PressStart2P-Regular.ttf')
-  );
+  let fontForImages: Buffer | ArrayBuffer;
+
+  // fetch works in browser only, not in node, vice-versa with fs
+  if (env === 'browser') {
+    fontForImages = await fetch(
+      new URL('public/assets/PressStart2P-Regular.ttf', import.meta.url)
+    ).then((res) => res.arrayBuffer());
+  } else {
+    fontForImages = fs.readFileSync(
+      path.join(process.cwd(), 'public', 'assets', 'PressStart2P-Regular.ttf')
+    );
+  }
 
   const fileName = uuid() + '.png';
 
