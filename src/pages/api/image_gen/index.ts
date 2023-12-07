@@ -1,14 +1,16 @@
-import dummyData from '../mocks/data.json';
 import axios from 'axios';
 import { archiveFiles } from '@/pages/api/utils/archive';
 import { GithubData } from '../types/ApiResponses';
-import { createImageUsingVercel } from './vercel_generator';
 import chalk from 'chalk';
+import { ghData } from '../mocks/github';
+import { cardTemplateAdaptor } from '@/pages/api/utils/general';
+import { createImageUsingVercel } from './vercel_generator';
+import { sequence } from '../types/cards';
 
 const fetchData = async (isMockOn = false): Promise<GithubData> => {
   if (isMockOn) {
     return new Promise((resolve) => {
-      resolve(dummyData);
+      resolve(ghData);
     });
   }
   const response = await axios
@@ -23,12 +25,18 @@ export const generateImages = async () => {
   console.log(chalk.yellow('Fetching data...'));
   const fetchedData = await fetchData(true);
   console.log(chalk.yellow('Generating images...'));
+
+  const adaptedData = cardTemplateAdaptor(fetchedData);
+  const cardsToBeGenerated = sequence.filter((card) => {
+    return adaptedData[card] !== null;
+  });
+
   const imageFileBuffers = await Promise.all(
-    fetchedData.data.map(async (data) => {
-      const image = await createImageUsingVercel(data);
-      return image;
+    cardsToBeGenerated.map(async (cardName) => {
+      return await createImageUsingVercel(adaptedData[cardName], cardName);
     })
   );
+
   const data = await archiveFiles(
     imageFileBuffers.map(({ data, fileName }) => ({ data, fileName }))
   );
