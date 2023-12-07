@@ -27,14 +27,14 @@ export const generateImages = async () => {
   console.log(chalk.yellow('Generating images...'));
 
   const adaptedData = cardTemplateAdaptor(fetchedData);
-  const cardsToBeGenerated = sequence.filter((card) => {
-    return adaptedData[card] !== null;
-  });
+  const cardsToBeGenerated = sequence.filter((card) =>
+    Boolean(adaptedData[card])
+  );
 
   const imageFileBuffers = await Promise.all(
-    cardsToBeGenerated.map(async (cardName) => {
-      return await createImageUsingVercel(adaptedData[cardName], cardName);
-    })
+    cardsToBeGenerated.map((cardName) =>
+      createImageUsingVercel(adaptedData[cardName], cardName)
+    )
   );
 
   const data = await archiveFiles(

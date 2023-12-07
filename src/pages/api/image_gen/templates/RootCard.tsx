@@ -15,6 +15,7 @@ export const RootCard: FC<RootCard> = ({ bg, children, style }) => {
     ...style
   };
 
+  // this is the only way to pass image urls for the vercel/og library
   const imageUrl = `${website_url}/${bg}`;
 
   return (
