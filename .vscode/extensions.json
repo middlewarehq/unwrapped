@@ -1,3 +1,7 @@
 {
-  "recommendations": ["gruntfuggly.todo-tree", "stringham.copy-with-imports"]
+  "recommendations": [
+    "gruntfuggly.todo-tree",
+    "stringham.copy-with-imports",
+    "bradlc.vscode-tailwindcss"
+  ]
 }

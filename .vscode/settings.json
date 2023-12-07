@@ -18,5 +18,11 @@
   "eslint.workingDirectories": [
     { "mode": "auto" }
   ],
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    "tw"
+  ]
 }

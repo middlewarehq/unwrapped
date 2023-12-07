@@ -36,6 +36,7 @@ module.exports = {
         args: 'after-used',
         argsIgnorePattern: '^_'
       }
-    ]
+    ],
+    'react/no-unknown-property': ['error', { ignore: ['tw'] }]
   }
 };
