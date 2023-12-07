@@ -17,7 +17,7 @@ export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
 
   if (isRoundTheClock) {
     return (
-      <RootCard bg={'assets/images/guardian.png'}>
+      <RootCard bg={'assets/images/indigo_bg.png'}>
         <div tw="flex flex-col p-1">
           <p tw="text-xl">I code the way</p>
           <p tw="mt-[-10px] text-xl">I breath. All day!</p>
@@ -34,7 +34,7 @@ export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
     );
   } else if (isDayHawk) {
     return (
-      <RootCard bg={'assets/images/intro.png'}>
+      <RootCard bg={'assets/images/orange_bg.png'}>
         <div tw="flex flex-col p-1">
           <p tw="text-xl">I rise with</p>
           <p tw="mt-[-10px] text-xl">the sun!</p>
@@ -51,7 +51,7 @@ export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
     );
   } else {
     return (
-      <RootCard bg={'assets/images/day_night.png'}>
+      <RootCard bg={'assets/images/purple_bg.png'}>
         <div tw="flex flex-col p-1">
           <p tw="text-xl">Wh... what is...</p>
           <p tw="mt-[-10px] text-xl">sleep?</p>
