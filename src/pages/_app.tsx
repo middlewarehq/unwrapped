@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import { Inter } from 'next/font/google';
 
+import '@/styles/swiper.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export default function App({

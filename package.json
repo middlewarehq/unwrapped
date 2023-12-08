@@ -19,10 +19,12 @@
     "next-auth": "^4.24.5",
     "react": "^18",
     "react-dom": "^18",
+    "swiper": "^11.0.5",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.5.0",
+    "@svgr/webpack": "^8.1.0",
     "@types/archiver": "^6.0.2",
     "@types/node": "^20",
     "@types/react": "^18",

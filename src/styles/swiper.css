@@ -1,0 +1,80 @@
+:root {
+    --swiper-navigation-color: #9333ea;
+  --swiper-pagination-bullet-inactive-color: #cccccc;
+  --swiper-pagination-color: #9333ea;
+  }
+
+.swiper-container {
+    position: relative ;
+  width: calc(min(90rem, 90%));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 600px !important;
+}
+
+
+
+.swiper-slide-img {
+    position: relative;
+    width: 100%;
+    height: 500px!important;
+    overflow: hidden;
+}
+
+.swiper-slide-img img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    z-index: -1;
+    transition: 0.3s ease-in-out;
+}
+
+.swiper-pagination {
+    position: relative !important;
+    margin-top: 10px!important;
+}
+.swiper-pagination-bullet {
+    border-radius: 0!important;
+    width: 1.5rem!important;
+    height: 0.25rem!important;
+}
+
+.prev-arrow, .next-arrow, .share-active-image  {
+visibility: hidden;
+}
+
+.swiper-slide-active {
+    position: relative;
+    overflow: visible;
+}
+
+.swiper-slide-active .prev-arrow, .swiper-slide-active .next-arrow, .swiper-slide-active .share-active-image  {
+    visibility:visible;
+    position: absolute;
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+}
+
+.prev-arrow{
+    right: 95%;
+    top:50%
+}
+
+.next-arrow{
+    top:50%;
+    left: 95%;
+}
+
+.share-active-image{
+    top:-1.5%;
+    right: -20%;
+}
+
+@media screen and (min-width: 93.75rem) {
+  .swiper {
+    width: 85%;
+  }
+}
+
