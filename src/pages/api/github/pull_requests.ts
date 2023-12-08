@@ -1,4 +1,9 @@
-import { fetchAllPullRequests, fetchUser } from '@/exapi_sdk/github';
+import { getPRListAndMonthlyCountsFromGqlResponse } from '@/analytics';
+import {
+  fetchAllPullRequests,
+  fetchAllReviewedPRs,
+  fetchUser
+} from '@/exapi_sdk/github';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -13,10 +18,27 @@ export default async function handler(
     });
   }
 
-  const user = await fetchUser(token);
+  try {
+    const user = await fetchUser(token);
 
-  const pull_request_data = await fetchAllPullRequests(user.login, token);
-  res.status(200).json({
-    pull_request_data
-  });
+    const [pr_authored_data, pr_reviewed_data] = await Promise.all([
+      fetchAllPullRequests(user.login, token),
+      fetchAllReviewedPRs(user.login, token)
+    ]);
+
+    const [authored_prs, authored_monthly_counts] =
+      getPRListAndMonthlyCountsFromGqlResponse(pr_authored_data);
+    const [reviewed_prs, reviewed_monthly_counts] =
+      getPRListAndMonthlyCountsFromGqlResponse(pr_reviewed_data);
+
+    res.status(200).json({
+      authored_prs,
+      authored_monthly_counts,
+      reviewed_prs,
+      reviewed_monthly_counts
+    });
+  } catch (e: any) {
+    console.error(e);
+    res.status(400).send({ message: e.message });
+  }
 }
