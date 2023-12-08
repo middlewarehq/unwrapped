@@ -1,4 +1,4 @@
-interface Review {
+export interface Review {
   author: {
     login: string;
   };
@@ -7,7 +7,6 @@ interface Review {
 }
 
 export interface PullRequest {
-
   repository: {
     name: string;
     owner: {
@@ -19,11 +18,15 @@ export interface PullRequest {
   additions: number;
   deletions: number;
   reviews: {
-    edges: Review[];
+    edges: ReviewEdge[];
   };
 }
 
-interface PageInfo {
+export interface ReviewEdge {
+  node: Review;
+}
+
+export interface PageInfo {
   hasNextPage: boolean;
   endCursor: string;
 }
@@ -33,7 +36,7 @@ export interface PullRequestEdge {
   node: PullRequest;
 }
 
-interface SearchResponse {
+export interface SearchResponse {
   edges: PullRequestEdge[];
   pageInfo: PageInfo;
 }
@@ -51,25 +54,25 @@ export interface GithubUser {
   email: string;
 }
 
-interface ContributionDay {
+export interface ContributionDay {
   contributionCount: number;
   date: string;
 }
 
-interface GithubWeeklyContributionData {
+export interface GithubWeeklyContributionData {
   contributionDays: ContributionDay[];
 }
 
-interface GithubContributionCalendar {
+export interface GithubContributionCalendar {
   totalContributions: number;
   weeks: GithubWeeklyContributionData[];
 }
 
-interface GithubContributionsCollection {
+export interface GithubContributionsCollection {
   contributionCalendar: GithubContributionCalendar;
 }
 
-interface GitHubMetricsResponse {
+export interface GitHubMetricsResponse {
   user: {
     contributionsCollection: GithubContributionsCollection;
   };
