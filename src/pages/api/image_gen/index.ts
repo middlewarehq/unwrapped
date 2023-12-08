@@ -7,8 +7,8 @@ import { cardTemplateAdaptor } from '@/pages/api/utils/general';
 import { createImageUsingVercel } from './vercel_generator';
 import { sequence } from '../types/cards';
 
-const fetchData = async (isMockOn = false): Promise<GithubData> => {
-  if (isMockOn) {
+const fetchData = async (): Promise<GithubData> => {
+  if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development') {
     return new Promise((resolve) => {
       resolve(ghData);
     });
@@ -23,7 +23,7 @@ const fetchData = async (isMockOn = false): Promise<GithubData> => {
 
 export const generateImages = async () => {
   console.log(chalk.yellow('Fetching data...'));
-  const fetchedData = await fetchData(true);
+  const fetchedData = await fetchData();
   console.log(chalk.yellow('Generating images...'));
 
   const adaptedData = cardTemplateAdaptor(fetchedData);
