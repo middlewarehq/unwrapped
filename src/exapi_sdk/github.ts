@@ -1,15 +1,21 @@
 import axios from 'axios';
 import { endOfMonth, format } from 'date-fns';
-import { PullRequestEdge, GraphQLResponse, GithubUser } from './types';
+import {
+  PullRequestEdge,
+  GraphQLResponse,
+  GithubUser,
+  GraphQLMetricsResponse
+} from './types';
 
 async function fetchPullRequestsForMonth(
   author: string,
   month: number,
   token: string,
+  year_string: string = '2023',
   after?: string
 ): Promise<PullRequestEdge[]> {
   const startDate = new Date(
-    `2023-${month.toString().padStart(2, '0')}-01T00:00:00Z`
+    `${year_string}-${month.toString().padStart(2, '0')}-01T00:00:00Z`
   );
   const endDate = endOfMonth(startDate);
 
@@ -79,6 +85,8 @@ async function fetchPullRequestsForMonth(
     const nextPageData = await fetchPullRequestsForMonth(
       author,
       month,
+      token,
+      year_string,
       pageInfo.endCursor
     );
     return [...edges, ...nextPageData];
@@ -121,10 +129,11 @@ async function fetchReviewedPRsForMonth(
   author: string,
   month: number,
   token: string,
+  year_string: string = '2023',
   after?: string
 ): Promise<PullRequestEdge[]> {
   const startDate = new Date(
-    `2023-${month.toString().padStart(2, '0')}-01T00:00:00Z`
+    `${year_string}-${month.toString().padStart(2, '0')}-01T00:00:00Z`
   );
   const endDate = endOfMonth(startDate);
 
@@ -195,6 +204,7 @@ async function fetchReviewedPRsForMonth(
       author,
       month,
       token,
+      year_string,
       pageInfo.endCursor
     );
     return [...edges, ...nextPageData];
@@ -213,5 +223,48 @@ export async function fetchAllReviewedPRs(author: string, token: string) {
     return results;
   } catch (error: any) {
     console.error('Error fetching reviews:', error.message);
+  }
+}
+
+export async function fetchGitHubMetrics(
+  username: string,
+  token: string,
+  year_string: string = '2023'
+) {
+  try {
+    const response = await axios.post<GraphQLMetricsResponse>(
+      'https://api.github.com/graphql',
+      {
+        query: `
+          query GetUserContributions($username: String!) {
+            user(login: $username) {
+              contributionsCollection(from: "${year_string}-01-01T00:00:00Z", to: "${year_string}-12-31T23:59:59Z") {
+                contributionCalendar {
+                  totalContributions
+                  weeks {
+                    contributionDays {
+                      contributionCount
+                      date
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          username: username
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return response.data.data.user.contributionsCollection.contributionCalendar;
+  } catch (error: any) {
+    console.error('Error fetching GitHub metrics:', error.message);
   }
 }
