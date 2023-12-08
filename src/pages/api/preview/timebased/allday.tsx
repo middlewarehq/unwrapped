@@ -1,18 +1,19 @@
 import { createImageUsingVercel } from '@/pages/api/image_gen/vercel_generator';
-import '../../styles/globals.css';
+import { CardTypes } from '../../types/cards';
+
 export const config = {
   runtime: 'edge'
 };
 
 const data = {
-  metric_title: 'Development Metrics',
-  metric_username: '@john_dev',
-  metric_name: 'Master Bug Slayer',
-  metric_stat: 532
+  prsDuringDay: 2000,
+  totalPrs: 4000
 };
 
 const generateUsingVercel = async () => {
-  return (await createImageUsingVercel(data, 'browser')).image;
+  return (
+    await createImageUsingVercel(data, CardTypes.DAY_NIGHT_CYCLE, 'browser')
+  ).image;
 };
 
 export default generateUsingVercel;
