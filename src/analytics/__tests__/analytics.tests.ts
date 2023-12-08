@@ -1,4 +1,9 @@
-import { getReviewerReviewsCountMap, getAuthorPRCountsMap } from '../analytics';
+import {
+  getReviewerReviewsCountMap,
+  getAuthorPRCountsMap,
+  getTotalCodeAdditions,
+  getTotalCodeDeletions
+} from '../analytics';
 import { getPullRequest, getReview } from '../test_utils/factories';
 
 test('getReviewerReviewsCountMap returns empty object for empty PR Array', () => {
@@ -89,4 +94,185 @@ test('getAuthorPRCountsMap returns correct PR counts for users', () => {
     varun: 2,
     amogh: 1
   });
+});
+
+test('getTotalCodeAdditions returns 0 for empty PR Array', () => {
+  expect(getTotalCodeAdditions([])).toStrictEqual(0);
+});
+
+test('getTotalCodeAdditions returns correct value for PR Additions Array', () => {
+  const author1 = 'samad-yar-khan';
+  const author2 = 'jayantbh';
+  const author3 = 'shivam-bit';
+  const author4 = 'varun';
+  const author5 = 'amogh';
+
+  const pr1 = getPullRequest({
+    authorLogin: author1,
+    additions: 0,
+    deletions: 100
+  });
+  const pr2 = getPullRequest({
+    authorLogin: author2,
+    additions: 1,
+    deletions: 200
+  });
+  const pr3 = getPullRequest({
+    authorLogin: author3,
+    additions: 2,
+    deletions: 300
+  });
+  const pr4 = getPullRequest({
+    authorLogin: author4,
+    additions: 3,
+    deletions: 400
+  });
+  const pr5 = getPullRequest({
+    authorLogin: author1,
+    additions: 4,
+    deletions: 500
+  });
+  const pr6 = getPullRequest({
+    authorLogin: author2,
+    additions: 5,
+    deletions: 600
+  });
+  const pr7 = getPullRequest({
+    authorLogin: author3,
+    additions: 10,
+    deletions: 700
+  });
+  const pr8 = getPullRequest({
+    authorLogin: author4,
+    additions: 20,
+    deletions: 800
+  });
+  const pr9 = getPullRequest({
+    authorLogin: author1,
+    additions: 30,
+    deletions: 900
+  });
+  const pr10 = getPullRequest({
+    authorLogin: author2,
+    additions: 40,
+    deletions: 1000
+  });
+  const pr11 = getPullRequest({
+    authorLogin: author5,
+    additions: 50,
+    deletions: 1100
+  });
+
+  expect(getTotalCodeAdditions([pr1])).toStrictEqual(0);
+  expect(getTotalCodeAdditions([pr1, pr2, pr3, pr4, pr5, pr6])).toStrictEqual(
+    15
+  );
+  expect(
+    getTotalCodeAdditions([
+      pr1,
+      pr2,
+      pr3,
+      pr4,
+      pr5,
+      pr6,
+      pr7,
+      pr8,
+      pr9,
+      pr10,
+      pr11
+    ])
+  ).toStrictEqual(165);
+});
+
+test('getTotalCodeDeletions returns 0 for empty PR Array', () => {
+  expect(getTotalCodeDeletions([])).toStrictEqual(0);
+});
+
+test('getTotalCodeDeletions returns correct value for PR Additions Array', () => {
+  const author1 = 'samad-yar-khan';
+  const author2 = 'jayantbh';
+  const author3 = 'shivam-bit';
+  const author4 = 'varun';
+  const author5 = 'amogh';
+
+  const pr0 = getPullRequest({
+    authorLogin: author1,
+    additions: 0,
+    deletions: 0
+  });
+  const pr1 = getPullRequest({
+    authorLogin: author1,
+    additions: 0,
+    deletions: 100
+  });
+  const pr2 = getPullRequest({
+    authorLogin: author2,
+    additions: 1,
+    deletions: 200
+  });
+  const pr3 = getPullRequest({
+    authorLogin: author3,
+    additions: 2,
+    deletions: 300
+  });
+  const pr4 = getPullRequest({
+    authorLogin: author4,
+    additions: 3,
+    deletions: 400
+  });
+  const pr5 = getPullRequest({
+    authorLogin: author1,
+    additions: 4,
+    deletions: 500
+  });
+  const pr6 = getPullRequest({
+    authorLogin: author2,
+    additions: 5,
+    deletions: 600
+  });
+  const pr7 = getPullRequest({
+    authorLogin: author3,
+    additions: 10,
+    deletions: 700
+  });
+  const pr8 = getPullRequest({
+    authorLogin: author4,
+    additions: 20,
+    deletions: 800
+  });
+  const pr9 = getPullRequest({
+    authorLogin: author1,
+    additions: 30,
+    deletions: 900
+  });
+  const pr10 = getPullRequest({
+    authorLogin: author2,
+    additions: 40,
+    deletions: 1000
+  });
+  const pr11 = getPullRequest({
+    authorLogin: author5,
+    additions: 50,
+    deletions: 1100
+  });
+
+  expect(getTotalCodeDeletions([pr0])).toStrictEqual(0);
+  expect(getTotalCodeDeletions([pr1, pr2, pr3, pr4, pr5, pr6])).toStrictEqual(
+    2100
+  );
+  expect(
+    getTotalCodeDeletions([
+      pr1,
+      pr2,
+      pr3,
+      pr4,
+      pr5,
+      pr6,
+      pr7,
+      pr8,
+      pr9,
+      pr10,
+      pr11
+    ])
+  ).toStrictEqual(6600);
 });

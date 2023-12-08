@@ -54,3 +54,25 @@ export const getAuthorPRCountsMap = (pullRequests: Array<PullRequest>) => {
 
   return authorNameToPrCountsMap;
 };
+
+export const getTotalCodeAdditions = (pullRequests: Array<PullRequest>) => {
+  let totalAdditions = 0;
+
+  if (!pullRequests) return totalAdditions;
+  for (let pr of pullRequests) {
+    totalAdditions += pr.additions;
+  }
+
+  return totalAdditions;
+};
+
+export const getTotalCodeDeletions = (pullRequests: Array<PullRequest>) => {
+  let totalDeletions = 0;
+
+  if (!pullRequests) return totalDeletions;
+  for (let pr of pullRequests) {
+    totalDeletions += pr.deletions;
+  }
+
+  return totalDeletions;
+};
