@@ -16,7 +16,7 @@ async function fetchPullRequestsForMonth(
   const response = await axios.post<GraphQLResponse>(
     'https://api.github.com/graphql',
     {
-      query: `
+      query: `#graphql
         query {
           search(query: "is:pr author:${author} created:${format(
             startDate,
