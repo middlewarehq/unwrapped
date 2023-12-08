@@ -1,4 +1,4 @@
-import { getReviewerReviewsCountMap } from '../analytics';
+import { getReviewerReviewsCountMap, getAuthorPRCountsMap } from '../analytics';
 import { getPullRequest, getReview } from '../test_utils/factories';
 
 test('getReviewerReviewsCountMap returns empty object for empty PR Array', () => {
@@ -33,5 +33,60 @@ test('getReviewerReviewsCountMap returns correct reviews count.', () => {
     jayantbh: 3,
     'shivam-bit': 1,
     varun: 1
+  });
+});
+
+test('getAuthorPRCountsMap returns empty object for empty PR Array', () => {
+  expect(getAuthorPRCountsMap([])).toStrictEqual({});
+});
+
+test('getAuthorPRCountsMap returns correct PR counts for users', () => {
+  expect(getAuthorPRCountsMap([])).toStrictEqual({});
+
+  const author1 = 'samad-yar-khan';
+  const author2 = 'jayantbh';
+  const author3 = 'shivam-bit';
+  const author4 = 'varun';
+  const author5 = 'amogh';
+
+  const pr1 = getPullRequest({ authorLogin: author1 });
+  const pr2 = getPullRequest({ authorLogin: author2 });
+  const pr3 = getPullRequest({ authorLogin: author3 });
+  const pr4 = getPullRequest({ authorLogin: author4 });
+  const pr5 = getPullRequest({ authorLogin: author1 });
+  const pr6 = getPullRequest({ authorLogin: author2 });
+  const pr7 = getPullRequest({ authorLogin: author3 });
+  const pr8 = getPullRequest({ authorLogin: author4 });
+  const pr9 = getPullRequest({ authorLogin: author1 });
+  const pr10 = getPullRequest({ authorLogin: author2 });
+  const pr11 = getPullRequest({ authorLogin: author5 });
+
+  expect(getAuthorPRCountsMap([pr1, pr5, pr9])).toStrictEqual({
+    'samad-yar-khan': 3
+  });
+  expect(getAuthorPRCountsMap([pr1, pr2, pr5, pr9])).toStrictEqual({
+    'samad-yar-khan': 3,
+    jayantbh: 1
+  });
+  expect(
+    getAuthorPRCountsMap([
+      pr1,
+      pr2,
+      pr3,
+      pr4,
+      pr5,
+      pr6,
+      pr7,
+      pr8,
+      pr9,
+      pr10,
+      pr11
+    ])
+  ).toStrictEqual({
+    'samad-yar-khan': 3,
+    jayantbh: 3,
+    'shivam-bit': 2,
+    varun: 2,
+    amogh: 1
   });
 });

@@ -37,3 +37,20 @@ export const getReviewerReviewsCountMap = (
   }
   return reviewer_name_to_pr_count_map;
 };
+
+export const getAuthorPRCountsMap = (pullRequests: Array<PullRequest>) => {
+  let authorNameToPrCountsMap: any = {};
+
+  for (let pr of pullRequests) {
+    let author = pr.author.login;
+    if (!author) continue;
+
+    if (author in authorNameToPrCountsMap) {
+      authorNameToPrCountsMap[author] += 1;
+    } else {
+      authorNameToPrCountsMap[author] = 1;
+    }
+  }
+
+  return authorNameToPrCountsMap;
+};
