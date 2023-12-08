@@ -29,7 +29,7 @@ const downloadMultipleImages = (urls: string[]) => {
     .catch((error) => console.error('Error zipping images:', error));
 };
 
-const useImageDownloader = () => {
+export const useImageDownloader = () => {
   const downloadImages = useCallback(({ images }: DownloadImagesProps) => {
     if (Array.isArray(images)) {
       downloadMultipleImages(images);
@@ -40,5 +40,3 @@ const useImageDownloader = () => {
 
   return downloadImages;
 };
-
-export default useImageDownloader;
