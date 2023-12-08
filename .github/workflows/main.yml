@@ -1,0 +1,134 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Production Deployment
+
+on:
+  push:
+    branches: [main]
+
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  GH_COMMIT_MSG: ${{ github.event.head_commit.message }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  AWS_REGION: "ap-south-1"
+  node-version: "20.10.0"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get current time
+        uses: josStorer/get-current-time@v2.0.1
+        id: time
+
+      - name: Prepare GH Environment Variables
+        run: |
+          echo "GH_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV; \
+          echo "GH_COMMIT=${GITHUB_SHA::7}" >> $GITHUB_ENV; \
+          echo "GH_WORKFLOW_URL=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV; \
+          echo "GH_TREE_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/tree/$GITHUB_REF" >> $GITHUB_ENV; \
+          echo "GH_COMMIT_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA" >> $GITHUB_ENV; \
+          echo "APP_ENV=PRODUCTION" >> $GITHUB_ENV; \
+          echo "APP_URL=https://unwrapped.dev" >> $GITHUB_ENV;
+
+      - name: Prepare GH Content Environment Variables
+        run: |
+          echo "GH_COMMON_CONTENT1=,blocks:[{type:'section',text:{type:'mrkdwn',text:" >> $GITHUB_ENV; \
+          echo "GH_COMMON_CONTENT2=/ <$GH_WORKFLOW_URL|Workflow Link>*'}},{type:'context',elements:[{type:'mrkdwn',text:'> *Branch:* <$GH_TREE_LINK|$GH_BRANCH> / *View:* $APP_URL\n> *Commit:* <$GH_COMMIT_LINK|$GH_COMMIT> $GH_COMMIT_MSG'}]},{type: 'divider'}]}" >> $GITHUB_ENV;
+
+      - name: Push Slack Notification - Deployment Started
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{text: '⚪ [$APP_ENV][Unwrapped] deploying: $GH_COMMIT_MSG' $GH_COMMON_CONTENT1':white_circle: *[$APP_ENV][Unwrapped] New deployment triggered $GH_COMMON_CONTENT2" $SLACK_WEBHOOK_URL
+
+      - uses: actions/checkout@v3
+
+      - name: create env file
+        run: |
+          touch .env
+          cat <<'EOF' >> .env
+          ${{ secrets.ENV_LIST_PRODUCTION }}
+          NEXT_PUBLIC_BUILD_TIME=${{ steps.time.outputs.time }}
+          EOF
+
+      - name: Use Node.js ${{ env.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+          cache: "npm"
+      - run: yarn install
+      - run: yarn build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create artifact name
+        run: echo "artifact=artifact-${GITHUB_SHA:0:8}.tar.gz" >> $GITHUB_ENV
+
+      - name: Get runner IP
+        run: |
+          ip=`curl https://ipinfo.io/ip`
+          echo $ip
+          echo "runner_ip=$ip" >> $GITHUB_ENV
+
+      - name: Add Github Actions IP to Security group as an SSH inbound rule
+        run: |
+          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_PROD_SG_ID_TO_UPDATE }} --protocol tcp --port 22 --cidr ${{ env.runner_ip }}/32
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_PROD_SG_UPDATER_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_PROD_SG_UPDATER_SECRET_KEY }}
+          AWS_DEFAULT_REGION: ap-south-1
+          
+      - name: Upload to S3
+        run: |
+          set -e
+          mv artifacts/artifact.tar.gz artifacts/${{ env.artifact }}
+          aws s3 cp artifacts/${{ env.artifact }} s3://middleware-ci-builds/prod/
+
+      - name: Deploy on EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
+          HOSTNAME: ${{ secrets.PROD_IP }}
+          USER_NAME: ec2-user
+        run: |
+          set -e
+          cat <<'EOF' >> private_key
+          ${{ secrets.AWS_PRIVATE_KEY }}
+          EOF
+          chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ env.USER_NAME }}@${{ env.HOSTNAME }} << EOF
+          mkdir -p prod
+          aws s3 cp s3://middleware-ci-builds/prod/${{ env.artifact }} prod
+          cd prod
+          tar -xzf ${{ env.artifact }}
+          yarn box-server-start
+          EOF
+          
+      - name: Remove Github Actions IP from security group
+        run: |
+          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_PROD_SG_ID_TO_UPDATE }} --protocol tcp --port 22 --cidr ${{ env.runner_ip }}/32
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_PROD_SG_UPDATER_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_PROD_SG_UPDATER_SECRET_KEY }}
+          AWS_DEFAULT_REGION: ap-south-1
+        if: always()
+
+      - name: Push Slack Notification - Deployment Completed
+        if: ${{ success() }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{text: '🟢 [$APP_ENV][Unwrapped] Deployed: $GH_COMMIT_MSG' $GH_COMMON_CONTENT1':large_green_circle: *[$APP_ENV][Unwrapped] Deployment complete! $GH_COMMON_CONTENT2" $SLACK_WEBHOOK_URL
+
+      - name: Push Slack Notification - Deployment Failed
+        if: ${{ failure() }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{text: '🔴 [$APP_ENV][Unwrapped] Deploy failed: $GH_COMMIT_MSG' $GH_COMMON_CONTENT1':red_circle: *[$APP_ENV][Unwrapped] Deployment failed! $GH_COMMON_CONTENT2" $SLACK_WEBHOOK_URL
