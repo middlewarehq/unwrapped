@@ -6,9 +6,10 @@ import { ghData } from '../mocks/github';
 import { cardTemplateAdaptor } from '@/pages/api/utils/general';
 import { createImageUsingVercel } from './vercel_generator';
 import { sequence } from '../types/cards';
+import { DEV } from '../constants/general';
 
 const fetchData = async (): Promise<GithubData> => {
-  if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development') {
+  if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT === DEV) {
     return new Promise((resolve) => {
       resolve(ghData);
     });
