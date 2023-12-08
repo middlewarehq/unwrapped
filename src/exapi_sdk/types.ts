@@ -7,6 +7,9 @@ export interface Review {
 }
 
 export interface PullRequest {
+  author: {
+    login: string;
+  };
   repository: {
     name: string;
     owner: {

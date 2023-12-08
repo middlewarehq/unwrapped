@@ -2,6 +2,7 @@ import { Review, ReviewEdge } from '@/exapi_sdk/types';
 import { PullRequestGeneratorParams, ReviewGeneratorParams } from './types';
 
 export const getPullRequest = ({
+  authorLogin = 'samad-yar-khan',
   repoOwner = 'middlewarehq',
   repoName = 'unwrapped',
   createdAt = '2023-02-01T14:04:37Z',
@@ -11,6 +12,9 @@ export const getPullRequest = ({
   reviews = []
 }: PullRequestGeneratorParams): any => {
   return {
+    author: {
+      login: authorLogin
+    },
     repository: {
       name: repoName,
       owner: {
