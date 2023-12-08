@@ -6,7 +6,8 @@ interface Review {
   state: string;
 }
 
-interface PullRequest {
+export interface PullRequest {
+
   repository: {
     name: string;
     owner: {
