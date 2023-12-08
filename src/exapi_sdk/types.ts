@@ -44,3 +44,31 @@ export interface GithubUser {
   name: string;
   email: string;
 }
+
+interface ContributionDay {
+  contributionCount: number;
+  date: string;
+}
+
+interface GithubWeeklyContributionData {
+  contributionDays: ContributionDay[];
+}
+
+interface GithubContributionCalendar {
+  totalContributions: number;
+  weeks: GithubWeeklyContributionData[];
+}
+
+interface GithubContributionsCollection {
+  contributionCalendar: GithubContributionCalendar;
+}
+
+interface GitHubMetricsResponse {
+  user: {
+    contributionsCollection: GithubContributionsCollection;
+  };
+}
+
+export interface GraphQLMetricsResponse {
+  data: GitHubMetricsResponse;
+}
