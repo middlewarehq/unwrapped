@@ -18,16 +18,12 @@ const useImageDownloader = () => {
 
     const downloadMultipleImages = (urls: string[]) => {
       const zip = new JSZip();
-      const promises: Promise<void | JSZip>[] = [];
+      const promises = urls.map((url, index) => {
+        const fileName = `image${index + 1}.jpg`;
 
-      urls.forEach((url, index) => {
-        const fileName = `middleware-unwrapped-${index + 1}.jpg`;
-
-        promises.push(
-          fetch(url)
-            .then((response) => response.blob())
-            .then((blob) => zip.file(fileName, blob))
-        );
+        return fetch(url)
+          .then((response) => response.blob())
+          .then((blob) => zip.file(fileName, blob));
       });
 
       Promise.all(promises)
