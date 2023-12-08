@@ -1,4 +1,4 @@
-import { PullRequestEdge } from './exapi_sdk/types';
+import { PullRequestEdge, PullRequest } from './exapi_sdk/types';
 
 export const getPRListAndMonthlyCountsFromGqlResponse = (
   edges?: PullRequestEdge[][]
@@ -10,3 +10,22 @@ export const getPRListAndMonthlyCountsFromGqlResponse = (
 
   return [flat_prs, prs_monthly_counts];
 };
+
+export const getReviewerReviewsCountMap = (
+  pull_requests: Array<PullRequest>
+) => {
+  let reviewer_name_to_pr_count_map: any = {};
+
+  for (let pr of pull_requests) {
+    for (let review of pr.reviews.edges) {
+      const reviewer_login = review.author.login;
+      if (reviewer_name_to_pr_count_map.reviewer_login) {
+        reviewer_name_to_pr_count_map[reviewer_login] += 1;
+      } else {
+        reviewer_name_to_pr_count_map[reviewer_login] = 1;
+      }
+    }
+  }
+  return reviewer_name_to_pr_count_map;
+};
+
