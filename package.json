@@ -4,10 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
     "start": "next start",
     "lint": "eslint --fix .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build": "./scripts/build.sh",
+    "zip": "./scripts/zip.sh",
+    "box-server-start-wo-install": "./scripts/server-init.sh",
+    "box-server-start": "yarn install && yarn box-server-start-wo-install"
+    
   },
   "dependencies": {
     "@mui/icons-material": "^5.14.19",
@@ -50,6 +54,7 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "husky": "^8.0.3",
     "jest": "^29.7.0",
+    "pm2": "^5.3.0",
     "postcss": "^8",
     "prettier": "^3.1.0",
     "tailwindcss": "^3.3.0",
