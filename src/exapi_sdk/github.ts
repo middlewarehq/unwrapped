@@ -35,6 +35,9 @@ async function fetchPullRequestsForMonth(
               cursor
               node {
                 ... on PullRequest {
+                  author {
+                    login
+                  }
                   number
                   title
                   repository {
@@ -153,6 +156,9 @@ async function fetchReviewedPRsForMonth(
               cursor
               node {
                 ... on PullRequest {
+                  author {
+                    login
+                  }
                   number
                   title
                   repository {

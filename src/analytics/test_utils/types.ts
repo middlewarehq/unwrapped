@@ -1,6 +1,7 @@
 import { Review } from '@/exapi_sdk/types';
 
 export interface PullRequestGeneratorParams {
+  authorLogin?: string;
   repoOwner?: string;
   repoName?: string;
   createdAt?: string;

@@ -37,3 +37,42 @@ export const getReviewerReviewsCountMap = (
   }
   return reviewer_name_to_pr_count_map;
 };
+
+export const getAuthorPRCountsMap = (pullRequests: Array<PullRequest>) => {
+  let authorNameToPrCountsMap: any = {};
+
+  for (let pr of pullRequests) {
+    let author = pr.author.login;
+    if (!author) continue;
+
+    if (author in authorNameToPrCountsMap) {
+      authorNameToPrCountsMap[author] += 1;
+    } else {
+      authorNameToPrCountsMap[author] = 1;
+    }
+  }
+
+  return authorNameToPrCountsMap;
+};
+
+export const getTotalCodeAdditions = (pullRequests: Array<PullRequest>) => {
+  let totalAdditions = 0;
+
+  if (!pullRequests) return totalAdditions;
+  for (let pr of pullRequests) {
+    totalAdditions += pr.additions;
+  }
+
+  return totalAdditions;
+};
+
+export const getTotalCodeDeletions = (pullRequests: Array<PullRequest>) => {
+  let totalDeletions = 0;
+
+  if (!pullRequests) return totalDeletions;
+  for (let pr of pullRequests) {
+    totalDeletions += pr.deletions;
+  }
+
+  return totalDeletions;
+};
