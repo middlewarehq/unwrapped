@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 const Previews = () => {
@@ -24,7 +25,7 @@ const Previews = () => {
               className="flex flex-col items-center justify-center gap-2 mt-2"
             >
               <p className="text-xl">{link.split('/').slice(-1)}</p>
-              <img src={link} alt="preview" className="w-[400] h-[600]" />
+              <Image src={link} alt="preview" className="w-[400] h-[600]" />
             </div>
           );
         })}

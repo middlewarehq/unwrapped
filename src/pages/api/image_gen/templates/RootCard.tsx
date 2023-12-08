@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, CSSProperties } from 'react';
 import { CARD_HEIGHT, CARD_WIDTH, website_url } from '../../constants/general';
+import Image from 'next/image';
 
 type RootCard = {
   bg?: string;
@@ -20,7 +21,7 @@ export const RootCard: FC<RootCard> = ({ bg, children, style }) => {
 
   return (
     <section style={computedStyle} tw="relative flex">
-      <img
+      <Image
         src={imageUrl}
         alt="bg"
         width={parseInt(CARD_WIDTH)}
