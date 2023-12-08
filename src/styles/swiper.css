@@ -10,7 +10,10 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  height: 600px !important;
+}
+
+.swiper-container .swiper {
+    padding: 1.25rem;
 }
 
 
@@ -20,6 +23,7 @@
     width: 100%;
     height: 500px!important;
     overflow: hidden;
+    aspect-ratio: 0.5;
 }
 
 .swiper-slide-img img {
@@ -30,6 +34,7 @@
     object-fit: cover;
     z-index: -1;
     transition: 0.3s ease-in-out;
+    border-radius: 1rem;
 }
 
 .swiper-pagination {
@@ -58,18 +63,33 @@ visibility: hidden;
 }
 
 .prev-arrow{
-    right: 95%;
-    top:50%
+    right: 102%;
+    top:50%;
 }
 
 .next-arrow{
     top:50%;
-    left: 95%;
+    left: 102%;
 }
 
+.prev-arrow, .next-arrow{
+    padding: 0.1rem;
+    background-color: white;
+    border-radius: 50%;
+    border-width: 0.2rem;
+    border-style: solid;
+    border-color: #14183B;
+    fill:#14183b;
+    
+}
+
+
 .share-active-image{
-    top:-1.5%;
-    right: -20%;
+    top:-4%;
+    right: -8%;
+    padding: 0.1rem;
+    background-color: white;
+    border-radius: 50%;
 }
 
 @media screen and (min-width: 93.75rem) {
