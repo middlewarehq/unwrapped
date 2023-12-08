@@ -20,6 +20,10 @@ function is_project_root() {
 }
 
 function install_yarn_cmd_if_not_exists() {
+  if !command -v yarn; then
+    sudo npm i -g yarn
+  fi
+
   if ! command -v $1; then
     yarn global add $1
     if ! command -v $1; then
