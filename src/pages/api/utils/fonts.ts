@@ -38,10 +38,10 @@ export const getFontsForImageGeneration = async (
 
     return fonts;
   } else {
-    const Black = fs.readFileSync(
+    const Thin = fs.readFileSync(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Thin.ttf')
     );
-    const Bold = fs.readFileSync(
+    const ExtraLight = fs.readFileSync(
       path.join(
         process.cwd(),
         'public',
@@ -50,16 +50,16 @@ export const getFontsForImageGeneration = async (
         'Inter-ExtraLight.ttf'
       )
     );
-    const ExtraBold = fs.readFileSync(
+    const Light = fs.readFileSync(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Light.ttf')
     );
-    const ExtraLight = fs.readFileSync(
+    const Regular = fs.readFileSync(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Regular.ttf')
     );
-    const Light = fs.readFileSync(
+    const Medium = fs.readFileSync(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Medium.ttf')
     );
-    const Medium = fs.readFileSync(
+    const SemiBold = fs.readFileSync(
       path.join(
         process.cwd(),
         'public',
@@ -68,10 +68,10 @@ export const getFontsForImageGeneration = async (
         'Inter-SemiBold.ttf'
       )
     );
-    const Regular = fs.readFileSync(
+    const Bold = fs.readFileSync(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Bold.ttf')
     );
-    const SemiBold = fs.readFileSync(
+    const ExtraBold = fs.readFileSync(
       path.join(
         process.cwd(),
         'public',
@@ -80,7 +80,7 @@ export const getFontsForImageGeneration = async (
         'Inter-ExtraBold.ttf'
       )
     );
-    const Thin = fs.readFileSync(
+    const Black = fs.readFileSync(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Black.ttf')
     );
 
