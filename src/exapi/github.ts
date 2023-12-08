@@ -1,0 +1,118 @@
+import axios from 'axios';
+import { endOfMonth, format } from 'date-fns';
+import { PullRequestEdge, GraphQLResponse, GithubUser } from './types';
+
+async function fetchPullRequestsForMonth(
+  author: string,
+  month: number,
+  token: string,
+  after?: string
+): Promise<PullRequestEdge[]> {
+  const startDate = new Date(
+    `2023-${month.toString().padStart(2, '0')}-01T00:00:00Z`
+  );
+  const endDate = endOfMonth(startDate);
+
+  const response = await axios.post<GraphQLResponse>(
+    'https://api.github.com/graphql',
+    {
+      query: `
+        query {
+          search(query: "is:pr author:${author} created:${format(
+            startDate,
+            'yyyy-MM-dd'
+          )}..${format(
+            endDate,
+            'yyyy-MM-dd'
+          )}", type: ISSUE, first: 100, after: ${after ? `"${after}"` : null}) {
+            edges {
+              cursor
+              node {
+                ... on PullRequest {
+                  number
+                  title
+                  repository {
+                    name
+                    owner {
+                      login
+                    }
+                  }
+                  createdAt
+                  updatedAt
+                  mergedAt
+                  state
+                  additions
+                  deletions
+                  reviews(last: 100) {
+                    edges {
+                      node {
+                        author {
+                          login
+                        }
+                        createdAt
+                        state
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+          }
+        }
+      `
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const pageInfo = response.data.data.search.pageInfo;
+  const edges = response.data.data.search.edges;
+
+  if (pageInfo.hasNextPage) {
+    const nextPageData = await fetchPullRequestsForMonth(
+      author,
+      month,
+      pageInfo.endCursor
+    );
+    return [...edges, ...nextPageData];
+  } else {
+    return edges;
+  }
+}
+
+export async function fetchAllPullRequests(author: string, token: string) {
+  const months = Array.from({ length: 12 }, (_, index) => index + 1);
+
+  try {
+    const results = await Promise.all(
+      months.map((month) => fetchPullRequestsForMonth(author, month, token))
+    );
+    return results;
+  } catch (error: any) {
+    console.error('Error fetching data:', error.message);
+  }
+}
+
+export async function fetchUser(token: string) {
+  try {
+    const response = await axios.get<GithubUser>(
+      'https://api.github.com/user',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const userData: GithubUser = response.data;
+    return userData;
+  } catch (error: any) {
+    throw new Error(`Error fetching user data: ${error.message}`);
+  }
+}
