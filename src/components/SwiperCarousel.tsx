@@ -26,7 +26,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({ images }) => {
   }, []);
 
   return (
-    <div className="swiper-container" style={{ border: '1px solid red' }}>
+    <div className="swiper-container">
       <Swiper
         ref={sliderRef}
         modules={[EffectCoverflow, Pagination, Navigation]}
