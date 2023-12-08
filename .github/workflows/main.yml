@@ -43,7 +43,7 @@ jobs:
       - name: Push Slack Notification - Deployment Started
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data "{text: '⚪ [$APP_ENV][Unwrapped] deploying: $GH_COMMIT_MSG' $GH_COMMON_CONTENT1':white_circle: *[$APP_ENV] New deployment triggered $GH_COMMON_CONTENT2" $SLACK_WEBHOOK_URL
+          --data "{text: '⚪ [$APP_ENV][Unwrapped] deploying: $GH_COMMIT_MSG' $GH_COMMON_CONTENT1':white_circle: *[$APP_ENV][Unwrapped] New deployment triggered $GH_COMMON_CONTENT2" $SLACK_WEBHOOK_URL
 
       - uses: actions/checkout@v3
 
@@ -125,10 +125,10 @@ jobs:
         if: ${{ success() }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data "{text: '🟢 [$APP_ENV] Deployed: $GH_COMMIT_MSG' $GH_COMMON_CONTENT1':large_green_circle: *[$APP_ENV] Deployment complete! $GH_COMMON_CONTENT2" $SLACK_WEBHOOK_URL
+          --data "{text: '🟢 [$APP_ENV][Unwrapped] Deployed: $GH_COMMIT_MSG' $GH_COMMON_CONTENT1':large_green_circle: *[$APP_ENV][Unwrapped] Deployment complete! $GH_COMMON_CONTENT2" $SLACK_WEBHOOK_URL
 
       - name: Push Slack Notification - Deployment Failed
         if: ${{ failure() }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data "{text: '🔴 [$APP_ENV] Deploy failed: $GH_COMMIT_MSG' $GH_COMMON_CONTENT1':red_circle: *[$APP_ENV] Deployment failed! $GH_COMMON_CONTENT2" $SLACK_WEBHOOK_URL
+          --data "{text: '🔴 [$APP_ENV][Unwrapped] Deploy failed: $GH_COMMIT_MSG' $GH_COMMON_CONTENT1':red_circle: *[$APP_ENV][Unwrapped] Deployment failed! $GH_COMMON_CONTENT2" $SLACK_WEBHOOK_URL
