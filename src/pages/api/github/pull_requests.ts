@@ -1,4 +1,4 @@
-import { fetchAllPullRequests, fetchUser } from '@/exapi/github';
+import { fetchAllPullRequests, fetchUser } from '@/pages/api/exapi/github';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
