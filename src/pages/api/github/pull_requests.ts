@@ -1,4 +1,4 @@
-import { getPRListAndMonthlyCountsFromGqlResponse } from '@/analytics';
+import { getPRListAndMonthlyCountsFromGqlResponse } from '@/analytics/analytics';
 import {
   fetchAllPullRequests,
   fetchAllReviewedPRs,
