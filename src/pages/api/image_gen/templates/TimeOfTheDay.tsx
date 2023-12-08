@@ -6,6 +6,7 @@ export type TimeOfTheDayData = {
   prsDuringDay: number;
   totalPrs: number;
 };
+
 export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
   prsDuringDay,
   totalPrs

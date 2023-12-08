@@ -5,6 +5,7 @@ interface Review {
   createdAt: string;
   state: string;
 }
+
 interface PullRequest {
   repository: {
     name: string;
@@ -20,18 +21,22 @@ interface PullRequest {
     edges: Review[];
   };
 }
+
 interface PageInfo {
   hasNextPage: boolean;
   endCursor: string;
 }
+
 export interface PullRequestEdge {
   cursor: string;
   node: PullRequest;
 }
+
 interface SearchResponse {
   edges: PullRequestEdge[];
   pageInfo: PageInfo;
 }
+
 export interface GraphQLResponse {
   data: {
     search: SearchResponse;

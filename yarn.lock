@@ -215,6 +215,51 @@
     fflate "^0.7.3"
     string.prototype.codepointat "^0.2.1"
 
+"@stylistic/eslint-plugin-js@1.5.0", "@stylistic/eslint-plugin-js@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@stylistic/eslint-plugin-js/-/eslint-plugin-js-1.5.0.tgz#d502d2470f114a4a2b682930ade6ca4eeebaa9f8"
+  integrity sha512-TuGQv1bsIshkbJUInCewp4IUWy24W5RFiVNMV0quPSkuZ8gsYoqq6kLHvvaxpjxN9TvwSoOIwnhgrYKei2Tgcw==
+  dependencies:
+    acorn "^8.11.2"
+    escape-string-regexp "^4.0.0"
+    eslint-visitor-keys "^3.4.3"
+    espree "^9.6.1"
+    graphemer "^1.4.0"
+
+"@stylistic/eslint-plugin-jsx@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@stylistic/eslint-plugin-jsx/-/eslint-plugin-jsx-1.5.0.tgz#f8fcb23dcc75b455650426887b24711c4831bee6"
+  integrity sha512-sqFdA1mS0jwovAatS8xFAiwxPbcy69S2AUjrGMxyhxaKbELPjvqbxPYJL+35ylT0xqirUlm118xZIFDooC8koQ==
+  dependencies:
+    "@stylistic/eslint-plugin-js" "^1.5.0"
+    estraverse "^5.3.0"
+
+"@stylistic/eslint-plugin-plus@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@stylistic/eslint-plugin-plus/-/eslint-plugin-plus-1.5.0.tgz#49ad5560bb6b699c1b5d2940586a4048ebc35b1c"
+  integrity sha512-+A4qXFuM6V7x25Hj+xqfVIUbEckG+MUSvL6m83M6YtRq3d5zLW+giKKEL7eSCAw12MwnoDwPcEhqIJK6BRDR3w==
+  dependencies:
+    "@typescript-eslint/utils" "^6.13.2"
+
+"@stylistic/eslint-plugin-ts@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@stylistic/eslint-plugin-ts/-/eslint-plugin-ts-1.5.0.tgz#ed84ffe3c2809748337079b6309f2906ff268e02"
+  integrity sha512-OusNGWRXnOV+ywnoXmBFoMtU6Ig/MX1bEu5Jigqmy2cIT8GRMMn7jUl/bXevkv2o66MYnC7PT1Q/3GvN7t0/eg==
+  dependencies:
+    "@stylistic/eslint-plugin-js" "1.5.0"
+    "@typescript-eslint/utils" "^6.13.2"
+    graphemer "^1.4.0"
+
+"@stylistic/eslint-plugin@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@stylistic/eslint-plugin/-/eslint-plugin-1.5.0.tgz#d89c813c9f2121a33e1e6d3d3c521ff015964e61"
+  integrity sha512-XmlB5nxk06nlnx1/ka0l+WNqHcjnnXfDts4ZaCvrpCY/6l8lNtHwLwdCKF/UpBYNuRWI/HLWCTtQc0jjfwrfBA==
+  dependencies:
+    "@stylistic/eslint-plugin-js" "1.5.0"
+    "@stylistic/eslint-plugin-jsx" "1.5.0"
+    "@stylistic/eslint-plugin-plus" "1.5.0"
+    "@stylistic/eslint-plugin-ts" "1.5.0"
+
 "@swc/helpers@0.5.2":
   version "0.5.2"
   resolved "https://registry.npmjs.org/@swc/helpers/-/helpers-0.5.2.tgz"
@@ -353,7 +398,7 @@
     semver "^7.5.4"
     ts-api-utils "^1.0.1"
 
-"@typescript-eslint/utils@6.13.2":
+"@typescript-eslint/utils@6.13.2", "@typescript-eslint/utils@^6.13.2":
   version "6.13.2"
   resolved "https://registry.npmjs.org/@typescript-eslint/utils/-/utils-6.13.2.tgz"
   integrity sha512-b9Ptq4eAZUym4idijCRzl61oPCwwREcfDI8xGk751Vhzig5fFZR9CyzDz4Sp/nxSLBYxUPyh4QdIDqWykFhNmQ==
@@ -393,7 +438,7 @@ acorn-jsx@^5.3.2:
   resolved "https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-5.3.2.tgz"
   integrity sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==
 
-acorn@^8.9.0:
+acorn@^8.11.2, acorn@^8.9.0:
   version "8.11.2"
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.11.2.tgz"
   integrity sha512-nc0Axzp/0FILLEVsm4fNwLCwMttvhEI263QtVPQcbpfZZ3ts0hLsZGOpE6czNlid7CJ9MlyH8reXkpsf3YUY4w==
@@ -1742,6 +1787,11 @@ human-signals@^4.3.0:
   version "4.3.1"
   resolved "https://registry.npmjs.org/human-signals/-/human-signals-4.3.1.tgz"
   integrity sha512-nZXjEF2nbo7lIw3mgYjItAfgQXog3OjJogSbKa2CQIIvSGWcKgeJnQlNXip6NglNzYH45nSRiEVimMvYL8DDqQ==
+
+husky@^8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
+  integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==
 
 ignore@^5.2.0, ignore@^5.2.4:
   version "5.3.0"

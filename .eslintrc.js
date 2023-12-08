@@ -20,7 +20,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['react', 'prettier', 'unused-imports'],
+  plugins: ['react', 'prettier', 'unused-imports', '@stylistic'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
@@ -37,6 +37,14 @@ module.exports = {
         argsIgnorePattern: '^_'
       }
     ],
-    'react/no-unknown-property': ['error', { ignore: ['tw'] }]
+    'react/no-unknown-property': ['error', { ignore: ['tw'] }],
+    '@stylistic/padding-line-between-statements': [
+      'error',
+      {
+        blankLine: 'always',
+        prev: ['*'],
+        next: ['interface', 'type', 'export']
+      }
+    ]
   }
 };
