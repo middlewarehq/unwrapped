@@ -11,5 +11,6 @@ declare namespace NodeJS {
     NEXTAUTH_SECRET: string;
     GITHUB_ID: string;
     GITHUB_SECRET: string;
+    INTERNAL_API_BASE_URL: string;
   }
 }
