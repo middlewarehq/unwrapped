@@ -81,6 +81,25 @@ export interface GitHubMetricsResponse {
   };
 }
 
-export interface GraphQLMetricsResponse {
+export interface GraphQLContributionCalendarMetricsResponse {
   data: GitHubMetricsResponse;
+}
+
+export interface GithubContributionSummaryCollection {
+  totalCommitContributions: number;
+  totalIssueContributions: number;
+  totalPullRequestContributions: number;
+  totalPullRequestReviewContributions: number;
+  totalRepositoriesWithContributedPullRequests: number;
+  totalRepositoriesWithContributedIssues: number;
+  totalRepositoriesWithContributedPullRequestReviews: number;
+  totalRepositoriesWithContributedCommits: number;
+}
+
+export interface GraphQLContributionSummaryResponse {
+  data: {
+    user: {
+      contributionsCollection: GithubContributionSummaryCollection;
+    };
+  };
 }

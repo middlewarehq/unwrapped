@@ -2,7 +2,7 @@ import { getPRListAndMonthlyCountsFromGqlResponse } from '@/analytics/pr_analyti
 import {
   fetchAllPullRequests,
   fetchAllReviewedPRs,
-  fetchGitHubMetrics,
+  fetchUserGitHubContributionCalendarMetrics,
   fetchUser
 } from '@/exapi_sdk/github';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -26,7 +26,7 @@ export default async function handler(
       await Promise.all([
         fetchAllPullRequests(user.login, token),
         fetchAllReviewedPRs(user.login, token),
-        fetchGitHubMetrics(user.login, token)
+        fetchUserGitHubContributionCalendarMetrics(user.login, token)
       ]);
 
     const [authored_prs, authored_monthly_counts] =

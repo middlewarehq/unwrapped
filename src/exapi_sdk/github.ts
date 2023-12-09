@@ -4,7 +4,8 @@ import {
   PullRequestEdge,
   GraphQLResponse,
   GithubUser,
-  GraphQLMetricsResponse
+  GraphQLContributionCalendarMetricsResponse,
+  GraphQLContributionSummaryResponse
 } from './types';
 
 async function fetchPullRequestsForMonth(
@@ -232,16 +233,17 @@ export async function fetchAllReviewedPRs(author: string, token: string) {
   }
 }
 
-export async function fetchGitHubMetrics(
-  username: string,
+export async function fetchUserGitHubContributionCalendarMetrics(
+  author: string,
   token: string,
   year_string: string = '2023'
 ) {
   try {
-    const response = await axios.post<GraphQLMetricsResponse>(
-      'https://api.github.com/graphql',
-      {
-        query: `
+    const response =
+      await axios.post<GraphQLContributionCalendarMetricsResponse>(
+        'https://api.github.com/graphql',
+        {
+          query: `
           query GetUserContributions($username: String!) {
             user(login: $username) {
               contributionsCollection(from: "${year_string}-01-01T00:00:00Z", to: "${year_string}-12-31T23:59:59Z") {
@@ -258,9 +260,48 @@ export async function fetchGitHubMetrics(
             }
           }
         `,
-        variables: {
-          username: username
+          variables: {
+            username: author
+          }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
+      );
+
+    return response.data.data.user.contributionsCollection.contributionCalendar;
+  } catch (error: any) {
+    console.error('Error fetching GitHub metrics:', error.message);
+  }
+}
+
+export async function fetchUserContributionSummaryMetrics(
+  author: string,
+  token: string,
+  year_string: string = '2023'
+) {
+  try {
+    const response = await axios.post<GraphQLContributionSummaryResponse>(
+      'https://api.github.com/graphql',
+      {
+        query: `
+          query{
+            user(login: "${author}") {
+              contributionsCollection(from: "${year_string}-01-01T00:00:00Z", to: "${year_string}-12-31T23:59:59Z") {
+                totalCommitContributions
+                totalIssueContributions
+                totalPullRequestContributions
+                totalPullRequestReviewContributions
+                totalRepositoriesWithContributedPullRequests
+                totalRepositoriesWithContributedIssues
+                totalRepositoriesWithContributedPullRequestReviews
+                totalRepositoriesWithContributedCommits
+              }
+            }
+          }
+        `
       },
       {
         headers: {
@@ -269,7 +310,7 @@ export async function fetchGitHubMetrics(
       }
     );
 
-    return response.data.data.user.contributionsCollection.contributionCalendar;
+    return response.data.data.user.contributionsCollection;
   } catch (error: any) {
     console.error('Error fetching GitHub metrics:', error.message);
   }
