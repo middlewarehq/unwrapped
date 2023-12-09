@@ -1,5 +1,6 @@
 import { KeyValueObject } from '@/types';
 import { PullRequestEdge, PullRequest } from '../exapi_sdk/types';
+import { getTopNKeys } from './utils';
 
 export const getPRListAndMonthlyCountsFromGqlResponse = (
   edges?: PullRequestEdge[][]
@@ -78,4 +79,21 @@ export const getTotalCodeDeletions = (pullRequests: Array<PullRequest>) => {
   }
 
   return totalDeletions;
+};
+
+export const getTopNRecurringReviewers = (
+  pullRequests: Array<PullRequest>,
+  n?: number
+) => {
+  const reviewerReviewsCountMap: KeyValueObject =
+    getReviewerReviewsCountMap(pullRequests);
+  return getTopNKeys(reviewerReviewsCountMap, n);
+};
+
+export const getTopNRecurringAuthors = (
+  pullRequests: Array<PullRequest>,
+  n?: number
+) => {
+  const authorPRCountsMap: KeyValueObject = getAuthorPRCountsMap(pullRequests);
+  return getTopNKeys(authorPRCountsMap, n);
 };
