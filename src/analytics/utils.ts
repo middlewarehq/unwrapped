@@ -1,6 +1,6 @@
 import { KeyValueObject } from '@/types';
 
-export function getTopNKeys(obj: KeyValueObject, n?: number): string[] {
+export const getTopNKeys = (obj: KeyValueObject, n?: number): string[] => {
   let keyValueArray: [string, number][] = Object.entries(obj);
   keyValueArray.sort((a, b) => b[1] - a[1]);
 
@@ -9,4 +9,4 @@ export function getTopNKeys(obj: KeyValueObject, n?: number): string[] {
   }
 
   return keyValueArray.slice(0, n).map((arr) => arr[0]);
-}
+};
