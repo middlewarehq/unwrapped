@@ -3,7 +3,8 @@ import {
   getAuthorPRCountsMap,
   getTotalCodeAdditions,
   getTotalCodeDeletions,
-  getTopNRecurringReviewers
+  getTopNRecurringReviewers,
+  getTopNRecurringAuthors
 } from '../pr_analytics';
 import { getPullRequest, getReview } from '../test_utils/factories';
 
@@ -351,4 +352,305 @@ test('getTopNRecurringReviewers returns correct top Reviewers for valid N.', () 
     'jayantbh',
     'shivam-bit'
   ]);
+});
+
+test('getTopNRecurringAuthors returns empty list for empty PRs List.', () => {
+  expect(getTopNRecurringAuthors([])).toStrictEqual([]);
+  expect(getTopNRecurringAuthors([], 100)).toStrictEqual([]);
+});
+
+test('getTopNRecurringAuthors returns all authors for valid N.', () => {
+  const author1 = 'samad-yar-khan';
+  const author2 = 'jayantbh';
+  const author3 = 'shivam-bit';
+  const author4 = 'varun';
+  const author5 = 'amogh';
+
+  const pr1 = getPullRequest({ authorLogin: author1 });
+  const pr2 = getPullRequest({ authorLogin: author1 });
+  const pr3 = getPullRequest({ authorLogin: author1 });
+  const pr4 = getPullRequest({ authorLogin: author1 });
+  const pr5 = getPullRequest({ authorLogin: author1 });
+  const pr6 = getPullRequest({ authorLogin: author2 });
+  const pr7 = getPullRequest({ authorLogin: author2 });
+  const pr8 = getPullRequest({ authorLogin: author2 });
+  const pr9 = getPullRequest({ authorLogin: author2 });
+  const pr10 = getPullRequest({ authorLogin: author3 });
+  const pr11 = getPullRequest({ authorLogin: author3 });
+  const pr12 = getPullRequest({ authorLogin: author3 });
+  const pr13 = getPullRequest({ authorLogin: author4 });
+  const pr14 = getPullRequest({ authorLogin: author4 });
+  const pr15 = getPullRequest({ authorLogin: author5 });
+  const pr16 = getPullRequest({ authorLogin: author5 });
+
+  expect(getTopNRecurringAuthors([pr1], -1)).toStrictEqual(['samad-yar-khan']);
+
+  expect(
+    getTopNRecurringAuthors([
+      pr1,
+      pr2,
+      pr3,
+      pr4,
+      pr5,
+      pr6,
+      pr7,
+      pr8,
+      pr9,
+      pr10,
+      pr11,
+      pr12,
+      pr13,
+      pr14,
+      pr15,
+      pr16
+    ])
+  ).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit',
+    'varun',
+    'amogh'
+  ]);
+
+  expect(
+    getTopNRecurringAuthors(
+      [
+        pr1,
+        pr2,
+        pr3,
+        pr4,
+        pr5,
+        pr6,
+        pr7,
+        pr8,
+        pr9,
+        pr10,
+        pr11,
+        pr12,
+        pr13,
+        pr14,
+        pr15,
+        pr16
+      ],
+      undefined
+    )
+  ).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit',
+    'varun',
+    'amogh'
+  ]);
+
+  expect(
+    getTopNRecurringAuthors(
+      [
+        pr1,
+        pr2,
+        pr3,
+        pr4,
+        pr5,
+        pr6,
+        pr7,
+        pr8,
+        pr9,
+        pr10,
+        pr11,
+        pr12,
+        pr13,
+        pr14,
+        pr15,
+        pr16
+      ],
+      -20
+    )
+  ).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit',
+    'varun',
+    'amogh'
+  ]);
+});
+
+test('getTopNRecurringAuthors returns correct top n authors valid n', () => {
+  const author1 = 'samad-yar-khan';
+  const author2 = 'jayantbh';
+  const author3 = 'shivam-bit';
+  const author4 = 'varun';
+  const author5 = 'amogh';
+
+  const pr1 = getPullRequest({ authorLogin: author1 });
+  const pr2 = getPullRequest({ authorLogin: author1 });
+  const pr3 = getPullRequest({ authorLogin: author1 });
+  const pr4 = getPullRequest({ authorLogin: author1 });
+  const pr5 = getPullRequest({ authorLogin: author1 });
+  const pr6 = getPullRequest({ authorLogin: author2 });
+  const pr7 = getPullRequest({ authorLogin: author2 });
+  const pr8 = getPullRequest({ authorLogin: author2 });
+  const pr9 = getPullRequest({ authorLogin: author2 });
+  const pr10 = getPullRequest({ authorLogin: author3 });
+  const pr11 = getPullRequest({ authorLogin: author3 });
+  const pr12 = getPullRequest({ authorLogin: author3 });
+  const pr13 = getPullRequest({ authorLogin: author4 });
+  const pr14 = getPullRequest({ authorLogin: author4 });
+  const pr15 = getPullRequest({ authorLogin: author5 });
+  const pr16 = getPullRequest({ authorLogin: author5 });
+
+  expect(getTopNRecurringAuthors([pr1, pr2], 0)).toStrictEqual([]);
+
+  expect(
+    getTopNRecurringAuthors([
+      pr1,
+      pr2,
+      pr3,
+      pr4,
+      pr5,
+      pr6,
+      pr7,
+      pr8,
+      pr9,
+      pr10,
+      pr11,
+      pr12,
+      pr13,
+      pr14,
+      pr15,
+      pr16
+    ])
+  ).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit',
+    'varun',
+    'amogh'
+  ]);
+
+  expect(
+    getTopNRecurringAuthors(
+      [
+        pr1,
+        pr2,
+        pr3,
+        pr4,
+        pr5,
+        pr6,
+        pr7,
+        pr8,
+        pr9,
+        pr10,
+        pr11,
+        pr12,
+        pr13,
+        pr14,
+        pr15,
+        pr16
+      ],
+      3
+    )
+  ).toStrictEqual(['samad-yar-khan', 'jayantbh', 'shivam-bit']);
+
+  expect(
+    getTopNRecurringAuthors(
+      [
+        pr1,
+        pr2,
+        pr3,
+        pr4,
+        pr5,
+        pr6,
+        pr7,
+        pr8,
+        pr9,
+        pr10,
+        pr11,
+        pr12,
+        pr13,
+        pr14,
+        pr15
+      ],
+      100
+    )
+  ).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit',
+    'varun',
+    'amogh'
+  ]);
+});
+
+test('getTopNRecurringAuthors returns different authors based on PRs order and given authors with equal number of PRs', () => {
+  const author1 = 'samad-yar-khan';
+  const author2 = 'jayantbh';
+  const author3 = 'shivam-bit';
+  const author4 = 'varun';
+  const author5 = 'amogh';
+
+  const pr1 = getPullRequest({ authorLogin: author1 });
+  const pr2 = getPullRequest({ authorLogin: author1 });
+  const pr3 = getPullRequest({ authorLogin: author1 });
+  const pr4 = getPullRequest({ authorLogin: author1 });
+  const pr5 = getPullRequest({ authorLogin: author1 });
+  const pr6 = getPullRequest({ authorLogin: author2 });
+  const pr7 = getPullRequest({ authorLogin: author2 });
+  const pr8 = getPullRequest({ authorLogin: author2 });
+  const pr9 = getPullRequest({ authorLogin: author2 });
+  const pr10 = getPullRequest({ authorLogin: author3 });
+  const pr11 = getPullRequest({ authorLogin: author3 });
+  const pr12 = getPullRequest({ authorLogin: author3 });
+  const pr13 = getPullRequest({ authorLogin: author4 });
+  const pr14 = getPullRequest({ authorLogin: author4 });
+  const pr15 = getPullRequest({ authorLogin: author5 });
+  const pr16 = getPullRequest({ authorLogin: author5 });
+
+  //varun and amogh have same number of PRs but come in top 4 depending who's PRs are at start of list.
+
+  expect(
+    getTopNRecurringAuthors(
+      [
+        pr1,
+        pr2,
+        pr3,
+        pr4,
+        pr5,
+        pr6,
+        pr7,
+        pr8,
+        pr9,
+        pr10,
+        pr11,
+        pr12,
+        pr13,
+        pr14,
+        pr16,
+        pr15
+      ],
+      4
+    )
+  ).toStrictEqual(['samad-yar-khan', 'jayantbh', 'shivam-bit', 'varun']);
+
+  expect(
+    getTopNRecurringAuthors(
+      [
+        pr1,
+        pr2,
+        pr3,
+        pr4,
+        pr5,
+        pr6,
+        pr7,
+        pr8,
+        pr9,
+        pr10,
+        pr11,
+        pr12,
+        pr16,
+        pr15,
+        pr13,
+        pr14
+      ],
+      4
+    )
+  ).toStrictEqual(['samad-yar-khan', 'jayantbh', 'shivam-bit', 'amogh']);
 });
