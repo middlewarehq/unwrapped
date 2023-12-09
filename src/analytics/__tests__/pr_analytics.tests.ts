@@ -354,6 +354,37 @@ test('getTopNRecurringReviewers returns correct top Reviewers for valid N.', () 
   ]);
 });
 
+test('getTopNRecurringReviewers returns different reviewers based on PRs order and given reviewers with equal number of reviewed PRs', () => {
+  const reviewer1 = 'samad-yar-khan';
+  const reviewer2 = 'jayantbh';
+  const reviewer3 = 'shivam-bit';
+  const reviewer4 = 'varun';
+
+  const review1 = getReview({ reviewerLogin: reviewer1 });
+  const review2 = getReview({ reviewerLogin: reviewer2 });
+  const review3 = getReview({ reviewerLogin: reviewer3 });
+  const review4 = getReview({ reviewerLogin: reviewer4 });
+
+  const pr1 = getPullRequest({ reviews: [review1, review1, review1] });
+  const pr2 = getPullRequest({ reviews: [review1, review2, review2] });
+  const pr3 = getPullRequest({ reviews: [review3] });
+  const pr4 = getPullRequest({ reviews: [review4] });
+
+  // varun and shivam-bit reviewed same number of PRs but the one who's reviewed PRs are placed at lower index of input Array will be shown in top 3, ignoring one reviewer with same number of reviews depending on PRs order.
+
+  expect(getTopNRecurringReviewers([pr1, pr2, pr3, pr4], 3)).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit'
+  ]);
+
+  expect(getTopNRecurringReviewers([pr1, pr2, pr4, pr3], 3)).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'varun'
+  ]);
+});
+
 test('getTopNRecurringAuthors returns empty list for empty PRs List.', () => {
   expect(getTopNRecurringAuthors([])).toStrictEqual([]);
   expect(getTopNRecurringAuthors([], 100)).toStrictEqual([]);
