@@ -23,7 +23,7 @@ export const LoaderWithFacts = () => {
   }, [currentIndex]);
 
   return (
-    <div className="flex flex-col gap-5 items-center justify-center">
+    <div className="h-full flex flex-col items-center justify-around text-violet-200">
       <div>
         <h1>{currentText}</h1>
       </div>
