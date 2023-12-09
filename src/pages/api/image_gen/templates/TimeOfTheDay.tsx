@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { RootCard } from './RootCard';
+import { website_url } from '../../constants/general';
 const TIME_OF_DAY_THRESHOLD = 0.4;
 
 export type TimeOfTheDayData = {
@@ -16,55 +17,89 @@ export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
   const isDayHawk = prsDuringDay / totalPrs >= TIME_OF_DAY_THRESHOLD;
   const isRoundTheClock = isNightOwl && isDayHawk;
 
+  const niteOwl = `${website_url}/assets/images/niteowl.png`;
+  const dayHawk = `${website_url}/assets/images/dayhawk.png`;
+  const allDay = `${website_url}/assets/images/allday.png`;
+
   if (isRoundTheClock) {
     return (
-      <RootCard bg={'assets/images/indigo_bg.png'}>
-        <div tw="flex flex-col p-1">
-          <p tw="text-xl">I code the way</p>
-          <p tw="text-xl mt-[-10px]">I breath. All day!</p>
-          <h1 tw="text-7xl">All Day</h1>
-          <h1 tw="mt-[-20px]  text-7xl">Coder</h1>
-          <div tw="flex flex-col">
-            <p tw="text-xl">I pretend to listen</p>
-            <p tw="text-xl mt-[-6px]">to you while</p>
-            <p tw="text-xl mt-[-6px]">I debug my code</p>
-            <p tw="text-xl mt-[-6px]">in my head</p>
+      <RootCard bgColor="orange">
+        <div tw="flex flex-col p-1 relative w-full h-full">
+          <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
+            <p>I code the way</p>
+            <p tw="m-0">I breathe. All day!</p>
+          </div>
+          <div tw="flex flex-col text-4xl mt-8 text-black">
+            <h1 tw="m-0">All Day</h1>
+            <h1 tw="m-0">Coder</h1>
+          </div>
+          <div tw=" flex text-xl leading-[16px] flex-col mt-6">
+            <p tw="m-0">I pretend to listen</p>
+            <p>to you while</p>
+            <p tw="m-0">I debug my code</p>
+            <p>in my head!</p>
           </div>
         </div>
+        <img
+          tw="absolute bottom-[-20px] right-[-20px]"
+          width={220}
+          src={allDay}
+          alt=""
+        />
       </RootCard>
     );
   } else if (isDayHawk) {
     return (
-      <RootCard bg={'assets/images/orange_bg.png'}>
+      <RootCard bgColor="pink">
         <div tw="flex flex-col p-1">
-          <p tw="text-xl">I rise with</p>
-          <p tw="text-xl mt-[-10px]">the sun!</p>
-          <h1 tw="text-7xl">Day</h1>
-          <h1 tw="mt-[-20px]  text-7xl">Hawk</h1>
-          <div tw="flex flex-col">
-            <p tw="text-xl">&quot;Cock-a-doodle-doo!&quot;</p>
-            <p tw="text-xl mt-[-6px]">Gotta be my </p>
-            <p tw="text-xl mt-[-6px]">favorite artist</p>
-            <p tw="text-xl mt-[-6px]">of all time!</p>
+          <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
+            <p>I rise with</p>
+            <p tw="m-0">the sun!</p>
+          </div>
+          <div tw="flex flex-col text-4xl mt-8 text-black">
+            <h1 tw="m-0">Day</h1>
+            <h1 tw="m-0">Hawk</h1>
+          </div>
+          <div tw="flex text-xl leading-[16px] flex-col mt-6">
+            <p tw="m-0">&quot;Cock-a-doodle-doo!&quot;</p>
+            <p>Gotta be my </p>
+            <p tw="m-0">favorite artist</p>
+            <p>of all time!</p>
           </div>
         </div>
+        <img
+          tw="absolute bottom-[-20px] right-[-20px]"
+          width={350}
+          src={dayHawk}
+          alt=""
+        />
       </RootCard>
     );
   } else {
     return (
-      <RootCard bg={'assets/images/purple_bg.png'}>
+      <RootCard bgColor="purple">
         <div tw="flex flex-col p-1">
-          <p tw="text-xl">Wh... what is...</p>
-          <p tw="text-xl mt-[-10px]">sleep?</p>
-          <h1 tw="text-7xl">Nite</h1>
-          <h1 tw="mt-[-20px]  text-7xl">Owl</h1>
-          <div tw="flex flex-col">
-            <p tw="text-xl">When the world</p>
-            <p tw="text-xl mt-[-6px]">sleeps...</p>
-            <p tw="text-xl mt-[-6px]">You’re shipping</p>
-            <p tw="text-xl mt-[-6px]">code.</p>
+          <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
+            <p>Wh... what is...</p>
+            <p tw="m-0">sleep?</p>
+          </div>
+          <div tw="flex flex-col text-4xl mt-8 text-black">
+            <h1 tw="m-0">Nite</h1>
+            <h1 tw="m-0">Owl</h1>
+          </div>
+          <div tw="flex text-xl leading-[16px] flex-col mt-6">
+            <p tw="m-0">When the world</p>
+            <p>sleeps...</p>
+            <p tw="m-0">You’re shipping</p>
+            <p>code!</p>
           </div>
         </div>
+        <img
+          tw="absolute bottom-[-20px] right-[-20px]"
+          width={200}
+          src={niteOwl}
+          alt=""
+        />
       </RootCard>
     );
   }
