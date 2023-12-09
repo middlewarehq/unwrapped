@@ -3,7 +3,7 @@ import {
   getAuthorPRCountsMap,
   getTotalCodeAdditions,
   getTotalCodeDeletions
-} from '../analytics';
+} from '../pr_analytics';
 import { getPullRequest, getReview } from '../test_utils/factories';
 
 test('getReviewerReviewsCountMap returns empty object for empty PR Array', () => {
