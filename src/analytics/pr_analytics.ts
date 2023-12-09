@@ -1,3 +1,4 @@
+import { KeyValueObject } from '@/types';
 import { PullRequestEdge, PullRequest } from '../exapi_sdk/types';
 
 export const getPRListAndMonthlyCountsFromGqlResponse = (
@@ -13,8 +14,8 @@ export const getPRListAndMonthlyCountsFromGqlResponse = (
 
 export const getReviewerReviewsCountMap = (
   pull_requests: Array<PullRequest>
-) => {
-  let reviewer_name_to_pr_count_map: any = {};
+): KeyValueObject => {
+  let reviewer_name_to_pr_count_map: KeyValueObject = {};
 
   for (let pr of pull_requests) {
     let accountedReviewersForPR: any = {};
@@ -38,8 +39,10 @@ export const getReviewerReviewsCountMap = (
   return reviewer_name_to_pr_count_map;
 };
 
-export const getAuthorPRCountsMap = (pullRequests: Array<PullRequest>) => {
-  let authorNameToPrCountsMap: any = {};
+export const getAuthorPRCountsMap = (
+  pullRequests: Array<PullRequest>
+): KeyValueObject => {
+  let authorNameToPrCountsMap: KeyValueObject = {};
 
   for (let pr of pullRequests) {
     let author = pr.author.login;
