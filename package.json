@@ -27,6 +27,7 @@
     "next": "14.0.3",
     "next-auth": "^4.24.5",
     "react": "^18",
+    "react-awesome-loaders": "^0.1.37",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
     "swiper": "^11.0.5",
@@ -63,5 +64,8 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "resolutions": {
+    "node-sass": "^9.0.0"
   }
 }
