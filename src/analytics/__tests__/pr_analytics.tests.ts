@@ -2,7 +2,8 @@ import {
   getReviewerReviewsCountMap,
   getAuthorPRCountsMap,
   getTotalCodeAdditions,
-  getTotalCodeDeletions
+  getTotalCodeDeletions,
+  getTopNRecurringReviewers
 } from '../pr_analytics';
 import { getPullRequest, getReview } from '../test_utils/factories';
 
@@ -275,4 +276,79 @@ test('getTotalCodeDeletions returns correct value for PR Additions Array', () =>
       pr11
     ])
   ).toStrictEqual(6600);
+});
+
+test('getTopNRecurringReviewers returns empty list for empty PRs List.', () => {
+  expect(getTopNRecurringReviewers([])).toStrictEqual([]);
+  expect(getTopNRecurringReviewers([], 100)).toStrictEqual([]);
+});
+
+test('getTopNRecurringReviewers returns complete list for PRs List and invalid n', () => {
+  const reviewer1 = 'samad-yar-khan';
+  const reviewer2 = 'jayantbh';
+  const reviewer3 = 'shivam-bit';
+  const reviewer4 = 'varun';
+
+  const review1 = getReview({ reviewerLogin: reviewer1 });
+  const review2 = getReview({ reviewerLogin: reviewer2 });
+  const review3 = getReview({ reviewerLogin: reviewer3 });
+  const review4 = getReview({ reviewerLogin: reviewer4 });
+
+  const pr1 = getPullRequest({ reviews: [review1, review1, review1] });
+  const pr2 = getPullRequest({ reviews: [review1, review2, review2, review3] });
+  const pr3 = getPullRequest({ reviews: [review1, review2, review3] });
+  const pr4 = getPullRequest({ reviews: [review1, review2, review4] });
+
+  expect(getTopNRecurringReviewers([pr1], -1)).toStrictEqual([
+    'samad-yar-khan'
+  ]);
+  expect(getTopNRecurringReviewers([pr1, pr2, pr3, pr4])).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit',
+    'varun'
+  ]);
+  expect(
+    getTopNRecurringReviewers([pr1, pr2, pr3, pr4], undefined)
+  ).toStrictEqual(['samad-yar-khan', 'jayantbh', 'shivam-bit', 'varun']);
+  expect(getTopNRecurringReviewers([pr1, pr2, pr3, pr4], -20)).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit',
+    'varun'
+  ]);
+});
+
+test('getTopNRecurringReviewers returns correct top Reviewers for valid N.', () => {
+  const reviewer1 = 'samad-yar-khan';
+  const reviewer2 = 'jayantbh';
+  const reviewer3 = 'shivam-bit';
+  const reviewer4 = 'varun';
+
+  const review1 = getReview({ reviewerLogin: reviewer1 });
+  const review2 = getReview({ reviewerLogin: reviewer2 });
+  const review3 = getReview({ reviewerLogin: reviewer3 });
+  const review4 = getReview({ reviewerLogin: reviewer4 });
+
+  const pr1 = getPullRequest({ reviews: [review1, review1, review1] });
+  const pr2 = getPullRequest({ reviews: [review1, review2, review2] });
+  const pr3 = getPullRequest({ reviews: [review1, review2, review3] });
+  const pr4 = getPullRequest({ reviews: [review1, review2, review4] });
+
+  expect(getTopNRecurringReviewers([pr1, pr4], 0)).toStrictEqual([]);
+  expect(getTopNRecurringReviewers([pr1, pr2, pr3, pr4], 20)).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit',
+    'varun'
+  ]);
+  expect(getTopNRecurringReviewers([pr1, pr2, pr3, pr4], 2.3)).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh'
+  ]);
+  expect(getTopNRecurringReviewers([pr1, pr2, pr3, pr4], 3)).toStrictEqual([
+    'samad-yar-khan',
+    'jayantbh',
+    'shivam-bit'
+  ]);
 });
