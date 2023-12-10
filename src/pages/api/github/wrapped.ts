@@ -28,6 +28,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+
   const token = dec(req.cookies.ghct || '');
   const timezone = (req.headers.timezone as string) || 'IST';
 
@@ -36,6 +37,8 @@ export default async function handler(
       message: 'GitHub Access token not found.'
     });
   }
+
+  token = dec(token);
 
   try {
     const user = await fetchUser(token);

@@ -1,14 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { generateImages } from '@/pages/api/image_gen';
+import { fetchData, generateImages } from '@/pages/api/image_gen';
 import { runBenchmark } from '@/pages/api/utils/benchmarking';
 import chalk from 'chalk';
+import { archiveFiles } from './utils/archive';
 
 const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
   try {
-    const imageBuffer = await runBenchmark(generateImages);
+    const data = await fetchData();
+    const imageBuffer = await runBenchmark(generateImages, data);
+
+    const zippedData = await archiveFiles(
+      imageBuffer.map(({ data, fileName }) => ({ data, fileName }))
+    );
+
     const fileName = 'middleware_unwrapped.zip';
 
     res.setHeader('Content-Type', 'application/octet-stream');
@@ -17,7 +24,7 @@ const fetchAndDownloadImageBuffer = async (
       `attachment; filename=${encodeURIComponent(fileName)}`
     );
     res.setHeader('Cache-Control', 'no-cache');
-    res.send(imageBuffer);
+    res.send(zippedData);
     console.log(chalk.green('Successfully sent buffer to client'));
   } catch (error) {
     // console.error('Error fetching or sending buffer:', error);

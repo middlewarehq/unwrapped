@@ -4,6 +4,7 @@ import { GuardianData } from '../image_gen/templates/Guardian';
 import { IntroCardProps } from '../image_gen/templates/IntroCard';
 import { GitHubDataResponse } from '../types/ApiResponses';
 import { TimeOfTheDayData } from '@/pages/api/image_gen/templates/TimeOfTheDay';
+import { CardTypes } from '@/pages/api/types/cards';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const intro: IntroCardProps | null = {
@@ -40,10 +41,18 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   };
 
   return {
-    intro,
-    guardian,
-    contributions,
-    authoredVsReviewedPRs,
-    timeBasedData
-  };
+    [CardTypes.UNWRAPPED_INTRO]: intro,
+    [CardTypes.GUARDIAN_OF_PROD]: guardian,
+    [CardTypes.YOUR_CONTRIBUTIONS]: contributions,
+    [CardTypes.PR_REVIEWED_VS_AUTHORED]: authoredVsReviewedPRs,
+    [CardTypes.DAY_NIGHT_CYCLE]: timeBasedData
+  } as Record<
+    CardTypes,
+    | IntroCardProps
+    | GuardianData
+    | ContributionsData
+    | AuthoredReviewedData
+    | TimeOfTheDayData
+    | null
+  >;
 };
