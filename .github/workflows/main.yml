@@ -80,7 +80,7 @@ jobs:
 
       - name: Get runner IP
         run: |
-          ip=`curl https://ipinfo.io/ip`
+          ip=`curl ifconfig.me`
           echo $ip
           echo "runner_ip=$ip" >> $GITHUB_ENV
 
