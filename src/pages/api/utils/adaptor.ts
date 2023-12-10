@@ -7,6 +7,7 @@ import { TimeOfTheDayData } from '@/pages/api/image_gen/templates/TimeOfTheDay';
 import { CardTypes } from '@/pages/api/types/cards';
 import { ZenNinjaData } from '../image_gen/templates/ZenNinja';
 import { StreakData } from '../image_gen/templates/Streak';
+import { CodeReviewsData } from '../image_gen/templates/CodeReviews';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const intro: IntroCardProps | null = {
@@ -52,6 +53,13 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     streak: data.longest_streak
   };
 
+  const codeReviewerStats: CodeReviewsData | null = data.top_reviewers?.length
+    ? {
+        topReviewer: data.top_reviewers[0],
+        totalReviewers: data.top_reviewers.length
+      }
+    : null;
+
   return {
     [CardTypes.UNWRAPPED_INTRO]: intro,
     [CardTypes.GUARDIAN_OF_PROD]: guardian,
@@ -59,7 +67,8 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     [CardTypes.PR_REVIEWED_VS_AUTHORED]: authoredVsReviewedPRs,
     [CardTypes.DAY_NIGHT_CYCLE]: timeBasedData,
     [CardTypes.ZEN_OR_NINJA]: zenOrNinja,
-    [CardTypes.CONTRIBUTION_STREAK]: contributionStreak
+    [CardTypes.CONTRIBUTION_STREAK]: contributionStreak,
+    [CardTypes.TOP_REVIEWERS]: codeReviewerStats
   } as Record<
     CardTypes,
     | IntroCardProps
@@ -69,6 +78,7 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     | TimeOfTheDayData
     | ZenNinjaData
     | StreakData
+    | CodeReviewsData
     | null
   >;
 };

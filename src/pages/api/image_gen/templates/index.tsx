@@ -20,6 +20,7 @@ import {
   ZenNinjaData
 } from '@/pages/api/image_gen/templates/ZenNinja';
 import { Streak, StreakData } from '@/pages/api/image_gen/templates/Streak';
+import { CodeReviews, CodeReviewsData } from './CodeReviews';
 
 export type CardTemplateData = {
   cardType: CardTypes;
@@ -32,6 +33,7 @@ export type CardTemplateData = {
     | ContributionsData
     | ZenNinjaData
     | StreakData
+    | CodeReviewsData
     | null;
 };
 
@@ -51,6 +53,8 @@ export const CardTemplate: FC<CardTemplateData> = ({ cardType, data }) => {
       return <ZenNinja {...(data as ZenNinjaData)} />;
     case CardTypes.CONTRIBUTION_STREAK:
       return <Streak {...(data as StreakData)} />;
+    case CardTypes.TOP_REVIEWERS:
+      return <CodeReviews {...(data as CodeReviewsData)} />;
     default:
       return <TimeOfTheDay {...(data as TimeOfTheDayData)} />;
   }
