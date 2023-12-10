@@ -1,4 +1,8 @@
-import { ContributionDay, GithubContributionCalendar } from '@/exapi_sdk/types';
+import {
+  ContributionDay,
+  GithubContributionCalendar,
+  GraphQLRepositoryContributionData
+} from '@/exapi_sdk/types';
 import { getMonth, parseISO } from 'date-fns';
 
 export const getContributionDaysList = (
@@ -61,4 +65,36 @@ export const getLongestContributionStreak = (
   );
 
   return maxContributionStreakLength;
+};
+
+export const getRepoWiseOpensourceContributionsCount = (
+  repoContributionData: GraphQLRepositoryContributionData,
+  author: string
+): Record<string, number> => {
+  const flattenedRepoContributionsList = Object.values(
+    repoContributionData.data.user.contributionsCollection
+  ).flat();
+
+  const publicRepoContributions = flattenedRepoContributionsList.filter(
+    (repoData) => !repoData.repository.isPrivate
+  );
+
+  const opensourceRepoContributions = publicRepoContributions.filter(
+    (repoData) => repoData.repository.owner.login !== author
+  );
+
+  let repoNameToContributionCountMap: Record<string, number> = {};
+
+  for (let repoContributionData of opensourceRepoContributions) {
+    const completeRepoName = `${repoContributionData.repository.owner.login}/${repoContributionData.repository.name}`;
+    if (completeRepoName in repoNameToContributionCountMap) {
+      repoNameToContributionCountMap[completeRepoName] +=
+        repoContributionData.contributions.totalCount;
+    } else {
+      repoNameToContributionCountMap[completeRepoName] =
+        repoContributionData.contributions.totalCount;
+    }
+  }
+
+  return repoNameToContributionCountMap;
 };
