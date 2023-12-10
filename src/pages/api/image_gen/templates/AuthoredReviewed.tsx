@@ -78,7 +78,12 @@ const PieChart: React.FC<PieChartProps> = ({ authoredPrs, reviewedPrs }) => {
 
   return (
     <div tw="flex flex-col relative p-1">
-      <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        width="160"
+        height="160"
+        viewBox="-1 -1 202 202"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         {data.map((value, index) => {
           const percentage = (value / total) * 100;
           const endAngle = startAngle + (percentage * 360) / 100;
