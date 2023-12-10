@@ -24,8 +24,10 @@ export const ZenNinja: FC<ZenNinjaData> = ({ trends }) => {
             <h1 tw="m-0 relative top-2">Ninja</h1>
           </div>
           <div tw="flex mt-10 flex-col">
-            <LineGraph data={trends} />
-            <p tw="m-0 mt-4 text-xs">Your contribs graph in 2023</p>
+            <LineGraph data={trends} color="#611100" />
+            <p tw="m-0 mt-4 text-xs text-[#611100] font-semibold">
+              Your contribs graph in 2023
+            </p>
           </div>
           <div tw="flex text-xl leading-[16px] flex-col mt-12">
             <p tw="m-0">You lurk in the</p>
@@ -53,8 +55,10 @@ export const ZenNinja: FC<ZenNinjaData> = ({ trends }) => {
             <h1 tw="m-0 relative top-2">Zen</h1>
           </div>
           <div tw="flex mt-10 flex-col">
-            <LineGraph data={trends} />
-            <p tw="m-0 mt-4 text-xs">Your contribs graph in 2023</p>
+            <LineGraph data={trends} color="#004949" />
+            <p tw="m-0 mt-4 text-xs text-[#004949] font-semibold">
+              Your contribs graph in 2023
+            </p>
           </div>
           <div tw="flex text-xl leading-[16px] flex-col mt-12">
             <p tw="m-0">You’re a master...</p>
@@ -74,9 +78,10 @@ export const ZenNinja: FC<ZenNinjaData> = ({ trends }) => {
 
 interface LineGraphProps {
   data: number[];
+  color: string;
 }
 
-const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
+const LineGraph: React.FC<LineGraphProps> = ({ data, color }) => {
   const height = 80;
 
   const minY = Math.min(...data);
@@ -99,7 +104,7 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
       <svg tw="w-full h-full">
         <polyline
           fill="none"
-          stroke="black"
+          stroke={color}
           strokeWidth="4"
           strokeLinecap="round"
           strokeLinejoin="round"
