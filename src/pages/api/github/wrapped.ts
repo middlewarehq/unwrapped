@@ -17,7 +17,6 @@ import {
   fetchUser
 } from '@/exapi_sdk/github';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { WrappedResponse } from '@/pages/api/types/ApiResponses';
 
 const remove_users_login = (list: Array<string>, user_login: string) => {
   const indexToRemove = list.indexOf(user_login);
@@ -88,7 +87,7 @@ export default async function handler(
       prs_opened_during_night: 350,
       contribution_percentile: 98,
       global_contributions: 432094792
-    } as WrappedResponse);
+    });
   } catch (e: any) {
     console.error(e);
     res.status(400).send({ message: e.message });

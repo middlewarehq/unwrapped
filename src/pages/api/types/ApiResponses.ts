@@ -1,5 +1,3 @@
-import { GithubUser } from '@/exapi_sdk/types';
-
 export type GithubData = {
   data: {
     name: string;
@@ -38,17 +36,64 @@ export type GithubData = {
   };
 };
 
-export type WrappedResponse = {
-  user: GithubUser; // Replace with the actual type of the 'user' property
-  authored_monthly_counts: number[]; // Replace with the actual type of the 'authored_monthly_counts' property
-  reviewed_monthly_counts: number[]; // Replace with the actual type of the 'reviewed_monthly_counts' property
-  total_contributions?: number | null; // Replace with the actual type of the 'total_contributions' property
+export type Plan = {
+  name: string;
+  space: number;
+  collaborators: number;
+  private_repos: number;
+};
+
+export type GitHubDataResponse = {
+  user: {
+    login: string;
+    id: number;
+    node_id: string;
+    avatar_url: string;
+    gravatar_id: string;
+    url: string;
+    html_url: string;
+    followers_url: string;
+    following_url: string;
+    gists_url: string;
+    starred_url: string;
+    subscriptions_url: string;
+    organizations_url: string;
+    repos_url: string;
+    events_url: string;
+    received_events_url: string;
+    type: string;
+    site_admin: boolean;
+    name: string;
+    company: string;
+    blog: string;
+    location: string;
+    email: string | null;
+    hireable: boolean | null;
+    bio: string;
+    twitter_username: string | null;
+    public_repos: number;
+    public_gists: number;
+    followers: number;
+    following: number;
+    created_at: string;
+    updated_at: string;
+    private_gists: number;
+    total_private_repos: number;
+    owned_private_repos: number;
+    disk_usage: number;
+    collaborators: number;
+    two_factor_authentication: boolean;
+    plan: Plan;
+  };
+  authored_monthly_pr_counts: number[];
+  reviewed_monthly_pr_counts: number[];
+  total_contributions: number;
   total_additions: number;
   total_deletions: number;
-  top_reviewed_contributors: string[]; // Replace with the actual type of the 'top_reviewed_contributors' property
-  top_reviewers: string[]; // Replace with the actual type of the 'top_reviewers' property
-  monthly_contributions: number; // Replace with the actual type of the 'monthly_contributions' property
-  longest_streak: number; // Replace with the actual type of the 'longest_streak' property
+  top_reviewed_contributors: string[];
+  top_reviewers: string[];
+  monthly_contributions: { [key: string]: number };
+  longest_streak: number;
   total_oss_contributions: number;
   prs_opened_during_day: number;
   prs_opened_during_night: number;
