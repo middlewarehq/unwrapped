@@ -19,7 +19,7 @@ export const getReviewerReviewsCountMap = (
   let reviewer_name_to_pr_count_map: KeyValueObject = {};
 
   for (let pr of pull_requests) {
-    let accountedReviewersForPR: any = {};
+    let accountedReviewersForPR: Object = {};
 
     for (let review_node of pr.reviews.edges) {
       const reviewer_login = review_node.node.author.login;
