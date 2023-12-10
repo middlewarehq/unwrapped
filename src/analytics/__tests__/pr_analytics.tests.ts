@@ -4,7 +4,8 @@ import {
   getTotalCodeAdditions,
   getTotalCodeDeletions,
   getTopNRecurringReviewers,
-  getTopNRecurringAuthors
+  getTopNRecurringAuthors,
+  splitPRsByDayNight
 } from '../pr_analytics';
 import { getPullRequest, getReview } from '../test_utils/factories';
 
@@ -684,4 +685,67 @@ test('getTopNRecurringAuthors returns different authors based on PRs order and g
       4
     )
   ).toStrictEqual(['samad-yar-khan', 'jayantbh', 'shivam-bit', 'amogh']);
+});
+
+test('splitPRsByDayNight correctly splits prs into day and night', () => {
+  const author1 = 'samad-yar-khan';
+
+  const pr1 = getPullRequest({
+    authorLogin: author1,
+    createdAt: '2023-03-31T21:11:27Z'
+  });
+  const pr2 = getPullRequest({
+    authorLogin: author1,
+    createdAt: '2023-03-31T21:11:27Z'
+  });
+  const pr3 = getPullRequest({
+    authorLogin: author1,
+    createdAt: '2023-03-31T21:11:27Z'
+  });
+  const pr4 = getPullRequest({
+    authorLogin: author1,
+    createdAt: '2023-03-31T01:11:27Z'
+  });
+  const pr5 = getPullRequest({
+    authorLogin: author1,
+    createdAt: '2023-03-31T15:11:27Z'
+  });
+  const pr6 = getPullRequest({
+    authorLogin: author1,
+    createdAt: '2023-03-31T16:11:27Z'
+  });
+  const pr7 = getPullRequest({
+    authorLogin: author1,
+    createdAt: '2023-03-31T17:11:27Z'
+  });
+  const pr8 = getPullRequest({
+    authorLogin: author1,
+    createdAt: '2023-03-31T11:11:27Z'
+  });
+  const pr9 = getPullRequest({
+    authorLogin: author1,
+    createdAt: '2023-03-31T14:11:27Z'
+  });
+
+  expect(splitPRsByDayNight([], 'UTC')).toStrictEqual({ day: [], night: [] });
+  expect(splitPRsByDayNight([pr1, pr2, pr3], 'UTC')).toStrictEqual({
+    day: [],
+    night: [pr1, pr2, pr3]
+  });
+  expect(splitPRsByDayNight([pr5, pr6, pr7, pr8, pr9], 'UTC')).toStrictEqual({
+    day: [pr5, pr6, pr7, pr8, pr9],
+    night: []
+  });
+  expect(
+    splitPRsByDayNight([pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr8, pr9], 'UTC')
+  ).toStrictEqual({
+    day: [pr5, pr6, pr7, pr8, pr9],
+    night: [pr1, pr2, pr3, pr4]
+  });
+  expect(
+    splitPRsByDayNight([pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr8, pr9], 'IST')
+  ).toStrictEqual({
+    day: [pr8],
+    night: [pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr9]
+  });
 });
