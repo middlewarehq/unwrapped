@@ -1,15 +1,14 @@
-import { useAppState } from '@/contexts/AppContext';
 import React, { ReactNode } from 'react';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
+import { useSession } from 'next-auth/react';
 
 export const AppLoadingStateWrapper: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
-  const { isLoading } = useAppState();
-
+  const { status } = useSession();
   return (
     <div>
-      {isLoading ? (
+      {status === 'loading' ? (
         <div className="h-screen flex flex-col items-center justify-between p-10">
           <LoaderWithFacts />
         </div>
