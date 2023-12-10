@@ -1,11 +1,11 @@
-import { getPRListAndMonthlyCountsFromGqlResponse } from '@/analytics/pr_analytics';
+import { getPRListAndMonthlyCountsFromGqlResponse } from '@/analytics/pr-analytics';
 import { dec } from '@/api-helpers/auth-supplementary';
 import {
   fetchAllPullRequests,
   fetchAllReviewedPRs,
   fetchUserGitHubContributionCalendarMetrics,
   fetchUser
-} from '@/exapi_sdk/github';
+} from '@/exapi-sdk/github';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(

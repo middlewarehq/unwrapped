@@ -1,4 +1,4 @@
-import { Review } from '@/exapi_sdk/types';
+import { Review } from '@/exapi-sdk/types';
 
 export interface PullRequestGeneratorParams {
   authorLogin?: string;

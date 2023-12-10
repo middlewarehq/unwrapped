@@ -3,7 +3,7 @@ import {
   getMonthWiseContributionCount,
   getLongestContributionStreak,
   getRepoWiseOpensourceContributionsCount
-} from '../contribution_analytics';
+} from '../contribution-analytics';
 
 const contributionData = {
   totalContributions: 2837,
