@@ -1,3 +1,4 @@
+import { enc } from '@/api-helpers/auth-supplementary';
 import NextAuth, {
   type AuthOptions,
   type Profile,
@@ -66,7 +67,7 @@ export const nextAuthConfig = (
       switch (account?.provider) {
         case 'github': {
           if (!account?.access_token) return false;
-          setCookie(GH_COOKIE_ATTR, account?.access_token, res);
+          setCookie(GH_COOKIE_ATTR, enc(account.access_token), res);
           return await handleGithubSignIn(account, profile);
         }
         default: {

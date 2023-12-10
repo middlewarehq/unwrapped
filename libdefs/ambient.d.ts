@@ -12,5 +12,7 @@ declare namespace NodeJS {
     GITHUB_ID: string;
     GITHUB_SECRET: string;
     INTERNAL_API_BASE_URL: string;
+    TOKEN_ENC_PUB_KEY: string;
+    TOKEN_ENC_PRI_KEY: string;
   }
 }
