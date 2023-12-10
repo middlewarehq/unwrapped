@@ -8,7 +8,14 @@ export const config = {
 
 const data: OSSContribsData = {
   // up and down values for the graph
-  trends: [32, 34, 9, 12, 42, 34, 1, 67, 43, 22, 12, 50]
+  contribs: [
+    {
+      contributions_count: 20,
+      org_name: 'middlewarehq',
+      repo_name: 'web-manager-dash',
+      org_avatar_url: 'https://github.com/middlewarehq.png'
+    }
+  ]
 };
 
 const generateUsingVercel = async () => {

@@ -12,6 +12,7 @@ import { CardTypes } from '@/types/cards';
 import { ZenNinjaData } from '@/components/templates/ZenNinja';
 import { StreakData } from '@/components/templates/Streak';
 import { CodeReviewsData } from '@/components/templates/CodeReviews';
+import { OSSContribsData } from '@/components/templates/OSSContribs';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const intro: IntroCardProps | null = {
@@ -64,6 +65,10 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
       }
     : null;
 
+  const ossContribsData: OSSContribsData = {
+    contribs: data.oss_contributions
+  };
+
   return {
     [CardTypes.UNWRAPPED_INTRO]: intro,
     [CardTypes.GUARDIAN_OF_PROD]: guardian,
@@ -72,7 +77,8 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     [CardTypes.DAY_NIGHT_CYCLE]: timeBasedData,
     [CardTypes.ZEN_OR_NINJA]: zenOrNinja,
     [CardTypes.CONTRIBUTION_STREAK]: contributionStreak,
-    [CardTypes.TOP_REVIEWERS]: codeReviewerStats
+    [CardTypes.TOP_REVIEWERS]: codeReviewerStats,
+    [CardTypes.OSS_CONTRIBUTION]: ossContribsData
   } as Record<
     CardTypes,
     | IntroCardProps
@@ -83,6 +89,7 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     | ZenNinjaData
     | StreakData
     | CodeReviewsData
+    | OSSContribsData
     | null
   >;
 };

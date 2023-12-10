@@ -49,5 +49,6 @@ export const cardColorsMap = {
   midnight: '#596CD0',
   lightGreen: '#1CB0B0',
   coralPink: '#E16666',
+  babyBlue: '#67B8F3',
   yellow: '#E2A300'
 };

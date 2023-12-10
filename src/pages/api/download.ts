@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchData, generateImages } from '@/pages/api/image-gen';
+import { generateImages } from '@/pages/api/image-gen';
 import { runBenchmark } from '@/api-helpers/benchmarking';
 import chalk from 'chalk';
 import { archiveFiles } from '../../api-helpers/archive';
-import { getCardLinksFromGithubData } from '@/api-helpers/general';
+// import { getCardLinksFromGithubData } from '@/api-helpers/general';
 import { fetchGithubUnwrappedData } from '@/api-helpers/unrwrapped-aggregator';
 import { dec } from '@/api-helpers/auth-supplementary';
 
@@ -25,7 +25,7 @@ const fetchAndDownloadImageBuffer = async (
   try {
     const data = await fetchGithubUnwrappedData(token, timezone);
     const imageBuffer = await runBenchmark(generateImages, data);
-    console.log(getCardLinksFromGithubData(data));
+    // console.log(getCardLinksFromGithubData(data));
 
     const _zippedData = await archiveFiles(
       imageBuffer.map(({ data, fileName }) => ({ data, fileName }))
@@ -33,7 +33,7 @@ const fetchAndDownloadImageBuffer = async (
 
     const fileName = 'middleware_unwrapped.zip';
 
-    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('Content-Type', 'application/zip');
     res.setHeader(
       'Content-Disposition',
       `attachment; filename=${encodeURIComponent(fileName)}`
