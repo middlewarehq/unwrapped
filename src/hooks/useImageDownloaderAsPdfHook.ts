@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import { useCallback } from 'react';
-import { rgbToHex, darkenHexColor } from '@/pages/api/utils/general';
+import { rgbToHex, darkenHexColor } from '@/api-helpers/general';
 
 interface DownloadImagesAsPdfProps {
   images: string[];

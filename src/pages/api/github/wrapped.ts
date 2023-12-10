@@ -19,9 +19,9 @@ import {
   fetchUserGitHubContributionCalendarMetrics,
   fetchUser,
   fetchRepoWiseContributionsForUser
-} from '@/exapi-sdk/github';
+} from '@/api-helpers/exapi-sdk/github';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getGithubRepositoryContributionData } from '../utils/adaptor';
+import { getGithubRepositoryContributionData } from '@/api-helpers/card-data-adapter';
 
 const remove_users_login = (list: Array<string>, user_login: string) => {
   const indexToRemove = list.indexOf(user_login);

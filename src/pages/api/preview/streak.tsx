@@ -1,6 +1,6 @@
-import { createImageUsingVercel } from '@/pages/api/image_gen/vercel_generator';
-import { CardTypes } from '../types/cards';
-import { StreakData } from '../image_gen/templates/Streak';
+import { createImageUsingVercel } from '@/api-helpers/vercel-generator';
+import { CardTypes } from '../../../types/cards';
+import { StreakData } from '../../../components/templates/Streak';
 
 export const config = {
   runtime: 'edge'

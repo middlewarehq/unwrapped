@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, CSSProperties } from 'react';
 import { CARD_HEIGHT, CARD_WIDTH, websiteUrl } from '../../constants/general';
-import { cardColorsMap } from '@/pages/api/constants/general';
+import { cardColorsMap } from '@/constants/general';
 
 type RootCard = {
   bgColor: keyof typeof cardColorsMap;

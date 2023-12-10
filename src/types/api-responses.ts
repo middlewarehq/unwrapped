@@ -1,4 +1,4 @@
-import { GithubUser } from '@/exapi-sdk/types';
+import { GithubUser } from '@/api-helpers/exapi-sdk/types';
 
 export type GithubData = {
   data: {

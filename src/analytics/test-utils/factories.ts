@@ -1,4 +1,4 @@
-import { Review, ReviewEdge } from '@/exapi-sdk/types';
+import { Review, ReviewEdge } from '@/api-helpers/exapi-sdk/types';
 import { PullRequestGeneratorParams, ReviewGeneratorParams } from './types';
 
 export const getPullRequest = ({

@@ -1,6 +1,6 @@
-import { ImageFile } from '@/pages/api/types/images';
+import { ImageFile } from '@/types/images';
 import { ImageResponse } from '@vercel/og';
-import { arrayBufferToBuffer } from '@/pages/api/utils/general';
+import { arrayBufferToBuffer } from '@/api-helpers/general';
 
 import { CardTypes } from '../types/cards';
 import {
@@ -8,8 +8,8 @@ import {
   CARD_WIDTH,
   INTER_FONT_STYLES
 } from '../constants/general';
-import { CardTemplate, CardTemplateData } from './templates';
-import { getFontsForImageGeneration } from '../utils/fonts';
+import { CardTemplate, CardTemplateData } from '../components/templates';
+import { getFontsForImageGeneration } from './fonts';
 
 export const createImageUsingVercel = async (
   data: CardTemplateData['data'],

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { RootCard } from '@/pages/api/image_gen/templates/RootCard';
+import { RootCard } from '@/components/templates/RootCard';
 import { websiteUrl } from '../../constants/general';
-import { abbreviateNumber } from '@/pages/api/utils/general';
+import { abbreviateNumber } from '@/api-helpers/general';
 
 export type ContributionsData = {
   contributions: number;

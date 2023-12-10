@@ -1,6 +1,6 @@
-import { createImageUsingVercel } from '@/pages/api/image_gen/vercel_generator';
-import { CardTypes } from '../types/cards';
-import { ContributionsData } from '@/pages/api/image_gen/templates/Contributions';
+import { createImageUsingVercel } from '@/api-helpers/vercel-generator';
+import { CardTypes } from '../../../types/cards';
+import { ContributionsData } from '@/components/templates/Contributions';
 
 export const config = {
   runtime: 'edge'

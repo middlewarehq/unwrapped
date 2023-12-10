@@ -1,9 +1,9 @@
 import { websiteUrl } from '../constants/general';
-import { IntroCardProps } from '../image_gen/templates/IntroCard';
-import { TimeOfTheDayData } from '../image_gen/templates/TimeOfTheDay';
-import { GitHubDataResponse, GithubData } from '../types/ApiResponses';
+import { IntroCardProps } from '../components/templates/IntroCard';
+import { TimeOfTheDayData } from '../components/templates/TimeOfTheDay';
+import { GitHubDataResponse, GithubData } from '../types/api-responses';
 import { CardTypes } from '../types/cards';
-import { getDataFromGithubResponse } from './adaptor';
+import { getDataFromGithubResponse } from './card-data-adapter';
 
 export function arrayBufferToBuffer(arrayBuffer: ArrayBuffer): Buffer {
   const uint8Array = new Uint8Array(arrayBuffer);

@@ -3,7 +3,7 @@ import {
   GithubContributionCalendar,
   GraphQLRepositoryContributionData,
   RepositoryContributionData
-} from '@/exapi-sdk/types';
+} from '@/api-helpers/exapi-sdk/types';
 import { getMonth, parseISO } from 'date-fns';
 import { clone } from 'ramda';
 

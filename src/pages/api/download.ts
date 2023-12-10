@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchData, generateImages } from '@/pages/api/image_gen';
-import { runBenchmark } from '@/pages/api/utils/benchmarking';
+import { fetchData, generateImages } from '@/pages/api/image-gen';
+import { runBenchmark } from '@/api-helpers/benchmarking';
 import chalk from 'chalk';
-import { archiveFiles } from './utils/archive';
-import { getCardLinksFromGithubData } from '@/pages/api/utils/general';
+import { archiveFiles } from '../../api-helpers/archive';
+import { getCardLinksFromGithubData } from '@/api-helpers/general';
 
 const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
@@ -14,7 +14,7 @@ const fetchAndDownloadImageBuffer = async (
     const imageBuffer = await runBenchmark(generateImages, data);
     console.log(getCardLinksFromGithubData(data));
 
-    const zippedData = await archiveFiles(
+    const _zippedData = await archiveFiles(
       imageBuffer.map(({ data, fileName }) => ({ data, fileName }))
     );
 

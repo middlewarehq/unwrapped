@@ -10,7 +10,7 @@ import { useImageDownloaderAsPdf } from '@/hooks/useImageDownloaderAsPdfHook';
 import Confetti from 'react-confetti';
 import Link from 'next/link';
 
-interface UnwrappedApiResponse {
+interface _UnwrappedApiResponse {
   images: string[];
 }
 

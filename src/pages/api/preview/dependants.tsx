@@ -1,7 +1,7 @@
-import { createImageUsingVercel } from '@/pages/api/image_gen/vercel_generator';
-import { CardTypes } from '../types/cards';
-import { DependantsData } from '../image_gen/templates/Dependants';
-import { GithubReview } from '../mocks/github';
+import { createImageUsingVercel } from '@/api-helpers/vercel-generator';
+import { CardTypes } from '../../../types/cards';
+import { DependantsData } from '../../../components/templates/Dependants';
+import { GithubReview } from '../../../mocks/github';
 
 export const config = {
   runtime: 'edge'

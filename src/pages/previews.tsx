@@ -1,5 +1,5 @@
 import React from 'react';
-import { CARD_HEIGHT, CARD_WIDTH } from './api/constants/general';
+import { CARD_HEIGHT, CARD_WIDTH } from '../constants/general';
 import Image from 'next/image';
 
 const Previews = () => {

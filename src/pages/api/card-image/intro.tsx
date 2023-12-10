@@ -1,6 +1,6 @@
-import { createImageUsingVercel } from '@/pages/api/image_gen/vercel_generator';
-import { CardTypes } from '../types/cards';
-import { IntroCardProps } from '../image_gen/templates/IntroCard';
+import { createImageUsingVercel } from '@/api-helpers/vercel-generator';
+import { CardTypes } from '../../../types/cards';
+import { IntroCardProps } from '../../../components/templates/IntroCard';
 
 export const config = {
   runtime: 'edge'

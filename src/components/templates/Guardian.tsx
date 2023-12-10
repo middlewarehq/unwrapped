@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { RootCard } from '@/pages/api/image_gen/templates/RootCard';
+import { RootCard } from '@/components/templates/RootCard';
 import { websiteUrl } from '../../constants/general';
 
 export type GuardianData = {

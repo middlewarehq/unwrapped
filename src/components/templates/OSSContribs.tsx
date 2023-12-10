@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
-import { RootCard } from '@/pages/api/image_gen/templates/RootCard';
+import { RootCard } from '@/components/templates/RootCard';
 import { websiteUrl } from '../../constants/general';
 
-export type ZenNinjaData = {
+export type OSSContribsData = {
   trends: number[];
 };
 
-export const ZenNinja: FC<ZenNinjaData> = ({ trends }) => {
+export const OSSContribs: FC<OSSContribsData> = ({ trends }) => {
   const panda = `${websiteUrl}/assets/images/panda.png`;
   const ninja = `${websiteUrl}/assets/images/ninja.png`;
 

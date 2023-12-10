@@ -1,4 +1,4 @@
-import { PullRequestEdge, PullRequest } from '../exapi-sdk/types';
+import { PullRequestEdge, PullRequest } from '../api-helpers/exapi-sdk/types';
 import { getTopNKeys } from './utils';
 
 export const getPRListAndMonthlyCountsFromGqlResponse = (

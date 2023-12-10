@@ -1,4 +1,4 @@
-import { GitHubDataResponse } from '@/pages/api/types/ApiResponses';
+import { GitHubDataResponse } from '@/types/api-responses';
 
 export const ghData = {
   data: {

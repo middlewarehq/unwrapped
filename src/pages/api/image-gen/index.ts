@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { GitHubDataResponse } from '../types/ApiResponses';
+import { GitHubDataResponse } from '../../../types/api-responses';
 import chalk from 'chalk';
-import { createImageUsingVercel } from './vercel_generator';
-import { DEV } from '../constants/general';
-import { updatedGhData } from '@/pages/api/mocks/github';
-import { getDataFromGithubResponse } from '@/pages/api/utils/adaptor';
-import { CardTypes, sequence } from '../types/cards';
+import { createImageUsingVercel } from '../../../api-helpers/vercel-generator';
+import { DEV } from '../../../constants/general';
+import { updatedGhData } from '@/mocks/github';
+import { getDataFromGithubResponse } from '@/api-helpers/card-data-adapter';
+import { CardTypes, sequence } from '../../../types/cards';
 
 export const fetchData = async (): Promise<GitHubDataResponse> => {
   if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT === DEV) {

@@ -1,17 +1,17 @@
-import { RepositoryContributionData } from '@/exapi-sdk/types';
-import { AuthoredReviewedData } from '../image_gen/templates/AuthoredReviewed';
-import { ContributionsData } from '../image_gen/templates/Contributions';
-import { GuardianData } from '../image_gen/templates/Guardian';
-import { IntroCardProps } from '../image_gen/templates/IntroCard';
+import { RepositoryContributionData } from '@/api-helpers/exapi-sdk/types';
+import { AuthoredReviewedData } from '@/components/templates/AuthoredReviewed';
+import { ContributionsData } from '@/components/templates/Contributions';
+import { GuardianData } from '@/components/templates/Guardian';
+import { IntroCardProps } from '@/components/templates/IntroCard';
 import {
   GitHubDataResponse,
   GithubRepositoryContributionData
-} from '../types/ApiResponses';
-import { TimeOfTheDayData } from '@/pages/api/image_gen/templates/TimeOfTheDay';
-import { CardTypes } from '@/pages/api/types/cards';
-import { ZenNinjaData } from '../image_gen/templates/ZenNinja';
-import { StreakData } from '../image_gen/templates/Streak';
-import { CodeReviewsData } from '../image_gen/templates/CodeReviews';
+} from '../types/api-responses';
+import { TimeOfTheDayData } from '@/components/templates/TimeOfTheDay';
+import { CardTypes } from '@/types/cards';
+import { ZenNinjaData } from '@/components/templates/ZenNinja';
+import { StreakData } from '@/components/templates/Streak';
+import { CodeReviewsData } from '@/components/templates/CodeReviews';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const intro: IntroCardProps | null = {

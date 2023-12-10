@@ -1,6 +1,6 @@
 import React from 'react';
-import { IntroCard } from '../image_gen/templates/IntroCard';
-import { TimeOfTheDay } from '../image_gen/templates/TimeOfTheDay';
+import { IntroCard } from '../../../components/templates/IntroCard';
+import { TimeOfTheDay } from '../../../components/templates/TimeOfTheDay';
 
 const AllCards = () => {
   return (

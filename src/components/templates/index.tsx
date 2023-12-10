@@ -2,25 +2,20 @@ import React, { FC } from 'react';
 import { CardTypes } from '../../types/cards';
 import { IntroCard, IntroCardProps } from './IntroCard';
 import { TimeOfTheDay, TimeOfTheDayData } from './TimeOfTheDay';
-import {
-  Guardian,
-  GuardianData
-} from '@/pages/api/image_gen/templates/Guardian';
+import { Guardian, GuardianData } from '@/components/templates/Guardian';
 import {
   AuthoredReviewed,
   AuthoredReviewedData
-} from '@/pages/api/image_gen/templates/AuthoredReviewed';
+} from '@/components/templates/AuthoredReviewed';
 import { Dependants, DependantsData } from './Dependants';
 import {
   Contributions,
   ContributionsData
-} from '@/pages/api/image_gen/templates/Contributions';
-import {
-  ZenNinja,
-  ZenNinjaData
-} from '@/pages/api/image_gen/templates/ZenNinja';
-import { Streak, StreakData } from '@/pages/api/image_gen/templates/Streak';
+} from '@/components/templates/Contributions';
+import { ZenNinja, ZenNinjaData } from '@/components/templates/ZenNinja';
+import { Streak, StreakData } from '@/components/templates/Streak';
 import { CodeReviews, CodeReviewsData } from './CodeReviews';
+import { OSSContribs, OSSContribsData } from './OSSContribs';
 
 export type CardTemplateData = {
   cardType: CardTypes;
@@ -51,6 +46,8 @@ export const CardTemplate: FC<CardTemplateData> = ({ cardType, data }) => {
       return <Contributions {...(data as ContributionsData)} />;
     case CardTypes.ZEN_OR_NINJA:
       return <ZenNinja {...(data as ZenNinjaData)} />;
+    case CardTypes.OSS_CONTRIBUTION:
+      return <OSSContribs {...(data as OSSContribsData)} />;
     case CardTypes.CONTRIBUTION_STREAK:
       return <Streak {...(data as StreakData)} />;
     case CardTypes.TOP_REVIEWERS:
