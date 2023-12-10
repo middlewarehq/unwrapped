@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { DEV } from '../constants/general';
 
 function bytesToMegabytes(bytes: number): string {
   return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
@@ -12,6 +13,9 @@ export const runBenchmark = async <T>(
   callback: (...args: any[]) => Promise<T>,
   ...args: any[]
 ): Promise<T> => {
+  if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT !== DEV) {
+    return await callback(...args);
+  }
   const startTimestamp = performance.now();
 
   const res = await callback(...args);
