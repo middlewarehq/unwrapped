@@ -14,5 +14,5 @@ export interface PullRequestGeneratorParams {
 export interface ReviewGeneratorParams {
   reviewerLogin?: string;
   createdAt?: string;
-  state?: string;
+  state?: Review['state'];
 }

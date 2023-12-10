@@ -5,6 +5,9 @@ import { fetchDataFromApi } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import { useLocalStorage } from 'usehooks-ts';
 import { useRouter } from 'next/router';
+import pluralize from 'pluralize';
+
+import GrowthSvg from '@/assets/growth.svg';
 
 export interface ContributionSummaryApiResponse {
   contributionSummary: ContributionSummary;
@@ -56,76 +59,148 @@ export default function StatsSummary() {
     );
   }
 
-  return (
-    <div className="items-center justify-center p-4 min-h-screen w-full flex flex-col gap-10 text-center">
-      <div>
-        <h2 className="text-3xl ">
-          Hi <span className="text-violet-300">{userName}</span>
-          👋
-        </h2>
-        <h2 className="text-2xl">
-          🚀 Let&apos;s unwrap your GitHub journey of 2023! 🎉
-        </h2>
-      </div>
+  const okCommits = Number(userSummaryStats?.totalCommitContributions) > 50;
+  const okIssues = Number(userSummaryStats?.totalIssueContributions) > 5;
+  const okPRs = Number(userSummaryStats?.totalPullRequestContributions) > 5;
+  const okReviews =
+    Number(userSummaryStats?.totalPullRequestReviewContributions) > 5;
+  const okRepos =
+    Number(userSummaryStats?.totalRepositoriesWithContributedCommits) > 2;
 
-      <div className="flex flex-col items-center justify-center gap-5">
-        <div>
-          <h2 className="text-xl">Commit Contributions</h2>
-          <p className="text-l">
-            You nailed it with {userSummaryStats?.totalCommitContributions}{' '}
-            contributions across{' '}
-            {userSummaryStats?.totalRepositoriesWithContributedCommits} repos,
-            beating all commitment issues.
-          </p>
+  const notOk = !(okCommits || okIssues || okPRs || okReviews || okRepos);
+
+  return (
+    <>
+      <GrowthSvg
+        style={{
+          position: 'absolute',
+          right: '-200px',
+          top: 0,
+          height: '600px',
+          transform: 'rotate(-30deg)',
+          opacity: 0.6
+        }}
+      />
+      <div className="relative p-8 min-h-screen w-full flex flex-col gap-10">
+        <div className="flex flex-col gap-4">
+          <span className="text-6xl font-medium mb-4">
+            Hey <span className="text-violet-300">{userName}</span>
+            👋
+          </span>
+          <span className="text-2xl">
+            4.5 Billion contributions...
+            <br />
+            and 2.2 Million of new partners in code later
+          </span>
+          <span className="text-2xl">2023 is finally at a close</span>
+          {!notOk && (
+            <span>And damn you&apos;ve gone places, and done things...</span>
+          )}
         </div>
+
+        {notOk ? (
+          <div className="flex flex-col gap-5">
+            <span className="text-2xl">Your year was rather calm!</span>
+            <span>
+              Maybe there are some surprises your 2023 unwrapped holds?
+            </span>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-5">
+            {okCommits &&
+              !!Number(
+                userSummaryStats?.totalRepositoriesWithContributedCommits
+              ) && (
+                <div>
+                  <h2 className="text-xl">You&apos;ve made a dent</h2>
+                  <p className="text-l text-gray-400">
+                    With {userSummaryStats?.totalCommitContributions}{' '}
+                    {pluralize(
+                      'commit',
+                      userSummaryStats?.totalCommitContributions
+                    )}{' '}
+                    across{' '}
+                    {userSummaryStats?.totalRepositoriesWithContributedCommits}{' '}
+                    {pluralize(
+                      'repo',
+                      userSummaryStats?.totalRepositoriesWithContributedCommits
+                    )}
+                    , beating all commitment issues.
+                  </p>
+                </div>
+              )}
+            {okIssues &&
+              !!Number(
+                userSummaryStats?.totalRepositoriesWithContributedIssues
+              ) && (
+                <div>
+                  <h2 className="text-xl">
+                    You&apos;ve made the internet a better place
+                  </h2>
+                  <p className="text-l text-gray-400">
+                    Because of you, the world knows about{' '}
+                    {userSummaryStats?.totalIssueContributions} new issues
+                    across{' '}
+                    {userSummaryStats?.totalRepositoriesWithContributedIssues}{' '}
+                    repos.
+                  </p>
+                  <p>Might have saved a life even!</p>
+                </div>
+              )}
+            {okPRs &&
+              !!Number(
+                userSummaryStats?.totalRepositoriesWithContributedPullRequests
+              ) && (
+                <div>
+                  <h2 className="text-xl">A pillar of the community</h2>
+                  <p className="text-l text-gray-400">
+                    You submitted{' '}
+                    {userSummaryStats?.totalPullRequestContributions} PRs across{' '}
+                    {
+                      userSummaryStats?.totalRepositoriesWithContributedPullRequests
+                    }{' '}
+                    repos, shaping projects with your expertise.
+                  </p>
+                </div>
+              )}
+            {okReviews && (
+              <div>
+                <h2 className="text-xl">Watchful Guardian</h2>
+                <p className="text-l text-gray-400">
+                  You provided insightful reviews on{' '}
+                  {userSummaryStats?.totalPullRequestReviewContributions} pull
+                  requests.
+                </p>
+              </div>
+            )}
+            {okRepos && (
+              <div>
+                <h2 className="text-xl">One with a wide reach</h2>
+                <p className="text-l text-gray-400">
+                  Hardly in your comfort zone, your commits left a mark in{' '}
+                  {userSummaryStats?.totalRepositoriesWithContributedCommits}{' '}
+                  repositories.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
         <div>
-          <h2 className="text-xl">Issue Contributions</h2>
-          <p className="text-l">
-            A true bug hunter! You opened{' '}
-            {userSummaryStats?.totalIssueContributions} issues across{' '}
-            {userSummaryStats?.totalRepositoriesWithContributedIssues} repos,
-            identifying and addressing challenges.
-          </p>
-        </div>
-        <div>
-          <h2 className="text-xl">Pull Request Contributions</h2>
-          <p className="text-l">
-            Master of collaboration! You submitted{' '}
-            {userSummaryStats?.totalPullRequestContributions} PRs across{' '}
-            {userSummaryStats?.totalRepositoriesWithContributedPullRequests}{' '}
-            repos, shaping projects with your expertise.
-          </p>
-        </div>
-        <div>
-          <h2 className="text-xl">Pull Request Review Contributions</h2>
-          <p className="text-l">
-            Your critical eye at work! You provided insightful reviews on{' '}
-            {userSummaryStats?.totalPullRequestReviewContributions}
-            pull requests.
-          </p>
-        </div>
-        <div>
-          <h2 className="text-xl">Repos with Contributed Commits</h2>
-          <p className="text-l">
-            Coding across repos! Your commits left a mark in{' '}
-            {userSummaryStats?.totalRepositoriesWithContributedCommits}{' '}
-            repositories.
-          </p>
+          <button
+            className="bg-indigo-800 text-white px-4 py-2 rounded-md"
+            onClick={() => {
+              router.replace('/stats-unwrapped');
+            }}
+          >
+            Unwrap your 2023 {'->'} ✨
+          </button>
+          {!notOk && (
+            <div className="mt-4 text-sm text-gray-400">
+              Keep up the fantastic work 🚀
+            </div>
+          )}
         </div>
       </div>
-      <div>
-        <button
-          className="bg-indigo-800 text-white px-4 py-2 rounded-md"
-          onClick={() => {
-            router.push('/stats-unwrapped');
-          }}
-        >
-          Create Unwrapped Images✨
-        </button>
-        <div className="mt-4 text-sm text-gray-400">
-          Keep up the fantastic work 🚀
-        </div>
-      </div>
-    </div>
+    </>
   );
 }

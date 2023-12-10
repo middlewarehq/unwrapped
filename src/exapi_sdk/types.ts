@@ -3,7 +3,7 @@ export interface Review {
     login: string;
   };
   createdAt: string;
-  state: string;
+  state: 'CHANGES_REQUESTED' | 'APPROVED' | 'COMMENTED' | 'DISMISSED';
 }
 
 export interface PullRequest {

@@ -35,7 +35,7 @@ export const getReview = (args: ReviewGeneratorParams): Review => {
   const defaults = {
     reviewerLogin: 'dhruv',
     createdAt: '2023-02-01T14:04:37Z',
-    state: 'COMMENTED'
+    state: 'COMMENTED' as Review['state']
   };
 
   const { createdAt, reviewerLogin, state } = { ...defaults, ...args };
