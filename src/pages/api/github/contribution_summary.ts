@@ -2,7 +2,7 @@ import { dec } from '@/api-helpers/auth-supplementary';
 import {
   fetchUser,
   fetchUserContributionSummaryMetrics
-} from '@/exapi_sdk/github';
+} from '@/exapi-sdk/github';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(

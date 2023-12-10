@@ -7,8 +7,8 @@ import {
   getTopNRecurringAuthors,
   splitPRsByDayNight,
   getUserReviewCountWithRequestChanges
-} from '../pr_analytics';
-import { getPullRequest, getReview } from '../test_utils/factories';
+} from '../pr-analytics';
+import { getPullRequest, getReview } from '../test-utils/factories';
 
 test('getReviewerReviewsCountMap returns empty object for empty PR Array', () => {
   expect(getReviewerReviewsCountMap([])).toStrictEqual({});

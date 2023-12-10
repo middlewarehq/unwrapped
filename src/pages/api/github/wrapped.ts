@@ -2,7 +2,7 @@ import {
   getLongestContributionStreak,
   getMonthWiseContributionCount,
   getRepoWiseOpensourceContributionsCount
-} from '@/analytics/contribution_analytics';
+} from '@/analytics/contribution-analytics';
 import {
   getPRListAndMonthlyCountsFromGqlResponse,
   getTopNRecurringAuthors,
@@ -11,7 +11,7 @@ import {
   getTotalCodeDeletions,
   getUserReviewCountWithRequestChanges,
   splitPRsByDayNight
-} from '@/analytics/pr_analytics';
+} from '@/analytics/pr-analytics';
 import { dec } from '@/api-helpers/auth-supplementary';
 import {
   fetchAllPullRequests,
@@ -19,7 +19,7 @@ import {
   fetchUserGitHubContributionCalendarMetrics,
   fetchUser,
   fetchRepoWiseContributionsForUser
-} from '@/exapi_sdk/github';
+} from '@/exapi-sdk/github';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getGithubRepositoryContributionData } from '../utils/adaptor';
 

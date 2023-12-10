@@ -1,4 +1,4 @@
-import { RepositoryContributionData } from '@/exapi_sdk/types';
+import { RepositoryContributionData } from '@/exapi-sdk/types';
 import { AuthoredReviewedData } from '../image_gen/templates/AuthoredReviewed';
 import { ContributionsData } from '../image_gen/templates/Contributions';
 import { GuardianData } from '../image_gen/templates/Guardian';
