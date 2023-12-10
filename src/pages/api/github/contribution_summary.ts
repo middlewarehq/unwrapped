@@ -1,3 +1,4 @@
+import { dec } from '@/api-helpers/auth-supplementary';
 import {
   fetchUser,
   fetchUserContributionSummaryMetrics
@@ -8,7 +9,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const token = req.cookies.ghct;
+  const token = dec(req.cookies.ghct || '');
 
   if (!token) {
     return res.status(403).json({
