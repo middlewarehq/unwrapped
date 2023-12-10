@@ -131,3 +131,30 @@ export interface GraphQLContributionSummaryResponse {
     };
   };
 }
+
+export interface GraphQLRepositoryContributionData {
+  data: {
+    user: {
+      contributionsCollection: {
+        issueContributionsByRepository: RepositoryContributionData[];
+        commitContributionsByRepository: RepositoryContributionData[];
+        pullRequestContributionsByRepository: RepositoryContributionData[];
+        pullRequestReviewContributionsByRepository: RepositoryContributionData[];
+      };
+    };
+  };
+}
+
+export interface RepositoryContributionData {
+  repository: {
+    name: string;
+    owner: {
+      login: string;
+    };
+    isPrivate: boolean;
+    isFork: boolean;
+  };
+  contributions: {
+    totalCount: number;
+  };
+}
