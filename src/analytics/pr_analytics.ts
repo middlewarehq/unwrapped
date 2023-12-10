@@ -1,4 +1,3 @@
-import { KeyValueObject } from '@/types';
 import { PullRequestEdge, PullRequest } from '../exapi_sdk/types';
 import { getTopNKeys } from './utils';
 
@@ -15,11 +14,11 @@ export const getPRListAndMonthlyCountsFromGqlResponse = (
 
 export const getReviewerReviewsCountMap = (
   pull_requests: Array<PullRequest>
-): KeyValueObject => {
-  let reviewer_name_to_pr_count_map: KeyValueObject = {};
+): Record<string, number> => {
+  let reviewer_name_to_pr_count_map: Record<string, number> = {};
 
   for (let pr of pull_requests) {
-    let accountedReviewersForPR: Object = {};
+    let accountedReviewersForPR: Record<string, number> = {};
 
     for (let review_node of pr.reviews.edges) {
       const reviewer_login = review_node.node.author.login;
@@ -42,8 +41,8 @@ export const getReviewerReviewsCountMap = (
 
 export const getAuthorPRCountsMap = (
   pullRequests: Array<PullRequest>
-): KeyValueObject => {
-  let authorNameToPrCountsMap: KeyValueObject = {};
+): Record<string, number> => {
+  let authorNameToPrCountsMap: Record<string, number> = {};
 
   for (let pr of pullRequests) {
     let author = pr.author.login;
@@ -85,7 +84,7 @@ export const getTopNRecurringReviewers = (
   pullRequests: Array<PullRequest>,
   n?: number
 ) => {
-  const reviewerReviewsCountMap: KeyValueObject =
+  const reviewerReviewsCountMap: Record<string, number> =
     getReviewerReviewsCountMap(pullRequests);
   return getTopNKeys(reviewerReviewsCountMap, n);
 };
@@ -94,6 +93,7 @@ export const getTopNRecurringAuthors = (
   pullRequests: Array<PullRequest>,
   n?: number
 ) => {
-  const authorPRCountsMap: KeyValueObject = getAuthorPRCountsMap(pullRequests);
+  const authorPRCountsMap: Record<string, number> =
+    getAuthorPRCountsMap(pullRequests);
   return getTopNKeys(authorPRCountsMap, n);
 };

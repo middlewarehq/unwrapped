@@ -1,6 +1,7 @@
-import { KeyValueObject } from '@/types';
-
-export const getTopNKeys = (obj: KeyValueObject, n?: number): string[] => {
+export const getTopNKeys = (
+  obj: Record<string, number>,
+  n?: number
+): string[] => {
   let keyValueArray: [string, number][] = Object.entries(obj);
   keyValueArray.sort((a, b) => b[1] - a[1]);
 
