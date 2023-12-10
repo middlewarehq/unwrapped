@@ -8,7 +8,7 @@ export type IntroCardProps = {
 
 export const IntroCard: FC<IntroCardProps> = ({ year, username }) => {
   return (
-    <RootCard bg="assets/images/red_bg.png">
+    <RootCard bgColor="red">
       <div tw="text-yellow-950 flex flex-col w-full h-full p-2 items-center justify-center">
         <p>{username}</p>
         <h1 tw="text-5xl mt-10">{year}</h1>

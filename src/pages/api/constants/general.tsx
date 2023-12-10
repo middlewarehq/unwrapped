@@ -36,3 +36,14 @@ export const INTER_FONT_STYLES: FontStyles[] = [
   { weight: 800, name: 'ExtraBold' },
   { weight: 900, name: 'Black' }
 ];
+
+// Card colors
+export const cardColorsMap = {
+  red: '#AD4039',
+  orange: '#FB8500',
+  teal: '#219EBC',
+  purple: '#A870F7',
+  indigo: '#596CD0',
+  grey: '#B7B7B7',
+  pink: '#EF90D4'
+};
