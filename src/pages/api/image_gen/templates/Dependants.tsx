@@ -48,7 +48,7 @@ const Graph: FC<{
   // TODO: Render the graph correctly using suitable SVG logic
 
   return (
-    <div tw="flex flex-col items-center justify-center">
+    <div tw="flex flex-col items-center justify-center  h-48">
       <div tw="flex flex-col items-center justify-center">
         <div tw="flex items-center justify-center">
           <img tw="w-8 rounded-full h-8" src={centralNode.avatar} alt="" />
@@ -56,7 +56,7 @@ const Graph: FC<{
         </div>
         <div tw="flex items-center justify-center">
           {attachedNodes.map((item) => (
-            <div tw="flex items-center justify-center">
+            <div key={item.userName} tw="flex items-center justify-center">
               <img tw="w-8 rounded-full h-8" src={item.avatar} alt="" />
               <p tw="text-xs m-0 ml-2">{item.name}</p>
             </div>

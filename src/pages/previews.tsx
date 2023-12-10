@@ -7,7 +7,11 @@ const Previews = () => {
     `/api/preview/intro`,
     `/api/preview/timebased/allday`,
     `/api/preview/timebased/night`,
-    `/api/preview/timebased/day`
+    `/api/preview/timebased/day`,
+    `/api/preview/guardian`,
+    `/api/preview/authoredReviewed`,
+    `/api/preview/dependants`,
+    `/api/preview/contributions`
   ];
 
   return (

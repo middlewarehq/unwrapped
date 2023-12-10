@@ -16,6 +16,7 @@ import { getFontsForImageGeneration } from '../utils/fonts';
 import { GuardianData } from '@/pages/api/image_gen/templates/Guardian';
 import { AuthoredReviewedData } from '@/pages/api/image_gen/templates/AuthoredReviewed';
 import { DependantsData } from './templates/Dependants';
+import { ContributionsData } from './templates/Contributions';
 
 export const createImageUsingVercel = async (
   data:
@@ -24,6 +25,7 @@ export const createImageUsingVercel = async (
     | GuardianData
     | AuthoredReviewedData
     | DependantsData
+    | ContributionsData
     | null,
   cardType: CardTypes,
   env?: 'node' | 'browser'

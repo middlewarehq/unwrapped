@@ -11,8 +11,12 @@ import {
   AuthoredReviewedData
 } from '@/pages/api/image_gen/templates/AuthoredReviewed';
 import { Dependants, DependantsData } from './Dependants';
+import {
+  Contributions,
+  ContributionsData
+} from '@/pages/api/image_gen/templates/Contributions';
 
-export const CardTemplate: FC<{
+export type CardTemplateData = {
   cardType: CardTypes;
   data?:
     | IntroCardProps
@@ -20,8 +24,11 @@ export const CardTemplate: FC<{
     | GuardianData
     | AuthoredReviewedData
     | DependantsData
+    | ContributionsData
     | null;
-}> = ({ cardType, data }) => {
+};
+
+export const CardTemplate: FC<CardTemplateData> = ({ cardType, data }) => {
   switch (cardType) {
     case CardTypes.UNWRAPPED_INTRO:
       return <IntroCard {...(data as IntroCardProps)} />;
@@ -31,6 +38,8 @@ export const CardTemplate: FC<{
       return <AuthoredReviewed {...(data as AuthoredReviewedData)} />;
     case CardTypes.IT_TAKES_A_VILLAGE:
       return <Dependants {...(data as DependantsData)} />;
+    case CardTypes.YOUR_CONTRIBUTIONS:
+      return <Contributions {...(data as ContributionsData)} />;
     default:
       return <TimeOfTheDay {...(data as TimeOfTheDayData)} />;
   }

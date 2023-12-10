@@ -37,3 +37,15 @@ export const cardTemplateAdaptor = (data: GithubData) => {
 
   return result;
 };
+
+export const abbreviateNumber = (value: number): string => {
+  const suffixes = ['', 'k', 'M', 'B', 'T'];
+  const order = Math.floor(Math.log10(value) / 3);
+
+  if (order < suffixes.length) {
+    const roundedValue = Math.round(value / Math.pow(10, order * 3));
+    return `${roundedValue}${suffixes[order]}`;
+  } else {
+    return value.toString();
+  }
+};
