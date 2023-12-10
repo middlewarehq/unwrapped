@@ -62,6 +62,7 @@ export type GitHubDataResponse = {
   prs_opened_during_night: number;
   contribution_percentile: number;
   global_contributions: number;
+  reviewed_prs_with_requested_changes_count: number;
 };
 
 export type GithubRepositoryContributionData = {
