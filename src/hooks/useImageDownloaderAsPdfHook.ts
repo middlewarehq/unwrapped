@@ -5,12 +5,19 @@ interface DownloadImagesAsPdfProps {
   images: string[];
 }
 
+const IMAGE_HEIGHT = 600;
+const IMAGE_WIDTH = 400;
+const IMAGE_MARGIN = 20;
+
+const PAGE_HEIGHT = IMAGE_HEIGHT + IMAGE_MARGIN + IMAGE_MARGIN;
+const PAGE_WIDTH = IMAGE_WIDTH + IMAGE_MARGIN + IMAGE_MARGIN;
+
 export const useImageDownloaderAsPdf = () => {
   const downloadImagesAsPdf = useCallback(
     async ({ images }: DownloadImagesAsPdfProps) => {
       const pdf = new jsPDF({
         unit: 'px',
-        format: [440, 640]
+        format: [PAGE_WIDTH, PAGE_HEIGHT]
       });
       const colorsCodesByImageOrder = await Promise.all(
         images.map(getColorFromImage)
@@ -27,8 +34,15 @@ export const useImageDownloaderAsPdf = () => {
           parseInt(color![1]),
           parseInt(color![2])
         );
-        pdf.rect(0, 0, 440, 640, 'F');
-        pdf.addImage(imageUrl, 'JPEG', 20, 20, 400, 600);
+        pdf.rect(0, 0, PAGE_WIDTH, PAGE_HEIGHT, 'F');
+        pdf.addImage(
+          imageUrl,
+          'JPEG',
+          IMAGE_MARGIN,
+          IMAGE_MARGIN,
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT
+        );
       });
       pdf.save('middleware-unwrapped.pdf');
     },
