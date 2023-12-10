@@ -9,11 +9,12 @@ function bytesToKilobytes(bytes: number): string {
 }
 
 export const runBenchmark = async <T>(
-  callback: () => Promise<T>
+  callback: (...args: any[]) => Promise<T>,
+  ...args: any[]
 ): Promise<T> => {
   const startTimestamp = performance.now();
 
-  const res = await callback();
+  const res = await callback(...args);
 
   const endTimestamp = performance.now();
   const executionTime = endTimestamp - startTimestamp;
