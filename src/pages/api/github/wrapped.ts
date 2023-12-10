@@ -28,7 +28,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  let token = dec(req.cookies.ghct || '');
+  let token = req.cookies.ghct;
   const timezone = (req.headers.timezone as string) || 'IST';
 
   if (!token) {
