@@ -159,7 +159,20 @@ export const updatedGhData = {
     '11': 171
   },
   longest_streak: 19,
-  total_oss_contributions: 100,
+  oss_contributions: [
+    {
+      org_name: 'RocketChat',
+      repo_name: 'Apps.Github22',
+      org_avatar_url: 'https://avatars.githubusercontent.com/u/12508788?v=4',
+      contributions_count: 57
+    },
+    {
+      org_name: 'RocketChat',
+      repo_name: 'Apps.Notion',
+      org_avatar_url: 'https://avatars.githubusercontent.com/u/12508788?v=4',
+      contributions_count: 27
+    }
+  ],
   prs_opened_during_day: 200,
   prs_opened_during_night: 350,
   contribution_percentile: 98,
