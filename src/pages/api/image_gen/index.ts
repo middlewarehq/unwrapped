@@ -1,17 +1,16 @@
 import axios from 'axios';
-import { archiveFiles } from '@/pages/api/utils/archive';
-import { GithubData } from '../types/ApiResponses';
+import { GitHubDataResponse } from '../types/ApiResponses';
 import chalk from 'chalk';
-import { ghData } from '../mocks/github';
-import { cardTemplateAdaptor } from '@/pages/api/utils/general';
 import { createImageUsingVercel } from './vercel_generator';
-import { sequence } from '../types/cards';
 import { DEV } from '../constants/general';
+import { updatedGhData } from '@/pages/api/mocks/github';
+import { getDataFromGithubResponse } from '@/pages/api/utils/adaptor';
+import { CardTypes, sequence } from '../types/cards';
 
-const fetchData = async (): Promise<GithubData> => {
+export const fetchData = async (): Promise<GitHubDataResponse> => {
   if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT === DEV) {
     return new Promise((resolve) => {
-      resolve(ghData);
+      resolve(updatedGhData);
     });
   }
   const response = await axios
@@ -19,27 +18,27 @@ const fetchData = async (): Promise<GithubData> => {
     .then((res) => res)
     .catch((err) => err);
   const data = response.data;
-  return data as GithubData;
+  return data as GitHubDataResponse;
 };
 
-export const generateImages = async () => {
-  console.log(chalk.yellow('Fetching data...'));
-  const fetchedData = await fetchData();
+export const generateImages = async (
+  data: GitHubDataResponse,
+  customSequence?: CardTypes[]
+) => {
   console.log(chalk.yellow('Generating images...'));
 
-  const adaptedData = cardTemplateAdaptor(fetchedData);
-  const cardsToBeGenerated = sequence.filter((card) =>
+  const cardSequence = customSequence || sequence;
+
+  const adaptedData = getDataFromGithubResponse(data);
+  const cardsToBeGenerated = cardSequence.filter((card) =>
     Boolean(adaptedData[card])
   );
 
   const imageFileBuffers = await Promise.all(
-    cardsToBeGenerated.map((cardName) =>
-      createImageUsingVercel(adaptedData[cardName], cardName)
+    cardsToBeGenerated.map((cardName, index) =>
+      createImageUsingVercel(adaptedData[cardName], cardName, 'node', index)
     )
   );
 
-  const data = await archiveFiles(
-    imageFileBuffers.map(({ data, fileName }) => ({ data, fileName }))
-  );
-  return data;
+  return imageFileBuffers;
 };

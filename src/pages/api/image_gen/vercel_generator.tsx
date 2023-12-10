@@ -1,7 +1,6 @@
 import { ImageFile } from '@/pages/api/types/images';
 import { ImageResponse } from '@vercel/og';
 import { arrayBufferToBuffer } from '@/pages/api/utils/general';
-import { v4 as uuid } from 'uuid';
 
 import { IntroCardProps } from './templates/IntroCard';
 import { CardTypes } from '../types/cards';
@@ -28,9 +27,10 @@ export const createImageUsingVercel = async (
     | ContributionsData
     | null,
   cardType: CardTypes,
-  env?: 'node' | 'browser'
+  env: 'node' | 'browser',
+  index?: number
 ): Promise<ImageFile> => {
-  const fileName = uuid() + '.png';
+  const fileName = (index || 0) + 1 + '.png';
   const fonts = await getFontsForImageGeneration(env);
   const generatedImage = new ImageResponse(
     <CardTemplate cardType={cardType} data={data} />,
