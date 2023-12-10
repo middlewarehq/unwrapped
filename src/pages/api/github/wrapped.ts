@@ -9,6 +9,7 @@ import {
   getTotalCodeAdditions,
   getTotalCodeDeletions
 } from '@/analytics/pr_analytics';
+import { dec } from '@/api-helpers/auth-supplementary';
 import {
   fetchAllPullRequests,
   fetchAllReviewedPRs,
@@ -26,8 +27,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const token = req.cookies.ghct;
-
+  const token = dec(req.cookies.ghct || '');
   if (!token) {
     return res.status(403).json({
       message: 'GitHub Access token not found.'
