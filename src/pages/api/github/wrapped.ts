@@ -7,7 +7,8 @@ import {
   getTopNRecurringAuthors,
   getTopNRecurringReviewers,
   getTotalCodeAdditions,
-  getTotalCodeDeletions
+  getTotalCodeDeletions,
+  splitPRsByDayNight
 } from '@/analytics/pr_analytics';
 import { dec } from '@/api-helpers/auth-supplementary';
 import {
@@ -27,7 +28,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  let token = req.cookies.ghct;
+
+  const token = dec(req.cookies.ghct || '');
+  const timezone = (req.headers.timezone as string) || 'IST';
 
   if (!token) {
     return res.status(403).json({
@@ -74,6 +77,8 @@ export default async function handler(
       user_daily_contributions
     );
 
+    const { day, night } = splitPRsByDayNight(authored_prs, timezone);
+
     res.status(200).json({
       user,
       authored_monthly_pr_counts,
@@ -86,8 +91,8 @@ export default async function handler(
       monthly_contributions,
       longest_streak,
       total_oss_contributions: 100,
-      prs_opened_during_day: 200,
-      prs_opened_during_night: 350,
+      prs_opened_during_day: day.length,
+      prs_opened_during_night: night.length,
       contribution_percentile: 98,
       global_contributions: 432094792
     });

@@ -97,3 +97,29 @@ export const getTopNRecurringAuthors = (
     getAuthorPRCountsMap(pullRequests);
   return getTopNKeys(authorPRCountsMap, n);
 };
+
+export const splitPRsByDayNight = (
+  prs: PullRequest[],
+  timeZone: string
+): { day: PullRequest[]; night: PullRequest[] } => {
+  const dayPRs: PullRequest[] = [];
+  const nightPRs: PullRequest[] = [];
+
+  prs.forEach((pr) => {
+    const createdAt = new Date(pr.createdAt);
+    const localTime = new Date(createdAt.toLocaleString('en-US', { timeZone }));
+
+    const startOfDay = new Date(localTime);
+    startOfDay.setHours(8, 0, 0, 0);
+    const endOfDay = new Date(localTime);
+    endOfDay.setHours(18, 0, 0, 0);
+
+    if (localTime >= startOfDay && localTime <= endOfDay) {
+      dayPRs.push(pr);
+    } else {
+      nightPRs.push(pr);
+    }
+  });
+
+  return { day: dayPRs, night: nightPRs };
+};
