@@ -12,7 +12,8 @@ const Previews = () => {
     `/api/preview/authoredReviewed`,
     `/api/preview/dependants`,
     `/api/preview/contributions`,
-    `/api/preview/zenNinja`
+    `/api/preview/zenNinja`,
+    `/api/preview/streak`
   ];
 
   return (
