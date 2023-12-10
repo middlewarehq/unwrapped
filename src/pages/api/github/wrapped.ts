@@ -8,6 +8,7 @@ import {
   getTopNRecurringReviewers,
   getTotalCodeAdditions,
   getTotalCodeDeletions,
+  getUserReviewCountWithRequestChanges,
   splitPRsByDayNight
 } from '@/analytics/pr_analytics';
 import { dec } from '@/api-helpers/auth-supplementary';
@@ -78,6 +79,9 @@ export default async function handler(
 
     const { day, night } = splitPRsByDayNight(authored_prs, timezone);
 
+    const reviewed_prs_with_requested_changes_count =
+      getUserReviewCountWithRequestChanges(reviewed_prs, user.login);
+
     res.status(200).json({
       user,
       authored_monthly_pr_counts,
@@ -89,6 +93,7 @@ export default async function handler(
       top_reviewers,
       monthly_contributions,
       longest_streak,
+      reviewed_prs_with_requested_changes_count,
       total_oss_contributions: 100,
       prs_opened_during_day: day.length,
       prs_opened_during_night: night.length,
