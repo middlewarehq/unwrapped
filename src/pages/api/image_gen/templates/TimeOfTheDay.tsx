@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { RootCard } from './RootCard';
-import { website_url } from '../../constants/general';
+import { websiteUrl } from '../../constants/general';
 const TIME_OF_DAY_THRESHOLD = 0.4;
 
 export type TimeOfTheDayData = {
@@ -17,9 +17,9 @@ export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
   const isDayHawk = prsDuringDay / totalPrs >= TIME_OF_DAY_THRESHOLD;
   const isRoundTheClock = isNightOwl && isDayHawk;
 
-  const niteOwl = `${website_url}/assets/images/niteowl.png`;
-  const dayHawk = `${website_url}/assets/images/dayhawk.png`;
-  const allDay = `${website_url}/assets/images/allday.png`;
+  const niteOwl = `${websiteUrl}/assets/images/niteowl.png`;
+  const dayHawk = `${websiteUrl}/assets/images/dayhawk.png`;
+  const allDay = `${websiteUrl}/assets/images/allday.png`;
 
   if (isRoundTheClock) {
     return (

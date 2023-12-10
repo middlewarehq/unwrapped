@@ -13,9 +13,18 @@ import {
 import { CardTemplate } from './templates';
 import { TimeOfTheDayData } from '@/pages/api/image_gen/templates/TimeOfTheDay';
 import { getFontsForImageGeneration } from '../utils/fonts';
+import { GuardianData } from '@/pages/api/image_gen/templates/Guardian';
+import { AuthoredReviewedData } from '@/pages/api/image_gen/templates/AuthoredReviewed';
+import { DependantsData } from './templates/Dependants';
 
 export const createImageUsingVercel = async (
-  data: IntroCardProps | TimeOfTheDayData | null,
+  data:
+    | IntroCardProps
+    | TimeOfTheDayData
+    | GuardianData
+    | AuthoredReviewedData
+    | DependantsData
+    | null,
   cardType: CardTypes,
   env?: 'node' | 'browser'
 ): Promise<ImageFile> => {

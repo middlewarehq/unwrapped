@@ -47,3 +47,11 @@ export const ghData = {
     oss_contributions: 21
   }
 };
+
+export type GithubUser = {
+  name: string;
+  userName: string;
+  avatar: string;
+  recievedFromUser?: boolean;
+  gaveToUser?: boolean;
+};

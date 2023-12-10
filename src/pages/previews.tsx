@@ -1,5 +1,6 @@
 import React from 'react';
 import { CARD_HEIGHT, CARD_WIDTH } from './api/constants/general';
+import Image from 'next/image';
 
 const Previews = () => {
   const links = [
@@ -25,7 +26,7 @@ const Previews = () => {
               className="flex flex-col items-center justify-center gap-2 mt-2"
             >
               <p className="text-xl">{link.split('/').slice(-1)}</p>
-              <img
+              <Image
                 src={link}
                 alt="preview"
                 width={parseInt(CARD_WIDTH)}
