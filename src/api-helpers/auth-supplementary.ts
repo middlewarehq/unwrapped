@@ -18,7 +18,8 @@ export const enc = (data?: string) => {
   }
 };
 
-export const dec = (chunks: string[]) => {
+export const dec = (_chunks: string) => {
+  const chunks = _chunks.split(',');
   const key = process.env.TOKEN_ENC_PRI_KEY;
   return chunks
     .map((chunk) => privateDecrypt(key, Buffer.from(chunk, 'base64')))
