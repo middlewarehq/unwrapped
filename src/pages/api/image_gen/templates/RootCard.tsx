@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, CSSProperties } from 'react';
-import { CARD_HEIGHT, CARD_WIDTH, website_url } from '../../constants/general';
+import { CARD_HEIGHT, CARD_WIDTH, websiteUrl } from '../../constants/general';
 import { cardColorsMap } from '@/pages/api/constants/general';
 
 type RootCard = {
@@ -18,7 +18,7 @@ export const RootCard: FC<RootCard> = ({ bgColor, children, style }) => {
   };
 
   // this is the only way to pass image urls for the vercel/og library
-  const reflection = `${website_url}/assets/images/reflection.svg`;
+  const reflection = `${websiteUrl}/assets/images/reflection.svg`;
 
   return (
     <section style={computedStyle} tw="relative flex">

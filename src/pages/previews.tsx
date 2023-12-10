@@ -1,12 +1,17 @@
 import React from 'react';
 import { CARD_HEIGHT, CARD_WIDTH } from './api/constants/general';
+import Image from 'next/image';
 
 const Previews = () => {
   const links = [
     `/api/preview/intro`,
     `/api/preview/timebased/allday`,
     `/api/preview/timebased/night`,
-    `/api/preview/timebased/day`
+    `/api/preview/timebased/day`,
+    `/api/preview/guardian`,
+    `/api/preview/authoredReviewed`,
+    `/api/preview/dependants`,
+    `/api/preview/contributions`
   ];
 
   return (
@@ -25,7 +30,7 @@ const Previews = () => {
               className="flex flex-col items-center justify-center gap-2 mt-2"
             >
               <p className="text-xl">{link.split('/').slice(-1)}</p>
-              <img
+              <Image
                 src={link}
                 alt="preview"
                 width={parseInt(CARD_WIDTH)}

@@ -3,7 +3,7 @@ export const DEV = 'development';
 
 export const PROD = 'production';
 
-export const website_url = process.env.NEXTAUTH_URL;
+export const websiteUrl = process.env.NEXTAUTH_URL;
 
 // Card dimensions
 export const CARD_WIDTH = '400px';
@@ -45,5 +45,6 @@ export const cardColorsMap = {
   purple: '#A870F7',
   indigo: '#596CD0',
   grey: '#B7B7B7',
-  pink: '#EF90D4'
+  pink: '#EF90D4',
+  midnight: '#596CD0'
 };
