@@ -17,9 +17,7 @@ export default function Home() {
       >
         Login with Github
       </button>
-      <span className="mt-4 text-sm text-gray-400">
-        Note: Coming soon
-      </span>
+      <span className="mt-4 text-sm text-gray-400">Note: Coming soon</span>
     </div>
   );
 }
