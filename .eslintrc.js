@@ -23,6 +23,7 @@ module.exports = {
   plugins: ['react', 'prettier', 'unused-imports', '@stylistic'],
   rules: {
     'react/react-in-jsx-scope': 'off',
+    '@next/next/no-img-element': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/triple-slash-reference': 'off',
     'prettier/prettier': 'warn',

@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 import { CARD_HEIGHT, CARD_WIDTH } from './api/constants/general';
 
@@ -18,7 +17,7 @@ const Previews = () => {
       >
         Download all
       </a>
-      <div className="flex justify-between  flex-wrap">
+      <div className="flex justify-between flex-wrap">
         {links.map((link, index) => {
           return (
             <div
