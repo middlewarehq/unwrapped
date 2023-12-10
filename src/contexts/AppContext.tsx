@@ -5,6 +5,8 @@ import React, {
   SetStateAction,
   Dispatch
 } from 'react';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 interface AppStateInterface {
   isLoading: boolean;
@@ -19,7 +21,14 @@ interface AppStateProviderInterface {
 }
 
 export const AppStateProvider = ({ children }: AppStateProviderInterface) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      router.pathname !== '/' && router.push('/');
+    }
+  });
 
   return (
     <AppStateContext.Provider value={{ isLoading, setIsLoading }}>

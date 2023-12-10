@@ -14,13 +14,13 @@ export default function App({
 }: AppProps) {
   return (
     <main className={inter.className}>
-      <AppStateProvider>
-        <SessionProvider session={session}>
+      <SessionProvider session={session}>
+        <AppStateProvider>
           <AppLoadingStateWrapper>
             <Component {...pageProps} />
           </AppLoadingStateWrapper>
-        </SessionProvider>
-      </AppStateProvider>
+        </AppStateProvider>
+      </SessionProvider>
     </main>
   );
 }
