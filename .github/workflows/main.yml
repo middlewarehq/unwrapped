@@ -11,7 +11,7 @@ on:
   workflow_call:
 
 env:
-  GH_COMMIT_MSG: ${{ github.event.head_commit.message }}
+  GH_COMMIT_MSG_TO_PROCESS: ${{ github.event.workflow_run.head_commit.message }}
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   AWS_REGION: "ap-south-1"
   node-version: "20.10.0"
@@ -24,6 +24,11 @@ jobs:
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.1
         id: time
+      
+      - name: Process commit message
+        run: |
+          processed_msg=`printf '%q' $GH_COMMIT_MSG_TO_PROCESS`
+          echo "GH_COMMIT_MSG=$processed_msg" >> $GITHUB_ENV
 
       - name: Prepare GH Environment Variables
         run: |
