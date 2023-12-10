@@ -1,7 +1,8 @@
 import {
   getContributionDaysList,
   getMonthWiseContributionCount,
-  getLongestContributionStreak
+  getLongestContributionStreak,
+  getRepoWiseOpensourceContributionsCount
 } from '../contribution_analytics';
 
 const contributionData = {
@@ -913,4 +914,543 @@ test('getMonthWiseContributionCount returns correct monthly contribution count w
 
 test('getMonthWiseContributionCount returns correct monthly contribution count when max streak is at the end. Active streak', () => {
   expect(getLongestContributionStreak(contributionData2)).toStrictEqual(20);
+});
+
+const repoWiseContributionData = {
+  data: {
+    user: {
+      contributionsCollection: {
+        issueContributionsByRepository: [
+          {
+            repository: {
+              name: 'unwrapped',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 15
+            }
+          },
+          {
+            repository: {
+              name: 'Apps.Github22',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 5
+            }
+          },
+          {
+            repository: {
+              name: 'EmbeddedChat',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'dsa-problemset',
+              owner: {
+                login: 'samad-yar-khan'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'Thrust.RC',
+              owner: {
+                login: 'henit-chobisa'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          }
+        ],
+        commitContributionsByRepository: [
+          {
+            repository: {
+              name: 'monorepo',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1810
+            }
+          },
+          {
+            repository: {
+              name: 'unwrapped',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 87
+            }
+          },
+          {
+            repository: {
+              name: 'dsa-problemset',
+              owner: {
+                login: 'samad-yar-khan'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 47
+            }
+          },
+          {
+            repository: {
+              name: 'Apps.Github22',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 23
+            }
+          },
+          {
+            repository: {
+              name: 'Apps.Notion',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 14
+            }
+          },
+          {
+            repository: {
+              name: 'web-manager-dash',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 9
+            }
+          },
+          {
+            repository: {
+              name: 'dum-e-3',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 6
+            }
+          },
+          {
+            repository: {
+              name: 'testing_circle_ci_2',
+              owner: {
+                login: 'samad-yar-khan'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 5
+            }
+          },
+          {
+            repository: {
+              name: 'samad-yar-khan',
+              owner: {
+                login: 'samad-yar-khan'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 4
+            }
+          },
+          {
+            repository: {
+              name: 'EmbeddedChat',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 2
+            }
+          },
+          {
+            repository: {
+              name: 'resume_generator',
+              owner: {
+                login: 'samad-yar-khan'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'RC4Community',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'RC4Conferences',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'GitHubAppTerms',
+              owner: {
+                login: 'samad-yar-khan'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          }
+        ],
+        pullRequestContributionsByRepository: [
+          {
+            repository: {
+              name: 'monorepo',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 464
+            }
+          },
+          {
+            repository: {
+              name: 'unwrapped',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 18
+            }
+          },
+          {
+            repository: {
+              name: 'web-manager-dash',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 10
+            }
+          },
+          {
+            repository: {
+              name: 'Apps.Github22',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 5
+            }
+          },
+          {
+            repository: {
+              name: 'julia',
+              owner: {
+                login: 'JuliaLang'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 2
+            }
+          },
+          {
+            repository: {
+              name: 'musicblocks',
+              owner: {
+                login: 'sugarlabs'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 2
+            }
+          },
+          {
+            repository: {
+              name: 'EmbeddedChat',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 2
+            }
+          },
+          {
+            repository: {
+              name: 'twitter_clone_server',
+              owner: {
+                login: 'samad-yar-khan'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'sympy',
+              owner: {
+                login: 'sympy'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'opencv',
+              owner: {
+                login: 'opencv'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'RC4Community',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'RC4Conferences',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          },
+          {
+            repository: {
+              name: 'Gitpod-Raycast-Extension',
+              owner: {
+                login: 'gitpod-samples'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 1
+            }
+          }
+        ],
+        pullRequestReviewContributionsByRepository: [
+          {
+            repository: {
+              name: 'monorepo',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 250
+            }
+          },
+          {
+            repository: {
+              name: 'Apps.Github22',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 24
+            }
+          },
+          {
+            repository: {
+              name: 'web-manager-dash',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 13
+            }
+          },
+          {
+            repository: {
+              name: 'Apps.Notion',
+              owner: {
+                login: 'RocketChat'
+              },
+              isPrivate: false,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 13
+            }
+          },
+          {
+            repository: {
+              name: 'unwrapped',
+              owner: {
+                login: 'middlewarehq'
+              },
+              isPrivate: true,
+              isFork: false
+            },
+            contributions: {
+              totalCount: 7
+            }
+          }
+        ]
+      }
+    }
+  }
+};
+
+test('getRepoWiseOpensourceContributionsCount returns correct data for contributions data.', () => {
+  expect(
+    getRepoWiseOpensourceContributionsCount(
+      repoWiseContributionData,
+      'samad-yar-khan'
+    )
+  ).toStrictEqual({
+    'RocketChat/Apps.Github22': 57,
+    'RocketChat/EmbeddedChat': 5,
+    'henit-chobisa/Thrust.RC': 1,
+    'RocketChat/Apps.Notion': 27,
+    'RocketChat/RC4Community': 2,
+    'RocketChat/RC4Conferences': 2,
+    'JuliaLang/julia': 2,
+    'sugarlabs/musicblocks': 2,
+    'sympy/sympy': 1,
+    'opencv/opencv': 1,
+    'gitpod-samples/Gitpod-Raycast-Extension': 1
+  });
+});
+
+test('getRepoWiseOpensourceContributionsCount returns empty data for no contributions', () => {
+  expect(
+    getRepoWiseOpensourceContributionsCount(
+      {
+        data: {
+          user: {
+            contributionsCollection: {
+              pullRequestReviewContributionsByRepository: [],
+              pullRequestContributionsByRepository: [],
+              commitContributionsByRepository: [],
+              issueContributionsByRepository: []
+            }
+          }
+        }
+      },
+      'samad-yar-khan'
+    )
+  ).toStrictEqual({});
 });
