@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import Image from 'next/image';
 
 interface SwiperCarouselProps {
   images: string[];
@@ -73,7 +74,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({ images }) => {
                 onClick={handlePrev}
               />
             )}
-            <img src={image} alt={`Slide ${index + 1}`} />
+            <Image src={image} alt={`Slide ${index + 1}`} />
             {index !== images.length - 1 && (
               <FaCircleArrowRight
                 size={36}
