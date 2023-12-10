@@ -2,30 +2,17 @@ import { ImageFile } from '@/pages/api/types/images';
 import { ImageResponse } from '@vercel/og';
 import { arrayBufferToBuffer } from '@/pages/api/utils/general';
 
-import { IntroCardProps } from './templates/IntroCard';
 import { CardTypes } from '../types/cards';
 import {
   CARD_HEIGHT,
   CARD_WIDTH,
   INTER_FONT_STYLES
 } from '../constants/general';
-import { CardTemplate } from './templates';
-import { TimeOfTheDayData } from '@/pages/api/image_gen/templates/TimeOfTheDay';
+import { CardTemplate, CardTemplateData } from './templates';
 import { getFontsForImageGeneration } from '../utils/fonts';
-import { GuardianData } from '@/pages/api/image_gen/templates/Guardian';
-import { AuthoredReviewedData } from '@/pages/api/image_gen/templates/AuthoredReviewed';
-import { DependantsData } from './templates/Dependants';
-import { ContributionsData } from './templates/Contributions';
 
 export const createImageUsingVercel = async (
-  data:
-    | IntroCardProps
-    | TimeOfTheDayData
-    | GuardianData
-    | AuthoredReviewedData
-    | DependantsData
-    | ContributionsData
-    | null,
+  data: CardTemplateData['data'],
   cardType: CardTypes,
   env: 'node' | 'browser',
   index?: number

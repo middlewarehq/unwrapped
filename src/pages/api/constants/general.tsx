@@ -46,5 +46,8 @@ export const cardColorsMap = {
   indigo: '#596CD0',
   grey: '#B7B7B7',
   pink: '#EF90D4',
-  midnight: '#596CD0'
+  midnight: '#596CD0',
+  lightGreen: '#1CB0B0',
+  coralPink: '#E16666',
+  yellow: '#E2A300'
 };

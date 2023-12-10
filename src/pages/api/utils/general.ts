@@ -27,7 +27,7 @@ export const cardTemplateAdaptor = (data: GithubData) => {
     },
     [CardTypes.YOUR_CONTRIBUTIONS]: null,
     [CardTypes.CONTRIBUTION_STREAK]: null,
-    [CardTypes.NINJA_OR_ZEN]: null,
+    [CardTypes.ZEN_OR_NINJA]: null,
     [CardTypes.IT_TAKES_A_VILLAGE]: null,
     [CardTypes.GUARDIAN_OF_PROD]: null,
     [CardTypes.TOP_REVIEWERS]: null,
@@ -76,7 +76,7 @@ const urlMap: Record<CardTypes, string> = {
   [CardTypes.GUARDIAN_OF_PROD]: `${websiteUrl}/api/card_image/guardian`,
   // rest are null
   [CardTypes.CONTRIBUTION_STREAK]: '',
-  [CardTypes.NINJA_OR_ZEN]: '',
+  [CardTypes.ZEN_OR_NINJA]: '',
   [CardTypes.IT_TAKES_A_VILLAGE]: '',
   [CardTypes.TOP_REVIEWERS]: '',
   [CardTypes.PR_TIME_LAGS]: '',
