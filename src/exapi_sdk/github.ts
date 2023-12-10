@@ -334,6 +334,7 @@ export async function fetchRepoWiseContributionsForUser(
                     name
                     owner {
                       login
+                      avatarUrl
                     }
                     isPrivate
                     isFork
@@ -347,6 +348,7 @@ export async function fetchRepoWiseContributionsForUser(
                     name
                     owner {
                       login
+                      avatarUrl
                     }
                     isPrivate
                     isFork
@@ -360,6 +362,7 @@ export async function fetchRepoWiseContributionsForUser(
                     name
                     owner {
                       login
+                      avatarUrl
                     }
                     isPrivate
                     isFork
@@ -373,6 +376,7 @@ export async function fetchRepoWiseContributionsForUser(
                     name
                     owner {
                       login
+                      avatarUrl
                     }
                     isPrivate
                     isFork

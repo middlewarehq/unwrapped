@@ -1,9 +1,11 @@
 import {
   ContributionDay,
   GithubContributionCalendar,
-  GraphQLRepositoryContributionData
+  GraphQLRepositoryContributionData,
+  RepositoryContributionData
 } from '@/exapi_sdk/types';
 import { getMonth, parseISO } from 'date-fns';
+import { clone } from 'ramda';
 
 export const getContributionDaysList = (
   contributionCalendar: GithubContributionCalendar
@@ -70,7 +72,7 @@ export const getLongestContributionStreak = (
 export const getRepoWiseOpensourceContributionsCount = (
   repoContributionData: GraphQLRepositoryContributionData,
   author: string
-): Record<string, number> => {
+): Array<RepositoryContributionData> => {
   const flattenedRepoContributionsList = Object.values(
     repoContributionData.data.user.contributionsCollection
   ).flat();
@@ -83,18 +85,26 @@ export const getRepoWiseOpensourceContributionsCount = (
     (repoData) => repoData.repository.owner.login !== author
   );
 
-  let repoNameToContributionCountMap: Record<string, number> = {};
+  let repoNameToFinalContributionData: Record<
+    string,
+    RepositoryContributionData
+  > = {};
 
   for (let repoContributionData of opensourceRepoContributions) {
     const completeRepoName = `${repoContributionData.repository.owner.login}/${repoContributionData.repository.name}`;
-    if (completeRepoName in repoNameToContributionCountMap) {
-      repoNameToContributionCountMap[completeRepoName] +=
+    if (completeRepoName in repoNameToFinalContributionData) {
+      repoNameToFinalContributionData[
+        completeRepoName
+      ].contributions.totalCount +=
         repoContributionData.contributions.totalCount;
     } else {
-      repoNameToContributionCountMap[completeRepoName] =
-        repoContributionData.contributions.totalCount;
+      repoNameToFinalContributionData[completeRepoName] =
+        clone(repoContributionData);
     }
   }
 
-  return repoNameToContributionCountMap;
+  return Object.values(repoNameToFinalContributionData).sort(
+    (repoData1, repoData2) =>
+      repoData2.contributions.totalCount - repoData1.contributions.totalCount
+  );
 };
