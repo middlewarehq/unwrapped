@@ -26,3 +26,33 @@ export const getMonthWiseContributionCount = (
 
   return monthNumberToContributionsCountMap;
 };
+
+export const getLongestContributionStreak = (
+  contributionCalendar: GithubContributionCalendar
+): number => {
+  const contributions: ContributionDay[] =
+    getContributionDaysList(contributionCalendar);
+
+  let currentContributionStreakLength = 0;
+  let maxContributionStreakLength = 0;
+
+  for (let contribution of contributions) {
+    if (!contribution.contributionCount) {
+      maxContributionStreakLength = Math.max(
+        currentContributionStreakLength,
+        maxContributionStreakLength
+      );
+      currentContributionStreakLength = 0;
+      continue;
+    }
+
+    currentContributionStreakLength += 1;
+  }
+
+  maxContributionStreakLength = Math.max(
+    currentContributionStreakLength,
+    maxContributionStreakLength
+  );
+
+  return maxContributionStreakLength;
+};
