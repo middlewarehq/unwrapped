@@ -1,8 +1,12 @@
+import { RepositoryContributionData } from '@/exapi_sdk/types';
 import { AuthoredReviewedData } from '../image_gen/templates/AuthoredReviewed';
 import { ContributionsData } from '../image_gen/templates/Contributions';
 import { GuardianData } from '../image_gen/templates/Guardian';
 import { IntroCardProps } from '../image_gen/templates/IntroCard';
-import { GitHubDataResponse } from '../types/ApiResponses';
+import {
+  GitHubDataResponse,
+  GithubRepositoryContributionData
+} from '../types/ApiResponses';
 import { TimeOfTheDayData } from '@/pages/api/image_gen/templates/TimeOfTheDay';
 import { CardTypes } from '@/pages/api/types/cards';
 import { ZenNinjaData } from '../image_gen/templates/ZenNinja';
@@ -81,4 +85,15 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     | CodeReviewsData
     | null
   >;
+};
+
+export const getGithubRepositoryContributionData = (
+  repoData: RepositoryContributionData
+): GithubRepositoryContributionData => {
+  return {
+    org_name: repoData.repository.owner.login,
+    repo_name: repoData.repository.name,
+    org_avatar_url: repoData.repository.owner.avatarUrl,
+    contributions_count: repoData.contributions.totalCount
+  };
 };

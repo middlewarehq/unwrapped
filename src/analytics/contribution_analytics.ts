@@ -1,5 +1,11 @@
-import { ContributionDay, GithubContributionCalendar } from '@/exapi_sdk/types';
+import {
+  ContributionDay,
+  GithubContributionCalendar,
+  GraphQLRepositoryContributionData,
+  RepositoryContributionData
+} from '@/exapi_sdk/types';
 import { getMonth, parseISO } from 'date-fns';
+import { clone } from 'ramda';
 
 export const getContributionDaysList = (
   contributionCalendar: GithubContributionCalendar
@@ -61,4 +67,44 @@ export const getLongestContributionStreak = (
   );
 
   return maxContributionStreakLength;
+};
+
+export const getRepoWiseOpensourceContributionsCount = (
+  repoContributionData: GraphQLRepositoryContributionData,
+  author: string
+): Array<RepositoryContributionData> => {
+  const flattenedRepoContributionsList = Object.values(
+    repoContributionData.data.user.contributionsCollection
+  ).flat();
+
+  const publicRepoContributions = flattenedRepoContributionsList.filter(
+    (repoData) => !repoData.repository.isPrivate
+  );
+
+  const opensourceRepoContributions = publicRepoContributions.filter(
+    (repoData) => repoData.repository.owner.login !== author
+  );
+
+  let repoNameToFinalContributionData: Record<
+    string,
+    RepositoryContributionData
+  > = {};
+
+  for (let repoContributionData of opensourceRepoContributions) {
+    const completeRepoName = `${repoContributionData.repository.owner.login}/${repoContributionData.repository.name}`;
+    if (completeRepoName in repoNameToFinalContributionData) {
+      repoNameToFinalContributionData[
+        completeRepoName
+      ].contributions.totalCount +=
+        repoContributionData.contributions.totalCount;
+    } else {
+      repoNameToFinalContributionData[completeRepoName] =
+        clone(repoContributionData);
+    }
+  }
+
+  return Object.values(repoNameToFinalContributionData).sort(
+    (repoData1, repoData2) =>
+      repoData2.contributions.totalCount - repoData1.contributions.totalCount
+  );
 };

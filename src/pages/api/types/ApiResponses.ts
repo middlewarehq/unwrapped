@@ -57,9 +57,16 @@ export type GitHubDataResponse = {
   top_reviewers: string[];
   monthly_contributions: { [key: string]: number };
   longest_streak: number;
-  total_oss_contributions: number;
+  oss_contributions: GithubRepositoryContributionData[];
   prs_opened_during_day: number;
   prs_opened_during_night: number;
   contribution_percentile: number;
   global_contributions: number;
+};
+
+export type GithubRepositoryContributionData = {
+  org_name: string;
+  repo_name: string;
+  org_avatar_url?: string;
+  contributions_count: number;
 };

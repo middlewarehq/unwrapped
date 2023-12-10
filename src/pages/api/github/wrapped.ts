@@ -1,6 +1,7 @@
 import {
   getLongestContributionStreak,
-  getMonthWiseContributionCount
+  getMonthWiseContributionCount,
+  getRepoWiseOpensourceContributionsCount
 } from '@/analytics/contribution_analytics';
 import {
   getPRListAndMonthlyCountsFromGqlResponse,
@@ -16,9 +17,11 @@ import {
   fetchAllPullRequests,
   fetchAllReviewedPRs,
   fetchUserGitHubContributionCalendarMetrics,
-  fetchUser
+  fetchUser,
+  fetchRepoWiseContributionsForUser
 } from '@/exapi_sdk/github';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getGithubRepositoryContributionData } from '../utils/adaptor';
 
 const remove_users_login = (list: Array<string>, user_login: string) => {
   const indexToRemove = list.indexOf(user_login);
@@ -43,12 +46,17 @@ export default async function handler(
   try {
     const user = await fetchUser(token);
 
-    const [pr_authored_data, pr_reviewed_data, user_daily_contributions] =
-      await Promise.all([
-        fetchAllPullRequests(user.login, token),
-        fetchAllReviewedPRs(user.login, token),
-        fetchUserGitHubContributionCalendarMetrics(user.login, token)
-      ]);
+    const [
+      pr_authored_data,
+      pr_reviewed_data,
+      user_daily_contributions,
+      repo_wise_contribution_data
+    ] = await Promise.all([
+      fetchAllPullRequests(user.login, token),
+      fetchAllReviewedPRs(user.login, token),
+      fetchUserGitHubContributionCalendarMetrics(user.login, token),
+      fetchRepoWiseContributionsForUser(user.login, token)
+    ]);
 
     const [authored_prs, authored_monthly_pr_counts] =
       getPRListAndMonthlyCountsFromGqlResponse(pr_authored_data);
@@ -82,6 +90,12 @@ export default async function handler(
     const reviewed_prs_with_requested_changes_count =
       getUserReviewCountWithRequestChanges(reviewed_prs, user.login);
 
+    const repo_wise_opensource_contributions =
+      getRepoWiseOpensourceContributionsCount(
+        repo_wise_contribution_data,
+        user.login
+      );
+
     res.status(200).json({
       user,
       authored_monthly_pr_counts,
@@ -94,7 +108,9 @@ export default async function handler(
       monthly_contributions,
       longest_streak,
       reviewed_prs_with_requested_changes_count,
-      total_oss_contributions: 100,
+      oss_contributions: repo_wise_opensource_contributions.map((obj) =>
+        getGithubRepositoryContributionData(obj)
+      ),
       prs_opened_during_day: day.length,
       prs_opened_during_night: night.length,
       contribution_percentile: 98,
