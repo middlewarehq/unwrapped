@@ -5,6 +5,7 @@ import { IntroCardProps } from '../image_gen/templates/IntroCard';
 import { GitHubDataResponse } from '../types/ApiResponses';
 import { TimeOfTheDayData } from '@/pages/api/image_gen/templates/TimeOfTheDay';
 import { CardTypes } from '@/pages/api/types/cards';
+import { ZenNinjaData } from '../image_gen/templates/ZenNinja';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const intro: IntroCardProps | null = {
@@ -40,12 +41,19 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     totalPrs: data.prs_opened_during_day + data.prs_opened_during_night
   };
 
+  const zenOrNinja: ZenNinjaData | null = {
+    trends: Object.entries(data.monthly_contributions)
+      .sort(([a], [b]) => parseInt(b) - parseInt(a))
+      .map(([, contributions]) => contributions)
+  };
+
   return {
     [CardTypes.UNWRAPPED_INTRO]: intro,
     [CardTypes.GUARDIAN_OF_PROD]: guardian,
     [CardTypes.YOUR_CONTRIBUTIONS]: contributions,
     [CardTypes.PR_REVIEWED_VS_AUTHORED]: authoredVsReviewedPRs,
-    [CardTypes.DAY_NIGHT_CYCLE]: timeBasedData
+    [CardTypes.DAY_NIGHT_CYCLE]: timeBasedData,
+    [CardTypes.ZEN_OR_NINJA]: zenOrNinja
   } as Record<
     CardTypes,
     | IntroCardProps
@@ -53,6 +61,7 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     | ContributionsData
     | AuthoredReviewedData
     | TimeOfTheDayData
+    | ZenNinjaData
     | null
   >;
 };

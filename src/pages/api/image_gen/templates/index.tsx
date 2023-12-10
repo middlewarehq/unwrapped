@@ -15,6 +15,10 @@ import {
   Contributions,
   ContributionsData
 } from '@/pages/api/image_gen/templates/Contributions';
+import {
+  ZenNinja,
+  ZenNinjaData
+} from '@/pages/api/image_gen/templates/ZenNinja';
 
 export type CardTemplateData = {
   cardType: CardTypes;
@@ -25,6 +29,7 @@ export type CardTemplateData = {
     | AuthoredReviewedData
     | DependantsData
     | ContributionsData
+    | ZenNinjaData
     | null;
 };
 
@@ -40,6 +45,8 @@ export const CardTemplate: FC<CardTemplateData> = ({ cardType, data }) => {
       return <Dependants {...(data as DependantsData)} />;
     case CardTypes.YOUR_CONTRIBUTIONS:
       return <Contributions {...(data as ContributionsData)} />;
+    case CardTypes.ZEN_OR_NINJA:
+      return <ZenNinja {...(data as ZenNinjaData)} />;
     default:
       return <TimeOfTheDay {...(data as TimeOfTheDayData)} />;
   }
