@@ -1,19 +1,25 @@
 import React, { useCallback, useRef } from 'react';
 import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
-import { FaCircleArrowRight, FaCircleArrowLeft } from 'react-icons/fa6';
 import { GiShare } from 'react-icons/gi';
+import {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle
+} from 'react-icons/io';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import Image from 'next/image';
 
 interface SwiperCarouselProps {
   images: string[];
+  singleImageSharingCallback: ({ images }: { images: string }) => void;
 }
 
-const SwiperCarousel: React.FC<SwiperCarouselProps> = ({ images }) => {
+const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
+  singleImageSharingCallback,
+  images
+}) => {
   const sliderRef = useRef<SwiperRef | null>(null);
 
   const handlePrev = useCallback(() => {
@@ -41,7 +47,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({ images }) => {
           slideShadows: true
         }}
         effect="coverflow"
-        initialSlide={images.length / 2}
+        initialSlide={0}
         pagination={{
           clickable: true
         }}
@@ -65,18 +71,19 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({ images }) => {
             <GiShare
               size={28}
               fill="rgb(20, 24, 59)"
-              className="share-active-image"
+              className="share-active-image cursor-pointer"
+              onClick={() => singleImageSharingCallback({ images: image })}
             />
             {index !== 0 && (
-              <FaCircleArrowLeft
+              <IoIosArrowDropleftCircle
                 size={36}
-                className="prev-arrow"
+                className="prev-arrow "
                 onClick={handlePrev}
               />
             )}
-            <Image src={image} alt={`Slide ${index + 1}`} />
+            <img src={image} alt={`Slide ${index + 1}`} />
             {index !== images.length - 1 && (
-              <FaCircleArrowRight
+              <IoIosArrowDroprightCircle
                 size={36}
                 className="next-arrow"
                 onClick={handleNext}
