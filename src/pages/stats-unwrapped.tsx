@@ -7,16 +7,19 @@ import { FaFilePdf } from 'react-icons/fa6';
 import { FaLinkedin } from 'react-icons/fa';
 import { useImageDownloader } from '@/hooks/useImageDownloader';
 import { useImageDownloaderAsPdf } from '@/hooks/useImageDownloaderAsPdfHook';
+import Confetti from 'react-confetti';
+import Link from 'next/link';
 
 interface UnwrappedApiResponse {
   images: string[];
 }
 
+const LINKEDIN_URL = 'https://www.linkedin.com/';
+
 export default function StatsUnwrapped() {
   const [isLoading, setIsLoading] = useState(false);
   const downloadImage = useImageDownloader();
   const downloadImagesAsPdf = useImageDownloaderAsPdf();
-
   const [images, setUnwrappedImages] = useState<string[] | null>(null);
 
   useEffect(() => {
@@ -25,7 +28,9 @@ export default function StatsUnwrapped() {
       .then((res) => {
         setUnwrappedImages(res.images);
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [setUnwrappedImages]);
 
   if (isLoading) {
@@ -43,12 +48,19 @@ export default function StatsUnwrapped() {
           🚀 Let&apos;s unwrap your GitHub journey of 2023! 🎉
         </h2>
       </div>
+      {images?.length && <Confetti numberOfPieces={400} recycle={false} />}
       {images?.length && (
         <div className="flex flex-col items-center gap-4 w-full ">
           <SwiperCarousel images={images} />
           <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
             <FaDownload size={36} onClick={() => downloadImage({ images })} />
-            <FaLinkedin size={36} />
+            <Link href={LINKEDIN_URL} target="_blank">
+              <FaLinkedin
+                size={36}
+                onClick={() => downloadImagesAsPdf({ images })}
+              />
+            </Link>
+
             <FaFilePdf
               size={36}
               onClick={() => downloadImagesAsPdf({ images })}
