@@ -4,13 +4,26 @@ import { runBenchmark } from '@/api-helpers/benchmarking';
 import chalk from 'chalk';
 import { archiveFiles } from '../../api-helpers/archive';
 import { getCardLinksFromGithubData } from '@/api-helpers/general';
+import { fetchGithubUnwrappedData } from '@/api-helpers/unrwrapped-aggregator';
+import { dec } from '@/api-helpers/auth-supplementary';
 
 const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
+  let token = req.cookies.ghct;
+  const timezone = (req.headers.timezone as string) || 'UTC';
+
+  if (!token) {
+    return res.status(403).json({
+      message: 'GitHub Access token not found.'
+    });
+  }
+
+  token = dec(token);
+
   try {
-    const data = await fetchData();
+    const data = await fetchGithubUnwrappedData(token, timezone);
     const imageBuffer = await runBenchmark(generateImages, data);
     console.log(getCardLinksFromGithubData(data));
 
