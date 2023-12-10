@@ -6,6 +6,7 @@ import { GitHubDataResponse } from '../types/ApiResponses';
 import { TimeOfTheDayData } from '@/pages/api/image_gen/templates/TimeOfTheDay';
 import { CardTypes } from '@/pages/api/types/cards';
 import { ZenNinjaData } from '../image_gen/templates/ZenNinja';
+import { StreakData } from '../image_gen/templates/Streak';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const intro: IntroCardProps | null = {
@@ -47,13 +48,18 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
       .map(([, contributions]) => contributions)
   };
 
+  const contributionStreak: StreakData | null = {
+    streak: data.longest_streak
+  };
+
   return {
     [CardTypes.UNWRAPPED_INTRO]: intro,
     [CardTypes.GUARDIAN_OF_PROD]: guardian,
     [CardTypes.YOUR_CONTRIBUTIONS]: contributions,
     [CardTypes.PR_REVIEWED_VS_AUTHORED]: authoredVsReviewedPRs,
     [CardTypes.DAY_NIGHT_CYCLE]: timeBasedData,
-    [CardTypes.ZEN_OR_NINJA]: zenOrNinja
+    [CardTypes.ZEN_OR_NINJA]: zenOrNinja,
+    [CardTypes.CONTRIBUTION_STREAK]: contributionStreak
   } as Record<
     CardTypes,
     | IntroCardProps
@@ -62,6 +68,7 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     | AuthoredReviewedData
     | TimeOfTheDayData
     | ZenNinjaData
+    | StreakData
     | null
   >;
 };
