@@ -84,9 +84,9 @@ visibility: hidden;
 
 
 .share-active-image{
-    top:-2%;
-    right: -4%;
-    padding: 0.1rem;
+    top:-2.5%;
+    right: -5%;
+    padding: 0.4rem;
     background-color: white;
     border-radius: 50%;
 }
