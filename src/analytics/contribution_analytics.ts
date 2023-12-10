@@ -10,13 +10,17 @@ export const getContributionDaysList = (
 };
 
 export const getMonthWiseContributionCount = (
-  contributionCalendar: GithubContributionCalendar
+  contributionCalendar?: GithubContributionCalendar
 ) => {
+  let monthNumberToContributionsCountMap: any = {};
+  for (let i = 0; i < 12; i++) monthNumberToContributionsCountMap[i] = 0;
+
+  if (!contributionCalendar) {
+    return monthNumberToContributionsCountMap;
+  }
+
   const contributions: ContributionDay[] =
     getContributionDaysList(contributionCalendar);
-  let monthNumberToContributionsCountMap: any = {};
-
-  for (let i = 0; i < 12; i++) monthNumberToContributionsCountMap[i] = 0;
 
   for (let contribution of contributions) {
     let monthNumber = getMonth(parseISO(contribution.date));
@@ -28,8 +32,10 @@ export const getMonthWiseContributionCount = (
 };
 
 export const getLongestContributionStreak = (
-  contributionCalendar: GithubContributionCalendar
+  contributionCalendar?: GithubContributionCalendar
 ): number => {
+  if (!contributionCalendar) return 0;
+
   const contributions: ContributionDay[] =
     getContributionDaysList(contributionCalendar);
 
