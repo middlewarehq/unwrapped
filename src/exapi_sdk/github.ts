@@ -5,7 +5,8 @@ import {
   GraphQLResponse,
   GithubUser,
   GraphQLContributionCalendarMetricsResponse,
-  GraphQLContributionSummaryResponse
+  GraphQLContributionSummaryResponse,
+  GraphQLRepositoryContributionData
 } from './types';
 
 async function fetchPullRequestsForMonth(
@@ -314,4 +315,82 @@ export async function fetchUserContributionSummaryMetrics(
   } catch (error: any) {
     console.error('Error fetching GitHub metrics:', error.message);
   }
+}
+
+export async function fetchRepoWiseContributionsForUser(
+  author: string,
+  token: string,
+  year_string: string = '2023'
+): Promise<GraphQLRepositoryContributionData> {
+  const response = await axios.post<GraphQLRepositoryContributionData>(
+    'https://api.github.com/graphql',
+    {
+      query: `
+          query {
+            user(login: "${author}") {
+              contributionsCollection(from: "${year_string}-01-01T00:00:00Z", to: "${year_string}-12-31T23:59:59Z"){
+                issueContributionsByRepository(maxRepositories: 100) {
+                  repository {
+                    name
+                    owner {
+                      login
+                    }
+                    isPrivate
+                    isFork
+                  }
+                  contributions {
+                    totalCount
+                  }
+                }
+                commitContributionsByRepository(maxRepositories: 100) {
+                  repository {
+                    name
+                    owner {
+                      login
+                    }
+                    isPrivate
+                    isFork
+                  }
+                  contributions {
+                    totalCount
+                  }
+                }
+                pullRequestContributionsByRepository(maxRepositories: 100) {
+                  repository {
+                    name
+                    owner {
+                      login
+                    }
+                    isPrivate
+                    isFork
+                  }
+                  contributions {
+                    totalCount
+                  }
+                }
+                pullRequestReviewContributionsByRepository(maxRepositories: 100) {
+                  repository {
+                    name
+                    owner {
+                      login
+                    }
+                    isPrivate
+                    isFork
+                  }
+                  contributions {
+                    totalCount
+                  }
+                }
+              }
+            }
+          }
+        `
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  return response.data;
 }
