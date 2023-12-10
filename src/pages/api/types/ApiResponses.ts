@@ -35,6 +35,7 @@ export type GithubData = {
     reviewed_prs: number;
     prod_breaks: number;
     oss_contributions: number;
+    reviewed_prs_with_requested_changes_count: number;
   };
 };
 

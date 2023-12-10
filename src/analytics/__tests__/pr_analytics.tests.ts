@@ -5,7 +5,8 @@ import {
   getTotalCodeDeletions,
   getTopNRecurringReviewers,
   getTopNRecurringAuthors,
-  splitPRsByDayNight
+  splitPRsByDayNight,
+  getUserReviewCountWithRequestChanges
 } from '../pr_analytics';
 import { getPullRequest, getReview } from '../test_utils/factories';
 
@@ -748,4 +749,45 @@ test('splitPRsByDayNight correctly splits prs into day and night', () => {
     day: [pr8],
     night: [pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr9]
   });
+});
+
+test('getUserReviewCountWithRequestChanges correctly returns count of PRs where author requested review', () => {
+  const reviewer1 = 'samad-yar-khan';
+  const reviewer2 = 'jayantbh';
+
+  const review1 = getReview({ reviewerLogin: reviewer1, state: 'COMMENTED' });
+  const review2 = getReview({ reviewerLogin: reviewer1, state: 'APPROVED' });
+  const review3 = getReview({
+    reviewerLogin: reviewer1,
+    state: 'CHANGES_REQUESTED'
+  });
+  const review4 = getReview({ reviewerLogin: reviewer2, state: 'COMMENTED' });
+  const review5 = getReview({ reviewerLogin: reviewer2, state: 'APPROVED' });
+  const review6 = getReview({
+    reviewerLogin: reviewer2,
+    state: 'CHANGES_REQUESTED'
+  });
+
+  const pr1 = getPullRequest({ reviews: [review1, review6] });
+  const pr2 = getPullRequest({ reviews: [review2, review4] });
+  const pr3 = getPullRequest({ reviews: [review3, review4] });
+  const pr4 = getPullRequest({ reviews: [review5] });
+  const pr5 = getPullRequest({ reviews: [review6] });
+  const pr6 = getPullRequest({ reviews: [review4] });
+  const pr7 = getPullRequest({ reviews: [review3] });
+  const pr8 = getPullRequest({ reviews: [review3] });
+
+  expect(getUserReviewCountWithRequestChanges([], reviewer1)).toStrictEqual(0);
+  expect(
+    getUserReviewCountWithRequestChanges([pr1, pr2], reviewer1)
+  ).toStrictEqual(0);
+  expect(
+    getUserReviewCountWithRequestChanges([pr4, pr5, pr6], reviewer1)
+  ).toStrictEqual(0);
+  expect(
+    getUserReviewCountWithRequestChanges(
+      [pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr8],
+      reviewer1
+    )
+  ).toStrictEqual(3);
 });

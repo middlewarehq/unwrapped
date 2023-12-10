@@ -123,3 +123,15 @@ export const splitPRsByDayNight = (
 
   return { day: dayPRs, night: nightPRs };
 };
+
+export const getUserReviewCountWithRequestChanges = (
+  pull_requests: PullRequest[],
+  author: string
+): number =>
+  pull_requests.filter((pr) =>
+    pr.reviews.edges.find(
+      (rev) =>
+        rev.node.author.login === author &&
+        rev.node.state === 'CHANGES_REQUESTED'
+    )
+  ).length;
