@@ -1420,19 +1420,151 @@ test('getRepoWiseOpensourceContributionsCount returns correct data for contribut
       repoWiseContributionData,
       'samad-yar-khan'
     )
-  ).toStrictEqual({
-    'RocketChat/Apps.Github22': 57,
-    'RocketChat/EmbeddedChat': 5,
-    'henit-chobisa/Thrust.RC': 1,
-    'RocketChat/Apps.Notion': 27,
-    'RocketChat/RC4Community': 2,
-    'RocketChat/RC4Conferences': 2,
-    'JuliaLang/julia': 2,
-    'sugarlabs/musicblocks': 2,
-    'sympy/sympy': 1,
-    'opencv/opencv': 1,
-    'gitpod-samples/Gitpod-Raycast-Extension': 1
-  });
+  ).toStrictEqual([
+    {
+      repository: {
+        name: 'Apps.Github22',
+        owner: {
+          login: 'RocketChat'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 57
+      }
+    },
+    {
+      repository: {
+        name: 'Apps.Notion',
+        owner: {
+          login: 'RocketChat'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 27
+      }
+    },
+    {
+      repository: {
+        name: 'EmbeddedChat',
+        owner: {
+          login: 'RocketChat'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 5
+      }
+    },
+    {
+      repository: {
+        name: 'RC4Community',
+        owner: {
+          login: 'RocketChat'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 2
+      }
+    },
+    {
+      repository: {
+        name: 'RC4Conferences',
+        owner: {
+          login: 'RocketChat'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 2
+      }
+    },
+    {
+      repository: {
+        name: 'julia',
+        owner: {
+          login: 'JuliaLang'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 2
+      }
+    },
+    {
+      repository: {
+        name: 'musicblocks',
+        owner: {
+          login: 'sugarlabs'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 2
+      }
+    },
+    {
+      repository: {
+        name: 'Thrust.RC',
+        owner: {
+          login: 'henit-chobisa'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 1
+      }
+    },
+    {
+      repository: {
+        name: 'sympy',
+        owner: {
+          login: 'sympy'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 1
+      }
+    },
+    {
+      repository: {
+        name: 'opencv',
+        owner: {
+          login: 'opencv'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 1
+      }
+    },
+    {
+      repository: {
+        name: 'Gitpod-Raycast-Extension',
+        owner: {
+          login: 'gitpod-samples'
+        },
+        isPrivate: false,
+        isFork: false
+      },
+      contributions: {
+        totalCount: 1
+      }
+    }
+  ]);
 });
 
 test('getRepoWiseOpensourceContributionsCount returns empty data for no contributions', () => {
@@ -1452,5 +1584,5 @@ test('getRepoWiseOpensourceContributionsCount returns empty data for no contribu
       },
       'samad-yar-khan'
     )
-  ).toStrictEqual({});
+  ).toStrictEqual([]);
 });
