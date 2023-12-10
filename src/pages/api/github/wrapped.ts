@@ -27,12 +27,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const token = dec(req.cookies.ghct || '');
+  let token = req.cookies.ghct;
+
   if (!token) {
     return res.status(403).json({
       message: 'GitHub Access token not found.'
     });
   }
+
+  token = dec(token);
 
   try {
     const user = await fetchUser(token);
