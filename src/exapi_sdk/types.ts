@@ -150,7 +150,7 @@ export interface RepositoryContributionData {
     name: string;
     owner: {
       login: string;
-      avatar_url?: string;
+      avatarUrl?: string;
     };
     isPrivate: boolean;
     isFork: boolean;
