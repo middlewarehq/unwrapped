@@ -1,13 +1,13 @@
 import { createImageUsingVercel } from '@/pages/api/image_gen/vercel_generator';
 import { CardTypes } from '../types/cards';
 import { DependantsData } from '../image_gen/templates/Dependants';
-import { GithubUser } from '../mocks/github';
+import { GithubReview } from '../mocks/github';
 
 export const config = {
   runtime: 'edge'
 };
 
-const mockGithubDependants: GithubUser[] = [
+const mockGithubDependants: GithubReview[] = [
   {
     name: 'John Doe',
     userName: 'johndoe',
@@ -25,7 +25,7 @@ const mockGithubDependants: GithubUser[] = [
   }
 ];
 
-const mockGithubUser: GithubUser = {
+const mockGithubUser: GithubReview = {
   name: 'eshaan',
   userName: 'eshaan007',
   avatar: 'https://picsum.photos/id/41/200'

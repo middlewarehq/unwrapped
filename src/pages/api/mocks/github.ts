@@ -48,7 +48,7 @@ export const ghData = {
   }
 };
 
-export type GithubUser = {
+export type GithubReview = {
   name: string;
   userName: string;
   avatar: string;

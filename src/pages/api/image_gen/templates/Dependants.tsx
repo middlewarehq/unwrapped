@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { websiteUrl } from '../../constants/general';
 import { RootCard } from './RootCard';
-import { GithubUser } from '../../mocks/github';
+import { GithubReview } from '../../mocks/github';
 
 export type DependantsData = {
-  user: GithubUser;
-  dependants: GithubUser[];
+  user: GithubReview;
+  dependants: GithubReview[];
 };
 
 export const Dependants: FC<DependantsData> = ({ user, dependants }) => {
@@ -40,8 +40,8 @@ export const Dependants: FC<DependantsData> = ({ user, dependants }) => {
 };
 
 const Graph: FC<{
-  centralNode: GithubUser;
-  attachedNodes: GithubUser[];
+  centralNode: GithubReview;
+  attachedNodes: GithubReview[];
 }> = ({ centralNode, attachedNodes }) => {
   const centralNodeName = centralNode.name;
 
