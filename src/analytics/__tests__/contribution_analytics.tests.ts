@@ -1,4 +1,7 @@
-import { getContributionDaysList } from '../contribution_analytics';
+import {
+  getContributionDaysList,
+  getMonthWiseContributionCount
+} from '../contribution_analytics';
 
 const contributionData = {
   totalContributions: 2837,
@@ -558,4 +561,30 @@ test('getContributionDaysList returns flat empty list for empty contribution dat
       weeks: []
     })
   ).toStrictEqual([]);
+});
+
+test('getMonthWiseContributionCount returns empty monthly contribution count', () => {
+  let monthNumberToContributionsCountMap: any = {};
+
+  for (let i = 0; i < 12; i++) monthNumberToContributionsCountMap[i] = 0;
+  expect(
+    getMonthWiseContributionCount({
+      totalContributions: 0,
+      weeks: []
+    })
+  ).toStrictEqual(monthNumberToContributionsCountMap);
+});
+
+test('getMonthWiseContributionCount returns correct monthly contribution count', () => {
+  let monthNumberToContributionsCountMap: any = {};
+
+  for (let i = 0; i < 12; i++) monthNumberToContributionsCountMap[i] = 0;
+
+  monthNumberToContributionsCountMap[0] = 203;
+  monthNumberToContributionsCountMap[1] = 196;
+  monthNumberToContributionsCountMap[2] = 40;
+
+  expect(getMonthWiseContributionCount(contributionData)).toStrictEqual(
+    monthNumberToContributionsCountMap
+  );
 });
