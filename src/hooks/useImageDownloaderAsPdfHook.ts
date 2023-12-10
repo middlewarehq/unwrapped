@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import { useCallback } from 'react';
+import { rgbToHex, darkenHexColor } from '@/pages/api/utils/general';
 
 interface DownloadImagesAsPdfProps {
   images: string[];
@@ -17,7 +18,8 @@ export const useImageDownloaderAsPdf = () => {
     async ({ images }: DownloadImagesAsPdfProps) => {
       const pdf = new jsPDF({
         unit: 'px',
-        format: [PAGE_WIDTH, PAGE_HEIGHT]
+        format: [PAGE_WIDTH, PAGE_HEIGHT],
+        userUnit: 300
       });
       const colorsCodesByImageOrder = await Promise.all(
         images.map(getColorFromImage)
@@ -28,12 +30,14 @@ export const useImageDownloaderAsPdf = () => {
           pdf.addPage();
         }
         const color = colorsCodesByImageOrder[index].split(',');
-
-        pdf.setFillColor(
+        const hexCode = rgbToHex(
           parseInt(color![0]),
           parseInt(color![1]),
           parseInt(color![2])
         );
+        const darkenHexCode = darkenHexColor(hexCode, 0.2);
+        pdf.setFillColor(hexCode);
+        pdf.setDrawColor(darkenHexCode);
         pdf.rect(0, 0, PAGE_WIDTH, PAGE_HEIGHT, 'F');
         pdf.addImage(
           imageUrl,
@@ -43,6 +47,17 @@ export const useImageDownloaderAsPdf = () => {
           IMAGE_WIDTH,
           IMAGE_HEIGHT
         );
+        pdf.setLineWidth(10);
+        pdf.roundedRect(
+          IMAGE_MARGIN,
+          IMAGE_MARGIN,
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT,
+          10,
+          10,
+          'S'
+        );
+        pdf.clip();
       });
       pdf.save('middleware-unwrapped.pdf');
     },

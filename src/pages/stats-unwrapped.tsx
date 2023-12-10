@@ -24,9 +24,9 @@ export default function StatsUnwrapped() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchDataFromApi<UnwrappedApiResponse>('/api/hello')
+    fetchDataFromApi<string[]>('/api/download')
       .then((res) => {
-        setUnwrappedImages(res.images);
+        setUnwrappedImages(res);
       })
       .finally(() => {
         setIsLoading(false);
@@ -51,7 +51,10 @@ export default function StatsUnwrapped() {
       {images?.length && <Confetti numberOfPieces={400} recycle={false} />}
       {images?.length && (
         <div className="flex flex-col items-center gap-4 w-full ">
-          <SwiperCarousel images={images} />
+          <SwiperCarousel
+            images={images}
+            singleImageSharingCallback={downloadImage}
+          />
           <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
             <FaDownload size={36} onClick={() => downloadImage({ images })} />
             <Link href={LINKEDIN_URL} target="_blank">
