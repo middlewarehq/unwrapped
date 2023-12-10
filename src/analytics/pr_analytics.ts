@@ -7,10 +7,10 @@ export const getPRListAndMonthlyCountsFromGqlResponse = (
 ) => {
   if (!edges) throw new Error('No data found to calculate stats');
 
-  const flat_prs = edges.flat();
+  const flat_prs = edges.flat().map((pr_node) => pr_node.node);
   const prs_monthly_counts = edges.map((monthly_prs) => monthly_prs.length);
 
-  return [flat_prs, prs_monthly_counts];
+  return [flat_prs, prs_monthly_counts] as const;
 };
 
 export const getReviewerReviewsCountMap = (
