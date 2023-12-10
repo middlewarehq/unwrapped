@@ -21,6 +21,7 @@ import {
   fetchRepoWiseContributionsForUser
 } from '@/exapi_sdk/github';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getGithubRepositoryContributionData } from '../utils/adaptor';
 
 const remove_users_login = (list: Array<string>, user_login: string) => {
   const indexToRemove = list.indexOf(user_login);
@@ -107,8 +108,8 @@ export default async function handler(
       monthly_contributions,
       longest_streak,
       reviewed_prs_with_requested_changes_count,
-      total_oss_contributions: Object.values(
-        repo_wise_opensource_contributions
+      oss_contributions: repo_wise_opensource_contributions.map((obj) =>
+        getGithubRepositoryContributionData(obj)
       ),
       prs_opened_during_day: day.length,
       prs_opened_during_night: night.length,
