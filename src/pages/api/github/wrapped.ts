@@ -44,9 +44,9 @@ export default async function handler(
         fetchUserGitHubContributionCalendarMetrics(user.login, token)
       ]);
 
-    const [authored_prs, authored_monthly_counts] =
+    const [authored_prs, authored_monthly_pr_counts] =
       getPRListAndMonthlyCountsFromGqlResponse(pr_authored_data);
-    const [reviewed_prs, reviewed_monthly_counts] =
+    const [reviewed_prs, reviewed_monthly_pr_counts] =
       getPRListAndMonthlyCountsFromGqlResponse(pr_reviewed_data);
 
     const total_additions = getTotalCodeAdditions(authored_prs);
@@ -73,8 +73,8 @@ export default async function handler(
 
     res.status(200).json({
       user,
-      authored_monthly_counts,
-      reviewed_monthly_counts,
+      authored_monthly_pr_counts,
+      reviewed_monthly_pr_counts,
       total_contributions: user_daily_contributions?.totalContributions,
       total_additions,
       total_deletions,
