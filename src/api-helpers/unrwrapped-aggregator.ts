@@ -29,19 +29,21 @@ const remove_users_login = (list: Array<string>, user_login: string) => {
 
 export const fetchGithubUnwrappedData = async (
   token: string,
-  timezone: string
+  timezone: string,
+  username?: string
 ): Promise<GitHubDataResponse> => {
   const user = await fetchUser(token);
+  username = username || user.login;
   const [
     pr_authored_data,
     pr_reviewed_data,
     user_daily_contributions,
     repo_wise_contribution_data
   ] = await Promise.all([
-    fetchAllPullRequests(user.login, token),
-    fetchAllReviewedPRs(user.login, token),
-    fetchUserGitHubContributionCalendarMetrics(user.login, token),
-    fetchRepoWiseContributionsForUser(user.login, token)
+    fetchAllPullRequests(username, token),
+    fetchAllReviewedPRs(username, token),
+    fetchUserGitHubContributionCalendarMetrics(username, token),
+    fetchRepoWiseContributionsForUser(username, token)
   ]);
 
   const [authored_prs, authored_monthly_pr_counts] =
@@ -55,12 +57,12 @@ export const fetchGithubUnwrappedData = async (
 
   const top_reviewed_contributors = remove_users_login(
     getTopNRecurringAuthors(reviewed_prs),
-    user.login
+    username
   );
 
   const top_reviewers = remove_users_login(
     getTopNRecurringReviewers(authored_prs),
-    user.login
+    username
   );
 
   const monthly_contributions = getMonthWiseContributionCount(
@@ -72,12 +74,12 @@ export const fetchGithubUnwrappedData = async (
   const { day, night } = splitPRsByDayNight(authored_prs, timezone);
 
   const reviewed_prs_with_requested_changes_count =
-    getUserReviewCountWithRequestChanges(reviewed_prs, user.login);
+    getUserReviewCountWithRequestChanges(reviewed_prs, username);
 
   const repo_wise_opensource_contributions =
     getRepoWiseOpensourceContributionsCount(
       repo_wise_contribution_data,
-      user.login
+      username
     );
 
   return {
