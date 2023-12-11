@@ -15,6 +15,7 @@ import { CodeReviewsData } from '@/components/templates/CodeReviews';
 import { OSSContribsData } from '@/components/templates/OSSContribs';
 import { sum } from 'ramda';
 import { Username } from '@/components/templates/index';
+import { DependantsData } from '@/components/templates/Dependants';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const intro: IntroCardProps | null = {
@@ -92,6 +93,12 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
         }
       : null;
 
+  const userReviewers: DependantsData = {
+    userAvatar: data.user.avatar_url,
+    dependants: data.top_reviewers,
+    username: data.user.login
+  };
+
   return {
     username: data.user.login,
     [CardTypes.UNWRAPPED_INTRO]: intro,
@@ -102,7 +109,8 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     [CardTypes.ZEN_OR_NINJA]: zenOrNinja,
     [CardTypes.CONTRIBUTION_STREAK]: contributionStreak,
     [CardTypes.TOP_REVIEWERS]: codeReviewerStats,
-    [CardTypes.OSS_CONTRIBUTION]: ossContribsData
+    [CardTypes.OSS_CONTRIBUTION]: ossContribsData,
+    [CardTypes.IT_TAKES_A_VILLAGE]: userReviewers
   } as Record<
     CardTypes,
     | IntroCardProps
@@ -114,6 +122,7 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     | StreakData
     | CodeReviewsData
     | OSSContribsData
+    | DependantsData
     | null
   > &
     Username;

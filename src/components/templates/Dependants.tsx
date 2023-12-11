@@ -1,26 +1,26 @@
 import React, { FC } from 'react';
 import { websiteUrl } from '../../constants/general';
 import { RootCard } from './RootCard';
-import { GithubReview } from '../../mocks/github';
 import { Username } from '@/components/templates/index';
 
 export type DependantsData = {
-  user: GithubReview;
-  dependants: GithubReview[];
+  userAvatar: string;
+  dependants: string[];
+  username: string;
 };
 
 export const Dependants: FC<DependantsData & Username> = ({
-  user,
+  username,
   dependants,
-  username
+  userAvatar
 }) => {
   const village = `${websiteUrl}/assets/images/village.png`;
   const attachedNodes = dependants.map(
-    (d) => '@' + shortenUsername(d.userName)
+    (userName) => '@' + shortenUsername(userName)
   );
   const centralNode = {
-    userName: '@' + shortenUsername(user.userName),
-    avatar: user.avatar
+    userName: '@' + shortenUsername(username),
+    avatar: userAvatar
   };
   return (
     <RootCard bgColor="midnight" username={username}>
