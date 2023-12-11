@@ -15,7 +15,7 @@ export const Dependants: FC<DependantsData & Username> = ({
   username
 }) => {
   const village = `${websiteUrl}/assets/images/village.png`;
-  const attachedNodes = dependants.slice(0, 3).map((d) => '@' + d.userName);
+  const attachedNodes = dependants.map((d) => '@' + d.userName);
   const centralNode = { userName: '@' + user.userName, avatar: user.avatar };
   return (
     <RootCard bgColor="midnight" username={username}>
@@ -224,7 +224,7 @@ const Graph: FC<{
     );
   else if (attachedNodes.length === 4)
     return (
-      <div tw="flex flex-col items-center w-full">
+      <div tw="flex flex-col items-center w-full -mt-7">
         <div tw="flex relative">
           <div
             tw="absolute flex -right-40 -bottom-26"
