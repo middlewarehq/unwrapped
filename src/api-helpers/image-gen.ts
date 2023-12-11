@@ -1,26 +1,9 @@
-import axios from 'axios';
-import { GitHubDataResponse } from '../../../types/api-responses';
+import { GitHubDataResponse } from '../types/api-responses';
 import chalk from 'chalk';
-import { createImageUsingVercel } from '../../../api-helpers/vercel-generator';
-import { DEV } from '../../../constants/general';
-import { updatedGhData } from '@/mocks/github';
+import { createImageUsingVercel } from './vercel-generator';
 import { getDataFromGithubResponse } from '@/api-helpers/card-data-adapter';
-import { CardTypes, sequence } from '../../../types/cards';
+import { CardTypes, sequence } from '../types/cards';
 import { ImageFile } from '@/types/images';
-
-export const fetchData = async (): Promise<GitHubDataResponse> => {
-  if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT === DEV) {
-    return new Promise((resolve) => {
-      resolve(updatedGhData);
-    });
-  }
-  const response = await axios
-    .get('url')
-    .then((res) => res)
-    .catch((err) => err);
-  const data = response.data;
-  return data as GitHubDataResponse;
-};
 
 export const generateImages = async (
   data: GitHubDataResponse,

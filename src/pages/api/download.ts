@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { generateImages } from '@/pages/api/image-gen';
-import { archiveFiles } from '../../api-helpers/archive';
+import { generateImages } from '@/api-helpers/image-gen';
+import { archiveFiles } from '@/api-helpers/archive';
 // import { getCardLinksFromGithubData } from '@/api-helpers/general';
 import { fetchGithubUnwrappedData } from '@/api-helpers/unrwrapped-aggregator';
 import { dec } from '@/api-helpers/auth-supplementary';
