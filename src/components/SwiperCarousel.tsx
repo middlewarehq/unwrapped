@@ -52,8 +52,11 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
           clickable: true
         }}
         breakpoints={{
+          0: {
+            slidesPerView: 1
+          },
           400: {
-            slidesPerView: 1.5
+            slidesPerView: 1.3
           },
           560: {
             slidesPerView: 1.5
@@ -62,7 +65,10 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
             slidesPerView: 2.5
           },
           1024: {
-            slidesPerView: images.length > 3 ? images.length - 1 : images.length
+            slidesPerView: 3
+          },
+          1800: {
+            slidesPerView: 3.5
           }
         }}
       >
@@ -77,7 +83,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
             {index !== 0 && (
               <IoIosArrowDropleftCircle
                 size={36}
-                className="prev-arrow "
+                className="prev-arrow right-[90%] sm:right-[102%]"
                 onClick={handlePrev}
               />
             )}
@@ -85,7 +91,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
             {index !== images.length - 1 && (
               <IoIosArrowDroprightCircle
                 size={36}
-                className="next-arrow"
+                className="next-arrow left-[90%] sm:left-[102%]"
                 onClick={handleNext}
               />
             )}

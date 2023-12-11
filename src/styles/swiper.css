@@ -1,15 +1,16 @@
 :root {
     --swiper-navigation-color: #9333ea;
-  --swiper-pagination-bullet-inactive-color: #cccccc;
-  --swiper-pagination-color: #9333ea;
-  }
+    --swiper-pagination-bullet-inactive-color: #cccccc;
+    --swiper-pagination-color: #9333ea;
+}
 
 .swiper-container {
-    position: relative ;
-  width: calc(min(90rem, 90%));
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
+    position: relative;
+    width: calc(100% + 32px);
+    margin: 0 auto;
+    margin-left: -16px;
+    display: flex;
+    align-items: center;
 }
 
 .swiper-container .swiper {
@@ -61,24 +62,17 @@ visibility: hidden;
     filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
 }
 
-.prev-arrow{
-    right: 102%;
-    top:50%;
-}
-
-.next-arrow{
-    top:50%;
-    left: 102%;
-}
-
 .prev-arrow, .next-arrow{
+    top: 50%;
     padding: 0.05rem;
     background-color: white;
     border-radius: 50%;
     border-width: 0.2rem;
     border-style: solid;
     border-color: #14183B;
-    fill:#14183b;
+    fill: #14183b;
+    z-index: 1000;
+    position: absolute;
     
 }
 
@@ -92,8 +86,8 @@ visibility: hidden;
 }
 
 @media screen and (min-width: 93.75rem) {
-  .swiper {
-    width: 85%;
-  }
+    .swiper {
+        width: 85%;
+    }
 }
 
