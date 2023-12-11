@@ -10,7 +10,7 @@ import {
   saveImagesToLocalDirectory
 } from '../utils/persistence/file-system';
 
-const awsCredentialExits =
+const awsCredentialExists =
   process.env.AWS_ACCESS_KEY_ID &&
   process.env.AWS_SECRET_ACCESS_KEY &&
   process.env.AWS_REGION;
@@ -21,7 +21,7 @@ export const saveCards = async (
   userLogin: string,
   imageFiles: ImageFile[]
 ): Promise<void> => {
-  if (awsCredentialExits && bucketName) {
+  if (awsCredentialExists && bucketName) {
     await uploadImagesToS3(bucketName, userLogin, imageFiles);
   } else {
     await saveImagesToLocalDirectory(
@@ -34,7 +34,7 @@ export const saveCards = async (
 export const fetchSavedCards = async (
   userLogin: string
 ): Promise<ImageFile[]> => {
-  if (awsCredentialExits && bucketName) {
+  if (awsCredentialExists && bucketName) {
     return await fetchImagesFromS3Directory(bucketName, userLogin);
   } else {
     return await fetchImagesFromLocalDirectory(
@@ -44,7 +44,7 @@ export const fetchSavedCards = async (
 };
 
 export const deleteSaveCards = async (userLogin: string): Promise<void> => {
-  if (awsCredentialExits && bucketName) {
+  if (awsCredentialExists && bucketName) {
     await deleteS3Directory(bucketName, userLogin);
   } else {
     await deleteLocalDirectory(
