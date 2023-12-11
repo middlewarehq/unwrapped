@@ -60,6 +60,24 @@ export const fetchImagesFromS3Directory = async (
   }
 };
 
+export const fetchFileFromS3Directory = async (
+  bucketName: string,
+  key: string
+): Promise<ImageFile> => {
+  try {
+    const imageBuffer = await s3
+      .getObject({ Bucket: bucketName, Key: key })
+      .promise();
+
+    return {
+      fileName: key,
+      data: imageBuffer.Body as Buffer
+    };
+  } catch (error: any) {
+    throw new Error(`Error fetching images from S3: ${error.message}`);
+  }
+};
+
 export const deleteS3Directory = async (
   bucketName: string,
   directory: string
