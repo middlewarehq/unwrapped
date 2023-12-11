@@ -6,7 +6,8 @@ import {
   getTopNRecurringReviewers,
   getTopNRecurringAuthors,
   splitPRsByDayNight,
-  getUserReviewCountWithRequestChanges
+  getUserReviewCountWithRequestChanges,
+  getCommitPercentile
 } from '../pr-analytics';
 import { getPullRequest, getReview } from '../test-utils/factories';
 
@@ -790,4 +791,10 @@ test('getUserReviewCountWithRequestChanges correctly returns count of PRs where 
       reviewer1
     )
   ).toStrictEqual(3);
+});
+
+test('getCommitPercentile returns correct percentile', () => {
+  expect(getCommitPercentile(0)).toStrictEqual('90%');
+  expect(getCommitPercentile(6140)).toStrictEqual('0.01%');
+  expect(getCommitPercentile(6140000)).toStrictEqual('0.001%');
 });
