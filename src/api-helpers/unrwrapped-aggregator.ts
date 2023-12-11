@@ -4,6 +4,7 @@ import {
   getRepoWiseOpensourceContributionsCount
 } from '@/analytics/contribution-analytics';
 import {
+  getCommitPercentile,
   getPRListAndMonthlyCountsFromGqlResponse,
   getTopNRecurringAuthors,
   getTopNRecurringReviewers,
@@ -17,7 +18,8 @@ import {
   fetchAllReviewedPRs,
   fetchUserGitHubContributionCalendarMetrics,
   fetchUser,
-  fetchRepoWiseContributionsForUser
+  fetchRepoWiseContributionsForUser,
+  fetchUserContributionSummaryMetrics
 } from '@/api-helpers/exapi-sdk/github';
 import { getGithubRepositoryContributionData } from '@/api-helpers/card-data-adapter';
 import { GitHubDataResponse } from '@/types/api-responses';
@@ -38,12 +40,14 @@ export const fetchGithubUnwrappedData = async (
     pr_authored_data,
     pr_reviewed_data,
     user_daily_contributions,
-    repo_wise_contribution_data
+    repo_wise_contribution_data,
+    contribution_summary
   ] = await Promise.all([
     fetchAllPullRequests(username, token),
     fetchAllReviewedPRs(username, token),
     fetchUserGitHubContributionCalendarMetrics(username, token),
-    fetchRepoWiseContributionsForUser(username, token)
+    fetchRepoWiseContributionsForUser(username, token),
+    fetchUserContributionSummaryMetrics(username, token)
   ]);
 
   const [authored_prs, authored_monthly_pr_counts] =
@@ -99,7 +103,13 @@ export const fetchGithubUnwrappedData = async (
     ),
     prs_opened_during_day: day.length,
     prs_opened_during_night: night.length,
-    contribution_percentile: 98,
+    contribution_percentile: getCommitPercentile(
+      contribution_summary?.totalCommitContributions || 0
+    ),
+    total_commit_contributions: contribution_summary?.totalCommitContributions,
+    total_pr_contributions: contribution_summary?.totalPullRequestContributions,
+    total_review_contributions: contribution_summary?.totalPullRequestReviewContributions,
+    total_issue_contributions: contribution_summary?.totalIssueContributions,
     global_contributions: 432094792
   };
 };
