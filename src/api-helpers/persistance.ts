@@ -1,11 +1,13 @@
 import { ImageFile } from '@/types/images';
 import {
   deleteS3Directory,
+  fetchFileFromS3Directory,
   fetchImagesFromS3Directory,
   uploadImagesToS3
 } from '../utils/persistence/s3';
 import {
   deleteLocalDirectory,
+  fetchImageFromLocalDirectory,
   fetchImagesFromLocalDirectory,
   saveImagesToLocalDirectory
 } from '../utils/persistence/file-system';
@@ -49,6 +51,22 @@ export const deleteSaveCards = async (userLogin: string): Promise<void> => {
   } else {
     await deleteLocalDirectory(
       `${process.cwd()}/unwrapped-cards/${userLogin}/`
+    );
+  }
+};
+
+export const fetchSavedCard = async (
+  userLogin: string,
+  cardName: string
+): Promise<ImageFile> => {
+  if (awsCredentialExists && bucketName) {
+    return await fetchFileFromS3Directory(
+      bucketName,
+      `${userLogin}/${cardName}.png`
+    );
+  } else {
+    return await fetchImageFromLocalDirectory(
+      `${process.cwd()}/unwrapped-cards/${userLogin}/${cardName}.png`
     );
   }
 };
