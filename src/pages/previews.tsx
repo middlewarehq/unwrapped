@@ -1,6 +1,7 @@
 import React from 'react';
 import { CARD_HEIGHT, CARD_WIDTH } from '../constants/general';
 import Image from 'next/image';
+import { ShareButton } from '@/components/ShareButton';
 
 const Previews = () => {
   const links = [
@@ -46,6 +47,7 @@ const Previews = () => {
             </div>
           );
         })}
+        <ShareButton />
       </div>
     </div>
   );
