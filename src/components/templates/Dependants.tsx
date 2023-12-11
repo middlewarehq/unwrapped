@@ -1,26 +1,26 @@
 import React, { FC } from 'react';
 import { websiteUrl } from '../../constants/general';
 import { RootCard } from './RootCard';
-import { GithubReview } from '../../mocks/github';
 import { Username } from '@/components/templates/index';
 
 export type DependantsData = {
-  user: GithubReview;
-  dependants: GithubReview[];
+  userAvatar: string;
+  dependants: string[];
+  username: string;
 };
 
 export const Dependants: FC<DependantsData & Username> = ({
-  user,
+  username,
   dependants,
-  username
+  userAvatar
 }) => {
   const village = `${websiteUrl}/assets/images/village.png`;
-  const attachedNodes = dependants.map(
-    (d) => '@' + shortenUsername(d.userName)
-  );
+  const attachedNodes = dependants
+    .slice(0, 4)
+    .map((userName) => '@' + shortenUsername(userName));
   const centralNode = {
-    userName: '@' + shortenUsername(user.userName),
-    avatar: user.avatar
+    userName: '@' + shortenUsername(username),
+    avatar: userAvatar
   };
   return (
     <RootCard bgColor="midnight" username={username}>
@@ -36,14 +36,15 @@ export const Dependants: FC<DependantsData & Username> = ({
           <p tw="m-0">And shipping</p>
           <p>your code involved</p>
           <p tw="m-0">
-            <span tw="font-semibold mr-1">{attachedNodes.length} people</span>{' '}
-            this year!
+            <span tw="font-semibold mr-1">{dependants.length} people</span> this
+            year!
           </p>
         </div>
       </div>
       <img
         tw="absolute bottom-[-20px] right-[-20px]"
         width={270}
+        height={250}
         src={village}
         alt=""
       />
@@ -84,6 +85,9 @@ const Graph: FC<{
             'my-4 flex relative top-4 p-1 mx-1 bg-[#788DDE] rounded-full items-center'
           }
         >
+          <p tw="text-[10px] -top-12 w-20 text-center -left-4 font-semibold absolute">
+            My top reviewers
+          </p>
           <img
             src={centralNode.avatar}
             width={40}
@@ -122,6 +126,9 @@ const Graph: FC<{
             'my-4 flex relative top-4 p-1 mx-1 bg-[#788DDE] rounded-full items-center'
           }
         >
+          <p tw="text-[10px] -top-12 w-20 text-center -left-4 font-semibold absolute">
+            My top reviewers
+          </p>
           <img
             src={centralNode.avatar}
             width={40}
@@ -179,6 +186,9 @@ const Graph: FC<{
             'my-4 flex relative top-4 p-1 mx-1 bg-[#788DDE] rounded-full items-center'
           }
         >
+          <p tw="text-[10px] -top-12 w-20 text-center -left-4 font-semibold absolute">
+            My top reviewers
+          </p>
           <img
             src={centralNode.avatar}
             width={40}
@@ -273,6 +283,9 @@ const Graph: FC<{
             'my-4 flex relative top-4 p-1 mx-1 bg-[#788DDE] rounded-full items-center'
           }
         >
+          <p tw="text-[10px] -top-12 w-20 text-center -left-4 font-semibold absolute">
+            My top reviewers
+          </p>
           <img
             src={centralNode.avatar}
             width={40}
@@ -359,8 +372,8 @@ const ThirdArrow = () => (
 
 const shortenUsername = (username: string) => {
   const split = username.split('');
-  if (split.length > 20) {
-    return split.slice(0, 20).join('') + '...';
+  if (split.length > 18) {
+    return split.slice(0, 18).join('') + '...';
   }
   return username;
 };

@@ -53,9 +53,7 @@ export const ghData = {
 export type GithubReview = {
   name: string;
   userName: string;
-  avatar: string;
-  recievedFromUser?: boolean;
-  gaveToUser?: boolean;
+  avatar?: string;
 };
 
 export const updatedGhData = {

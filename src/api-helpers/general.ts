@@ -1,7 +1,5 @@
 import { websiteUrl } from '../constants/general';
-import { IntroCardProps } from '../components/templates/IntroCard';
-import { TimeOfTheDayData } from '../components/templates/TimeOfTheDay';
-import { GitHubDataResponse, GithubData } from '../types/api-responses';
+import { GitHubDataResponse } from '../types/api-responses';
 import { CardTypes } from '../types/cards';
 import { getDataFromGithubResponse } from './card-data-adapter';
 
@@ -11,38 +9,9 @@ export function arrayBufferToBuffer(arrayBuffer: ArrayBuffer): Buffer {
   return nodeBuffer;
 }
 
-export const cardTemplateAdaptor = (data: GithubData) => {
-  let result: Record<
-    keyof typeof CardTypes,
-    IntroCardProps | TimeOfTheDayData | null
-  >;
-  result = {
-    [CardTypes.UNWRAPPED_INTRO]: {
-      username: data.data.username,
-      year: data.data.year
-    },
-    [CardTypes.DAY_NIGHT_CYCLE]: {
-      prsDuringDay: data.data.commits_during_day,
-      totalPrs: data.data.total_commits
-    },
-    [CardTypes.YOUR_CONTRIBUTIONS]: null,
-    [CardTypes.CONTRIBUTION_STREAK]: null,
-    [CardTypes.ZEN_OR_NINJA]: null,
-    [CardTypes.IT_TAKES_A_VILLAGE]: null,
-    [CardTypes.GUARDIAN_OF_PROD]: null,
-    [CardTypes.TOP_REVIEWERS]: null,
-    [CardTypes.PR_TIME_LAGS]: null,
-    [CardTypes.PR_REVIEWED_VS_AUTHORED]: null,
-    [CardTypes.PRODUCTION_BREAKING]: null,
-    [CardTypes.OSS_CONTRIBUTION]: null
-  };
-
-  return result;
-};
-
 export const abbreviateNumber = (value: number): string => {
   if (value > 1000) {
-    return String(Number((value / 1000).toFixed(2))) + 'k';
+    return String(Number((value / 1000).toFixed(2))) + 'K';
   }
   return String(value);
 };
