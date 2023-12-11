@@ -45,7 +45,7 @@ export const RootCard: FC<RootCard> = ({
         }`}
       >
         {Boolean(username) && (
-          <div tw="relative left-[5px] top-[-3] font-bold opacity-70 flex justify-between w-full mb-[-16px]">
+          <div tw="relative left-[5px] top-[-3] font-bold opacity-70 flex justify-between w-full">
             <span>@{username}</span>
             <span>unwrapped.dev</span>
           </div>

@@ -38,10 +38,10 @@ export const getFontsForImageGeneration = async (
 
     return fonts;
   } else {
-    const Thin = fs.readFileSync(
+    const Thin = fs.promises.readFile(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Thin.ttf')
     );
-    const ExtraLight = fs.readFileSync(
+    const ExtraLight = fs.promises.readFile(
       path.join(
         process.cwd(),
         'public',
@@ -50,16 +50,16 @@ export const getFontsForImageGeneration = async (
         'Inter-ExtraLight.ttf'
       )
     );
-    const Light = fs.readFileSync(
+    const Light = fs.promises.readFile(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Light.ttf')
     );
-    const Regular = fs.readFileSync(
+    const Regular = fs.promises.readFile(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Regular.ttf')
     );
-    const Medium = fs.readFileSync(
+    const Medium = fs.promises.readFile(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Medium.ttf')
     );
-    const SemiBold = fs.readFileSync(
+    const SemiBold = fs.promises.readFile(
       path.join(
         process.cwd(),
         'public',
@@ -68,10 +68,10 @@ export const getFontsForImageGeneration = async (
         'Inter-SemiBold.ttf'
       )
     );
-    const Bold = fs.readFileSync(
+    const Bold = fs.promises.readFile(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Bold.ttf')
     );
-    const ExtraBold = fs.readFileSync(
+    const ExtraBold = fs.promises.readFile(
       path.join(
         process.cwd(),
         'public',
@@ -80,20 +80,20 @@ export const getFontsForImageGeneration = async (
         'Inter-ExtraBold.ttf'
       )
     );
-    const Black = fs.readFileSync(
+    const Black = fs.promises.readFile(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Black.ttf')
     );
 
-    return [
-      Black,
-      Bold,
-      ExtraBold,
+    return await Promise.all([
+      Thin,
       ExtraLight,
       Light,
-      Medium,
       Regular,
+      Medium,
       SemiBold,
-      Thin
-    ];
+      Bold,
+      ExtraBold,
+      Black
+    ]);
   }
 };

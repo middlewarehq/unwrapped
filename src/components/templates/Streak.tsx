@@ -13,9 +13,9 @@ export const Streak: FC<StreakData & Username> = ({ streak, username }) => {
     <RootCard bgColor="green" username={username}>
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex font-semibold flex-col">
-          <p tw="text-xl leading-[8px] mb-6">Breaks?</p>
-          <p tw="m-0 text-2xl leading-[8px]">Where we&apos;re going</p>
-          <p tw="text-2xl leading-[8px]">we don&apos;t need breaks</p>
+          <p tw="text-xl leading-[16px] mb-6">Breaks?</p>
+          <p tw="m-0 text-2xl leading-[12px]">Where we&apos;re going</p>
+          <p tw="text-2xl leading-[12px]">we don&apos;t need breaks</p>
         </div>
         <div tw="flex text-4xl mt-6 text-black items-baseline">
           <h1 tw="m-0 relative top-2">{streak}</h1>

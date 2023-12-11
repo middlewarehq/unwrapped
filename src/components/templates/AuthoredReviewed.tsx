@@ -28,7 +28,7 @@ export const AuthoredReviewed: FC<AuthoredReviewedData & Username> = ({
           <PieChart authoredPrs={authoredPrs} reviewedPrs={reviewedPrs} />
         </div>
         <div tw="flex flex-col font-medium">
-          <div tw="flex mt-8">
+          <div tw="flex mt-4">
             <div
               tw={`flex w-4 h-4 border-black border bg-[${colors.authored}]`}
             />
@@ -41,21 +41,15 @@ export const AuthoredReviewed: FC<AuthoredReviewedData & Username> = ({
             <p tw="m-0 ml-2">Reviewed PRs ({reviewedPrs})</p>
           </div>
         </div>
-        {reviewedPrs < authoredPrs ? (
-          <div tw="flex text-xl leading-[8px] flex-col mt-8">
-            <p tw="m-0">About PRs,</p>
-            <p>you were more about</p>
-            <p tw="m-0">giving, than receiving</p>
-            <p>this year</p>
-          </div>
-        ) : (
-          <div tw="flex text-xl leading-[8px] flex-col mt-8">
-            <p tw="m-0">About PRs,</p>
-            <p>you were more about</p>
-            <p tw="m-0">receiving, than giving</p>
-            <p>this year</p>
-          </div>
-        )}
+        <div tw="flex text-lg leading-[8px] flex-col mt-8">
+          <p tw="m-0">For PRs, you were more</p>
+          {reviewedPrs < authoredPrs ? (
+            <p>about giving, than receiving</p>
+          ) : (
+            <p>about receiving, than giving</p>
+          )}
+          <p tw="m-0">this year</p>
+        </div>
       </div>
       <img
         tw="absolute bottom-[-20px] right-[-20px]"
