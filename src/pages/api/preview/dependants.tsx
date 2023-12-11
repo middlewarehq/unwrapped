@@ -34,6 +34,11 @@ const mockGithubDependants: GithubReview[] = [
     name: 'John Smith',
     userName: generateStringOfNCharacters(generateRandomNumberBetween()),
     avatar: 'https://picsum.photos/id/31/200'
+  },
+  {
+    name: 'Smith',
+    userName: generateStringOfNCharacters(generateRandomNumberBetween()),
+    avatar: 'https://picsum.photos/id/31/200'
   }
 ];
 
