@@ -21,7 +21,6 @@ export default function StatsUnwrapped() {
   const [images, setUnwrappedImages] = useState<UpdatedImageFile[] | null>(
     null
   );
-  console.log('Debugging', images);
   useEffect(() => {
     setIsLoading(true);
     handleRequest<UpdatedImageFile[]>('/api/download')
