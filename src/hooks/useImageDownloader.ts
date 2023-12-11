@@ -6,7 +6,7 @@ interface DownloadImagesProps {
   images: string | string[];
 }
 const downloadSingleImage = (url: string) => {
-  const fileName = url.substring(url.lastIndexOf('/') + 1);
+  const fileName = 'unwrapped-image.png';
   fetch(url)
     .then((response) => response.blob())
     .then((blob) => saveAs(blob, fileName))
@@ -16,7 +16,7 @@ const downloadSingleImage = (url: string) => {
 const downloadMultipleImages = (urls: string[]) => {
   const zip = new JSZip();
   const promises = urls.map((url, index) => {
-    const fileName = `image${index + 1}.jpg`;
+    const fileName = `image${index + 1}.png`;
 
     return fetch(url)
       .then((response) => response.blob())
