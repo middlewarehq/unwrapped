@@ -15,8 +15,13 @@ export const Dependants: FC<DependantsData & Username> = ({
   username
 }) => {
   const village = `${websiteUrl}/assets/images/village.png`;
-  const attachedNodes = dependants.map((d) => '@' + d.userName);
-  const centralNode = { userName: '@' + user.userName, avatar: user.avatar };
+  const attachedNodes = dependants.map(
+    (d) => '@' + shortenUsername(d.userName)
+  );
+  const centralNode = {
+    userName: '@' + shortenUsername(user.userName),
+    avatar: user.avatar
+  };
   return (
     <RootCard bgColor="midnight" username={username}>
       <div tw="flex flex-col p-1 relative w-full h-full">
@@ -351,3 +356,11 @@ const ThirdArrow = () => (
     />
   </svg>
 );
+
+const shortenUsername = (username: string) => {
+  const split = username.split('');
+  if (split.length > 20) {
+    return split.slice(0, 20).join('') + '...';
+  }
+  return username;
+};
