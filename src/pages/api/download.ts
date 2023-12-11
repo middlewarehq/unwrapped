@@ -50,10 +50,9 @@ const fetchAndDownloadImageBuffer = async (
       );
     }
     console.log(chalk.green('Successfully sent buffer to client'));
-  } catch (error) {
-    // console.error('Error fetching or sending buffer:', error);
+  } catch (error: any) {
     console.log(chalk.red('Error fetching or sending buffer:'), error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(error.status || 500).json({ message: error.message });
   }
 };
 

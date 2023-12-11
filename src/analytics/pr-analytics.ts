@@ -1,10 +1,11 @@
+import { ResponseError } from '@/utils/errors';
 import { PullRequestEdge, PullRequest } from '../api-helpers/exapi-sdk/types';
 import { getTopNKeys } from './utils';
 
 export const getPRListAndMonthlyCountsFromGqlResponse = (
   edges?: PullRequestEdge[][]
 ) => {
-  if (!edges) throw new Error('No data found to calculate stats');
+  if (!edges) throw new ResponseError('No data found to calculate stats', 404);
 
   const flat_prs = edges.flat().map((pr_node) => pr_node.node);
   const prs_monthly_counts = edges.map((monthly_prs) => monthly_prs.length);
