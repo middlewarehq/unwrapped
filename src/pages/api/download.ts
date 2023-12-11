@@ -29,7 +29,6 @@ const fetchAndDownloadImageBuffer = async (
       req.query.username as string
     );
     const imageBuffer = await runBenchmark(generateImages, data);
-    // console.log(getCardLinksFromGithubData(data));
 
     const _zippedData = await archiveFiles(
       imageBuffer.map(({ data, fileName }) => ({ data, fileName }))
