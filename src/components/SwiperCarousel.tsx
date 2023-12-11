@@ -64,11 +64,14 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
           768: {
             slidesPerView: 2.5
           },
-          1024: {
+          1000: {
             slidesPerView: 3
           },
+          1400: {
+            slidesPerView: 4
+          },
           1800: {
-            slidesPerView: 3.5
+            slidesPerView: 5
           }
         }}
       >

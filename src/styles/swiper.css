@@ -16,9 +16,8 @@
 
 .swiper-container .swiper {
     padding: 1.25rem;
+    width: 100%;
 }
-
-
 
 .swiper-slide-img {
     position: relative;
