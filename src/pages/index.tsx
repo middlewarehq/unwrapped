@@ -1,9 +1,10 @@
 import { major } from '@/styles/fonts';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { MouseScrollAnim } from '@/components/MouseScrollAnim/MouseScrollAnim';
 import { useState } from 'react';
 
 import LogoSvg from '@/assets/unwrapped-logo.svg';
+import { useRouter } from 'next/router';
 
 /**
  * DISABLE_PUBLIC_ONLY_CONTRIBUTIONS
@@ -13,6 +14,9 @@ const DISABLE_PUBLIC_ONLY_CONTRIBUTIONS = true;
 
 export default function Home() {
   const [showPrivate, setShowPrivate] = useState(true);
+  const { status } = useSession();
+  const router = useRouter();
+  const currentUrl = new URL(window.location.href);
 
   return (
     <div className="justify-center w-full flex flex-col gap-4 box-border">
@@ -44,15 +48,38 @@ export default function Home() {
               href="https://middlewarehq.com"
               className="text-purple-400 border-b-2 border-dotted border-b-purple-400"
             >
-              By Middleware {'->'} Coming soon
+              By Middleware {'->'} launching soon
             </a>
           </span>
           <div className="w-fit flex flex-col gap-2">
-            {showPrivate ? (
+            {status === 'authenticated' ? (
+              <div className="w-fit flex flex-col gap-1">
+                <button
+                  className="bg-indigo-800 text-white px-4 py-2 rounded-md"
+                  onClick={() => {
+                    const url = new URL(currentUrl);
+                    url.pathname = '/stats-unwrapped';
+                    router.replace(url);
+                  }}
+                >
+                  Unwrap your year, lets go! {'->'}
+                </button>
+                <button
+                  className="bg-gray-400 bg-opacity-10 text-white px-4 py-1 rounded-md text-xs"
+                  onClick={() => {
+                    signOut({ redirect: false });
+                  }}
+                >
+                  Sign out
+                </button>
+              </div>
+            ) : showPrivate ? (
               <button
                 className="bg-indigo-800 text-white px-4 py-2 rounded-md"
                 onClick={() => {
-                  signIn('github', { callbackUrl: '/stats-summary' });
+                  const url = new URL(currentUrl);
+                  url.pathname = '/stats-unwrapped';
+                  signIn('github', { callbackUrl: url.href });
                 }}
               >
                 Login with Github to start {'->'}
