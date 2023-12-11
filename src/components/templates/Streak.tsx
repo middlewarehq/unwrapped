@@ -17,7 +17,7 @@ export const Streak: FC<StreakData & Username> = ({ streak, username }) => {
           <p tw="m-0 text-2xl leading-[12px]">Where we&apos;re going</p>
           <p tw="text-2xl leading-[12px]">we don&apos;t need breaks</p>
         </div>
-        <div tw="flex text-4xl mt-6 text-black items-baseline">
+        <div tw="flex text-4xl mt-2 text-black items-baseline">
           <h1 tw="m-0 relative top-2">{streak}</h1>
           <span tw="ml-2.5 relative text-2xl">days</span>
         </div>
