@@ -13,6 +13,7 @@ import { ZenNinjaData } from '@/components/templates/ZenNinja';
 import { StreakData } from '@/components/templates/Streak';
 import { CodeReviewsData } from '@/components/templates/CodeReviews';
 import { OSSContribsData } from '@/components/templates/OSSContribs';
+import { sum } from 'ramda';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const intro: IntroCardProps | null = {
@@ -20,43 +21,57 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     year: new Date().getFullYear()
   };
 
-  const guardian: GuardianData | null = {
-    numberOfTimes: data.authored_monthly_pr_counts.reduce(
-      (acc, curr) => acc + curr,
-      0
-    )
-  };
+  const guardian: GuardianData | null =
+    data.reviewed_prs_with_requested_changes_count > 2
+      ? {
+          numberOfTimes: data.reviewed_prs_with_requested_changes_count
+        }
+      : null;
 
   const contributions: ContributionsData | null = {
     contributions: data.total_contributions,
     percentile: data.contribution_percentile
   };
 
-  const authoredVsReviewedPRs: AuthoredReviewedData | null = {
-    authoredPrs: data.authored_monthly_pr_counts.reduce(
-      (acc, curr) => acc + curr,
-      0
-    ),
-    reviewedPrs: data.reviewed_monthly_pr_counts.reduce(
-      (acc, curr) => acc + curr,
-      0
-    )
-  };
+  const totalAuthored = data.authored_monthly_pr_counts.reduce(
+    (acc, curr) => acc + curr,
+    0
+  );
+  const totalReviewed = data.reviewed_monthly_pr_counts.reduce(
+    (acc, curr) => acc + curr,
+    0
+  );
+
+  const totalPrs = totalAuthored + totalReviewed;
+
+  const authoredVsReviewedPRs: AuthoredReviewedData | null =
+    totalPrs > 10
+      ? {
+          authoredPrs: totalAuthored,
+          reviewedPrs: totalReviewed
+        }
+      : null;
 
   const timeBasedData: TimeOfTheDayData | null = {
     prsDuringDay: data.prs_opened_during_day,
     totalPrs: data.prs_opened_during_day + data.prs_opened_during_night
   };
 
-  const zenOrNinja: ZenNinjaData | null = {
-    trends: Object.entries(data.monthly_contributions)
-      .sort(([a], [b]) => parseInt(b) - parseInt(a))
-      .map(([, contributions]) => contributions)
-  };
+  const zenOrNinja: ZenNinjaData | null =
+    data.total_contributions > 50
+      ? {
+          trends: Object.entries(data.monthly_contributions)
+            .sort(([a], [b]) => parseInt(b) - parseInt(a))
+            .map(([, contributions]) => contributions)
+        }
+      : null;
 
-  const contributionStreak: StreakData | null = {
-    streak: data.longest_streak
-  };
+  const contributionStreak: StreakData | null =
+    data.longest_streak > 3
+      ? {
+          streak: data.longest_streak
+        }
+      : null;
 
   const codeReviewerStats: CodeReviewsData | null = data.top_reviewers?.length
     ? {
@@ -65,9 +80,16 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
       }
     : null;
 
-  const ossContribsData: OSSContribsData = {
-    contribs: data.oss_contributions
-  };
+  const total_oss = sum(
+    data.oss_contributions.map((c) => c.contributions_count)
+  );
+
+  const ossContribsData: OSSContribsData | null =
+    total_oss > 50
+      ? {
+          contribs: data.oss_contributions
+        }
+      : null;
 
   return {
     [CardTypes.UNWRAPPED_INTRO]: intro,

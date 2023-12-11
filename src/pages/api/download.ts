@@ -1,7 +1,6 @@
+import chalk from 'chalk';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { generateImages } from '@/pages/api/image-gen';
-import { runBenchmark } from '@/api-helpers/benchmarking';
-import chalk from 'chalk';
 import { archiveFiles } from '../../api-helpers/archive';
 // import { getCardLinksFromGithubData } from '@/api-helpers/general';
 import { fetchGithubUnwrappedData } from '@/api-helpers/unrwrapped-aggregator';
@@ -23,12 +22,8 @@ const fetchAndDownloadImageBuffer = async (
   token = dec(token);
 
   try {
-    const data = await fetchGithubUnwrappedData(
-      token,
-      timezone,
-      req.query.username as string
-    );
-    const imageBuffer = await runBenchmark(generateImages, data);
+    const data = await fetchGithubUnwrappedData(token, timezone);
+    const imageBuffer = await generateImages(data);
 
     const _zippedData = await archiveFiles(
       imageBuffer.map(({ data, fileName }) => ({ data, fileName }))

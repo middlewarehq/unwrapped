@@ -7,7 +7,7 @@ export type AuthoredReviewedData = {
   authoredPrs: number;
 };
 
-const colors = { reviewed: '#9A1F17', authored: '#D25C55' };
+const colors = { reviewed: '#D25C55', authored: '#9A1F17' };
 
 export const AuthoredReviewed: FC<AuthoredReviewedData> = ({
   authoredPrs,
@@ -30,13 +30,13 @@ export const AuthoredReviewed: FC<AuthoredReviewedData> = ({
             <div
               tw={`flex w-4 h-4 border-black border bg-[${colors.authored}]`}
             />
-            <p tw="m-0 ml-2">Authored PRs</p>
+            <p tw="m-0 ml-2">Authored PRs ({authoredPrs})</p>
           </div>
           <div tw="flex mt-2">
             <div
               tw={`flex w-4 h-4 border-black border  bg-[${colors.reviewed}]`}
             />
-            <p tw="m-0 ml-2">Reviewed PRs</p>
+            <p tw="m-0 ml-2">Reviewed PRs ({reviewedPrs})</p>
           </div>
         </div>
         {reviewedPrs < authoredPrs ? (
@@ -57,7 +57,7 @@ export const AuthoredReviewed: FC<AuthoredReviewedData> = ({
       </div>
       <img
         tw="absolute bottom-[-20px] right-[-20px]"
-        width={200}
+        width={180}
         src={joey}
         alt=""
       />
@@ -103,7 +103,7 @@ const PieChart: React.FC<PieChartProps> = ({ authoredPrs, reviewedPrs }) => {
             <path
               key={index}
               d={path}
-              fill={index === 1 ? colors.authored : colors.reviewed}
+              fill={index === 0 ? colors.authored : colors.reviewed}
               stroke="#000"
               strokeWidth="2"
             />
