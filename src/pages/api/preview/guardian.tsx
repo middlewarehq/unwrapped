@@ -1,13 +1,15 @@
 import { createImageUsingVercel } from '@/api-helpers/vercel-generator';
 import { CardTypes } from '../../../types/cards';
 import { GuardianData } from '../../../components/templates/Guardian';
+import { Username } from '@/components/templates/index';
 
 export const config = {
   runtime: 'edge'
 };
 
-const data: GuardianData = {
-  numberOfTimes: 50
+const data: GuardianData & Username = {
+  numberOfTimes: 50,
+  username: 'jayantbh'
 };
 
 const generateUsingVercel = async () => {

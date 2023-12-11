@@ -2,16 +2,21 @@ import React, { FC } from 'react';
 import { websiteUrl } from '../../constants/general';
 import { RootCard } from './RootCard';
 import { GithubReview } from '../../mocks/github';
+import { Username } from '@/components/templates/index';
 
 export type DependantsData = {
   user: GithubReview;
   dependants: GithubReview[];
 };
 
-export const Dependants: FC<DependantsData> = ({ user, dependants }) => {
+export const Dependants: FC<DependantsData & Username> = ({
+  user,
+  dependants,
+  username
+}) => {
   const village = `${websiteUrl}/assets/images/village.png`;
   return (
-    <RootCard bgColor="midnight">
+    <RootCard bgColor="midnight" username={username}>
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
           <p>It takes a village</p>

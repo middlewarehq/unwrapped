@@ -3,18 +3,20 @@ import { RootCard } from '@/components/templates/RootCard';
 import { websiteUrl } from '../../constants/general';
 import { GithubRepositoryContributionData } from '@/types/api-responses';
 import pluralize from 'pluralize';
+import { Username } from '@/components/templates/index';
 
 export type OSSContribsData = {
   contribs: GithubRepositoryContributionData[];
 };
 
-export const OSSContribs: FC<OSSContribsData> = ({ contribs }) => {
+export const OSSContribs: FC<OSSContribsData & Username> = ({
+  contribs,
+  username
+}) => {
   const img = `${websiteUrl}/assets/images/philanthropist.png`;
 
-  console.log(contribs);
-
   return (
-    <RootCard bgColor="babyBlue">
+    <RootCard bgColor="babyBlue" username={username}>
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
           <p>You know, I&apos;m something of</p>

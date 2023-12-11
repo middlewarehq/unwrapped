@@ -14,6 +14,7 @@ import { StreakData } from '@/components/templates/Streak';
 import { CodeReviewsData } from '@/components/templates/CodeReviews';
 import { OSSContribsData } from '@/components/templates/OSSContribs';
 import { sum } from 'ramda';
+import { Username } from '@/components/templates/index';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const intro: IntroCardProps | null = {
@@ -92,6 +93,7 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
       : null;
 
   return {
+    username: data.user.login,
     [CardTypes.UNWRAPPED_INTRO]: intro,
     [CardTypes.GUARDIAN_OF_PROD]: guardian,
     [CardTypes.YOUR_CONTRIBUTIONS]: contributions,
@@ -113,7 +115,8 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     | CodeReviewsData
     | OSSContribsData
     | null
-  >;
+  > &
+    Username;
 };
 
 export const getGithubRepositoryContributionData = (

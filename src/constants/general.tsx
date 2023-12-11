@@ -10,6 +10,8 @@ export const CARD_WIDTH = '400px';
 
 export const CARD_HEIGHT = '600px';
 
+export const SCALE_FACTOR = 3;
+
 // Fonts
 type FontStyles = {
   weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
@@ -50,5 +52,6 @@ export const cardColorsMap = {
   lightGreen: '#1CB0B0',
   coralPink: '#E16666',
   babyBlue: '#67B8F3',
-  yellow: '#E2A300'
+  yellow: '#E2A300',
+  green: '#6F994F'
 };

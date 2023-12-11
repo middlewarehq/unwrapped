@@ -1,19 +1,27 @@
 import React, { FC, ReactNode, CSSProperties } from 'react';
 import { CARD_HEIGHT, CARD_WIDTH, websiteUrl } from '../../constants/general';
-import { cardColorsMap } from '@/constants/general';
+import { cardColorsMap, SCALE_FACTOR } from '@/constants/general';
 
 type RootCard = {
   bgColor: keyof typeof cardColorsMap;
   children: ReactNode;
   style?: CSSProperties;
+  username: String;
 };
 
-export const RootCard: FC<RootCard> = ({ bgColor, children, style }) => {
-  const computedStyle = {
+export const RootCard: FC<RootCard> = ({
+  bgColor,
+  children,
+  style,
+  username
+}) => {
+  const computedStyle: CSSProperties = {
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
     padding: '20px',
     backgroundColor: cardColorsMap[bgColor] || 'red',
+    transform: `scale(${SCALE_FACTOR})`,
+    transformOrigin: '0.0000000000000001px 0.0000000000000001px',
     ...style
   };
 
@@ -32,7 +40,18 @@ export const RootCard: FC<RootCard> = ({ bgColor, children, style }) => {
       />
 
       <Logo />
-      <div tw="flex z-10 h-full w-full relative" style={{ zIndex: 10 }}>
+      <div
+        tw={`flex z-10 h-full w-full relative flex-col ${
+          Boolean(username) ? 'pt-4' : ''
+        }`}
+        style={{ zIndex: 10 }}
+      >
+        {Boolean(username) && (
+          <div tw="relative left-[5px] top-[-3] font-bold opacity-70 flex justify-between w-full mb-[-16px]">
+            <span>@{username}</span>
+            <span>unwrapped.dev</span>
+          </div>
+        )}
         {children}
       </div>
     </section>

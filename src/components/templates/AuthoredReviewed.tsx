@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { RootCard } from './RootCard';
 import { websiteUrl } from '../../constants/general';
+import { Username } from '@/components/templates/index';
 
 export type AuthoredReviewedData = {
   reviewedPrs: number;
@@ -9,13 +10,14 @@ export type AuthoredReviewedData = {
 
 const colors = { reviewed: '#D25C55', authored: '#9A1F17' };
 
-export const AuthoredReviewed: FC<AuthoredReviewedData> = ({
+export const AuthoredReviewed: FC<AuthoredReviewedData & Username> = ({
   authoredPrs,
-  reviewedPrs
+  reviewedPrs,
+  username
 }) => {
   const joey = `${websiteUrl}/assets/images/joey.png`;
   return (
-    <RootCard bgColor="red">
+    <RootCard bgColor="red" username={username}>
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
           <p>Shipping code is</p>

@@ -10,6 +10,7 @@ import {
 } from '../constants/general';
 import { CardTemplate, CardTemplateData } from '../components/templates';
 import { getFontsForImageGeneration } from './fonts';
+import { SCALE_FACTOR } from '@/constants/general';
 
 export const createImageUsingVercel = async (
   data: CardTemplateData['data'],
@@ -22,8 +23,8 @@ export const createImageUsingVercel = async (
   const generatedImage = new ImageResponse(
     <CardTemplate cardType={cardType} data={data} />,
     {
-      width: parseInt(CARD_WIDTH),
-      height: parseInt(CARD_HEIGHT),
+      width: parseInt(CARD_WIDTH) * SCALE_FACTOR,
+      height: parseInt(CARD_HEIGHT) * SCALE_FACTOR,
       fonts: INTER_FONT_STYLES.map((fontData, index) => ({
         name: 'Inter',
         data: fonts[index],

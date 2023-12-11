@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
 import { RootCard } from '@/components/templates/RootCard';
 import { websiteUrl } from '../../constants/general';
+import { Username } from '@/components/templates/index';
 
 export type ZenNinjaData = {
   trends: number[];
 };
 
-export const ZenNinja: FC<ZenNinjaData> = ({ trends }) => {
+export const ZenNinja: FC<ZenNinjaData & Username> = ({ trends, username }) => {
   const panda = `${websiteUrl}/assets/images/panda.png`;
   const ninja = `${websiteUrl}/assets/images/ninja.png`;
 
@@ -14,7 +15,7 @@ export const ZenNinja: FC<ZenNinjaData> = ({ trends }) => {
 
   if (isNinja) {
     return (
-      <RootCard bgColor="coralPink">
+      <RootCard bgColor="coralPink" username={username}>
         <div tw="flex flex-col p-1 relative w-full h-full">
           <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
             <p>Swoop, slash, ...</p>
@@ -45,7 +46,7 @@ export const ZenNinja: FC<ZenNinjaData> = ({ trends }) => {
     );
   } else
     return (
-      <RootCard bgColor="lightGreen">
+      <RootCard bgColor="lightGreen" username={username}>
         <div tw="flex flex-col p-1 relative w-full h-full">
           <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
             <p>Inner peace? That’s cool!</p>

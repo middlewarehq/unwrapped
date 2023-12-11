@@ -2,19 +2,21 @@ import React, { FC } from 'react';
 import { RootCard } from '@/components/templates/RootCard';
 import { websiteUrl } from '../../constants/general';
 import { abbreviateNumber } from '@/api-helpers/general';
+import { Username } from '@/components/templates/index';
 
 export type ContributionsData = {
   contributions: number;
   percentile: number | null | undefined;
 };
 
-export const Contributions: FC<ContributionsData> = ({
+export const Contributions: FC<ContributionsData & Username> = ({
   contributions,
-  percentile
+  percentile,
+  username
 }) => {
   const artemis = `${websiteUrl}/assets/images/artemis.png`;
   return (
-    <RootCard bgColor="orange">
+    <RootCard bgColor="orange" username={username}>
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
           <p>Higher than</p>

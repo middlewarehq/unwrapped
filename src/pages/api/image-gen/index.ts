@@ -36,7 +36,12 @@ export const generateImages = async (
 
   const imageFileBuffers = await Promise.all(
     cardsToBeGenerated.map((cardName, index) =>
-      createImageUsingVercel(adaptedData[cardName], cardName, 'node', index)
+      createImageUsingVercel(
+        { ...adaptedData[cardName], username: data.user.login },
+        cardName,
+        'node',
+        index
+      )
     )
   );
 

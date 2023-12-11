@@ -25,24 +25,26 @@ const fetchAndDownloadImageBuffer = async (
     const data = await fetchGithubUnwrappedData(token, timezone);
     const imageBuffer = await generateImages(data);
 
-    const _zippedData = await archiveFiles(
-      imageBuffer.map(({ data, fileName }) => ({ data, fileName }))
-    );
-
-    const fileName = 'middleware_unwrapped.zip';
-
-    res.setHeader('Content-Type', 'application/zip');
-    res.setHeader(
-      'Content-Disposition',
-      `attachment; filename=${encodeURIComponent(fileName)}`
-    );
-    res.setHeader('Cache-Control', 'no-cache');
-    // FIX: response
-    res.send(
-      imageBuffer.map(
-        ({ data }) => `data:image/png;base64,${data.toString('base64')}`
-      )
-    );
+    if (req.query.format === 'archive') {
+      const zippedData = await archiveFiles(
+        imageBuffer.map(({ data, fileName }) => ({ data, fileName }))
+      );
+      const fileName = 'middleware_unwrapped.zip';
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename=${encodeURIComponent(fileName)}`
+      );
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Content-Type', 'application/zip');
+      res.send(zippedData);
+    } else {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(
+        imageBuffer.map(
+          ({ data }) => `data:image/png;base64,${data.toString('base64')}`
+        )
+      );
+    }
     console.log(chalk.green('Successfully sent buffer to client'));
   } catch (error) {
     // console.error('Error fetching or sending buffer:', error);

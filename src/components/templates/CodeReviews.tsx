@@ -1,20 +1,22 @@
 import React, { FC } from 'react';
 import { RootCard } from '@/components/templates/RootCard';
 import { websiteUrl } from '../../constants/general';
+import { Username } from '@/components/templates/index';
 
 export type CodeReviewsData = {
   totalReviewers: number;
   topReviewer: string;
 };
 
-export const CodeReviews: FC<CodeReviewsData> = ({
+export const CodeReviews: FC<CodeReviewsData & Username> = ({
   topReviewer,
-  totalReviewers
+  totalReviewers,
+  username
 }) => {
   const drakeNope = `${websiteUrl}/assets/images/drakeNope.png`;
   const drakeYeah = `${websiteUrl}/assets/images/drakeYeah.png`;
   return (
-    <RootCard bgColor="yellow">
+    <RootCard bgColor="yellow" username={username}>
       <div tw="flex absolute w-[300px] top-[-40px] left-[-20px] text-md font-semibold">
         <img width={160} src={drakeNope} alt="" />
         <div tw="flex relative top-[90px] right-[40px] flex-col">

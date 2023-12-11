@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { RootCard } from './RootCard';
 import { websiteUrl } from '../../constants/general';
+import { Username } from '@/components/templates/index';
 const TIME_OF_DAY_THRESHOLD = 0.4;
 
 export type TimeOfTheDayData = {
@@ -8,9 +9,10 @@ export type TimeOfTheDayData = {
   totalPrs: number;
 };
 
-export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
+export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
   prsDuringDay,
-  totalPrs
+  totalPrs,
+  username
 }) => {
   const prsDuringNight = totalPrs - prsDuringDay;
   const isNightOwl = prsDuringNight / totalPrs >= TIME_OF_DAY_THRESHOLD;
@@ -23,7 +25,7 @@ export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
 
   if (isRoundTheClock) {
     return (
-      <RootCard bgColor="orange">
+      <RootCard bgColor="orange" username={username}>
         <div tw="flex flex-col p-1 relative w-full h-full">
           <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
             <p>I code the way</p>
@@ -50,7 +52,7 @@ export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
     );
   } else if (isDayHawk) {
     return (
-      <RootCard bgColor="pink">
+      <RootCard bgColor="pink" username={username}>
         <div tw="flex flex-col p-1">
           <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
             <p>I rise with</p>
@@ -77,7 +79,7 @@ export const TimeOfTheDay: FC<TimeOfTheDayData> = ({
     );
   } else {
     return (
-      <RootCard bgColor="purple">
+      <RootCard bgColor="purple" username={username}>
         <div tw="flex flex-col p-1">
           <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
             <p>Wh... what is...</p>
