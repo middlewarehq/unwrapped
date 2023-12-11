@@ -23,7 +23,11 @@ const fetchAndDownloadImageBuffer = async (
   token = dec(token);
 
   try {
-    const data = await fetchGithubUnwrappedData(token, timezone);
+    const data = await fetchGithubUnwrappedData(
+      token,
+      timezone,
+      req.query.username as string
+    );
     const imageBuffer = await runBenchmark(generateImages, data);
     // console.log(getCardLinksFromGithubData(data));
 
