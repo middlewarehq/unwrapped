@@ -43,7 +43,7 @@ export const AuthoredReviewed: FC<AuthoredReviewedData & Username> = ({
         </div>
         <div tw="flex text-lg leading-[8px] flex-col mt-8">
           <p tw="m-0">For PRs, you were more</p>
-          {reviewedPrs < authoredPrs ? (
+          {reviewedPrs >= authoredPrs ? (
             <p>about giving, than receiving</p>
           ) : (
             <p>about receiving, than giving</p>
