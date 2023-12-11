@@ -14,7 +14,7 @@ const fetchAndDownloadImageBuffer = async (
   res: NextApiResponse
 ) => {
   let token = req.cookies.ghct;
-  const timezone = (req.headers.timezone as string) || 'UTC';
+  const timezone = (req.headers['x-timezone'] as string) || 'UTC';
 
   if (!token) {
     return res.status(403).json({

@@ -13,7 +13,7 @@ export const handleRequest = <T = any>(
     ...params,
     headers: {
       'Content-Type': 'application/json',
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      'x-timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
     }
   })
     .then(handleThen)
