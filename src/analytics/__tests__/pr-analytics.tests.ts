@@ -794,7 +794,7 @@ test('getUserReviewCountWithRequestChanges correctly returns count of PRs where 
 });
 
 test('getCommitPercentile returns correct percentile', () => {
-  expect(getCommitPercentile(0)).toStrictEqual('90%');
-  expect(getCommitPercentile(6140)).toStrictEqual('0.01%');
-  expect(getCommitPercentile(6140000)).toStrictEqual('0.001%');
+  expect(getCommitPercentile(0)).toStrictEqual(90);
+  expect(getCommitPercentile(6140)).toStrictEqual(0.01);
+  expect(getCommitPercentile(6140000)).toStrictEqual(0.001);
 });
