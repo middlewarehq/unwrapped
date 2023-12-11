@@ -10,6 +10,8 @@ export type DependantsData = {
   username: string;
 };
 
+const DEFAULT_AVATAR = 'https://github.com/github.png?size=80';
+
 export const Dependants: FC<DependantsData & Username> = ({
   username,
   dependants,
@@ -21,9 +23,10 @@ export const Dependants: FC<DependantsData & Username> = ({
   const attachedNodes = uniqUsers
     .slice(0, 4)
     .map((userName) => '@' + shortenUsername(userName));
+
   const centralNode = {
     userName: '@' + shortenUsername(username),
-    avatar: `${userAvatar}&size=80`
+    avatar: userAvatar ? `${userAvatar}&size=80` : DEFAULT_AVATAR
   };
   return (
     <RootCard bgColor="pearlGreen" username={username}>
@@ -65,7 +68,7 @@ export const Dependants: FC<DependantsData & Username> = ({
 
 const graphAccent = '#44B075';
 const Graph: FC<{
-  centralNode: { userName: string; avatar: string };
+  centralNode: { userName: string; avatar?: string };
   attachedNodes: string[];
 }> = ({ centralNode, attachedNodes }) => {
   if (attachedNodes.length === 0) return null;
@@ -97,7 +100,7 @@ const Graph: FC<{
             My top reviewers
           </p>
           <img
-            src={centralNode.avatar}
+            src={centralNode.avatar || DEFAULT_AVATAR}
             width={40}
             height={40}
             tw={'rounded-full'}
@@ -134,7 +137,7 @@ const Graph: FC<{
             My top reviewers
           </p>
           <img
-            src={centralNode.avatar}
+            src={centralNode.avatar || DEFAULT_AVATAR}
             width={40}
             height={40}
             tw={'rounded-full'}
@@ -188,7 +191,7 @@ const Graph: FC<{
             My top reviewers
           </p>
           <img
-            src={centralNode.avatar}
+            src={centralNode.avatar || DEFAULT_AVATAR}
             width={40}
             height={40}
             tw={'rounded-full'}
@@ -275,7 +278,7 @@ const Graph: FC<{
             My top reviewers
           </p>
           <img
-            src={centralNode.avatar}
+            src={centralNode.avatar || DEFAULT_AVATAR}
             width={40}
             height={40}
             tw={'rounded-full'}
