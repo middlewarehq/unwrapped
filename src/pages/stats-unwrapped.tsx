@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchDataFromApi } from '@/utils/axios';
+import { handleRequest } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
 import { FaDownload } from 'react-icons/fa';
@@ -9,6 +9,7 @@ import { useImageDownloader } from '@/hooks/useImageDownloader';
 import { useImageDownloaderAsPdf } from '@/hooks/useImageDownloaderAsPdfHook';
 import Confetti from 'react-confetti';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
 
@@ -20,9 +21,14 @@ export default function StatsUnwrapped() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchDataFromApi<string[]>('/api/download')
+    handleRequest<string[]>('/api/download')
       .then((res) => {
         setUnwrappedImages(res);
+      })
+      .catch((_) => {
+        toast.error('Something went wrong', {
+          position: 'top-right'
+        });
       })
       .finally(() => {
         setIsLoading(false);

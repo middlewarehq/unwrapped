@@ -24,6 +24,12 @@
     width: 100%;
     overflow: hidden;
     aspect-ratio: 2/3;
+    border-radius: 1rem;
+}
+
+.email-input-card {
+    background-color: #7f5af0;
+    background-image: url(/assets/images/reflection.svg);
 }
 
 .swiper-slide-img img {
