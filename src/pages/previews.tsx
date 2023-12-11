@@ -18,7 +18,7 @@ const Previews = () => {
   ];
 
   return (
-    <div className="flex flex-col bg-white">
+    <div className="flex flex-col bg-white text-black">
       <a
         className="m-4 bg-violet-400 w-fit mx-auto p-2 rounded-md hover:bg-violet-600 transform duration-300"
         href={`/api/download?format=archive`}
@@ -32,7 +32,9 @@ const Previews = () => {
               key={index}
               className="flex flex-col items-center justify-center gap-2 mt-2"
             >
-              <p className="text-xl">{link.split('/').slice(-1)}</p>
+              <a href={link} className="text-xl mt-2">
+                {link.split('/').slice(-1)}
+              </a>
               <Image
                 src={link}
                 alt="preview"
