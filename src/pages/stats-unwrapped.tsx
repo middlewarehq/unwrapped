@@ -10,10 +10,6 @@ import { useImageDownloaderAsPdf } from '@/hooks/useImageDownloaderAsPdfHook';
 import Confetti from 'react-confetti';
 import Link from 'next/link';
 
-interface _UnwrappedApiResponse {
-  images: string[];
-}
-
 const LINKEDIN_URL = 'https://www.linkedin.com/';
 
 export default function StatsUnwrapped() {

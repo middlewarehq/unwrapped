@@ -7,7 +7,8 @@ export const config = {
 
 const data = {
   prsDuringDay: 2000,
-  totalPrs: 4000
+  totalPrs: 4000,
+  username: 'jayantbh'
 };
 
 const generateUsingVercel = async () => {

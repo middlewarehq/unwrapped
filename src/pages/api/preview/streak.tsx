@@ -1,13 +1,15 @@
 import { createImageUsingVercel } from '@/api-helpers/vercel-generator';
 import { CardTypes } from '../../../types/cards';
 import { StreakData } from '../../../components/templates/Streak';
+import { Username } from '@/components/templates';
 
 export const config = {
   runtime: 'edge'
 };
 
-const data: StreakData = {
-  streak: 50
+const data: StreakData & Username = {
+  streak: 50,
+  username: 'jayantbh'
 };
 
 const generateUsingVercel = async () => {

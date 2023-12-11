@@ -23,6 +23,7 @@ import {
 } from '@/api-helpers/exapi-sdk/github';
 import { getGithubRepositoryContributionData } from '@/api-helpers/card-data-adapter';
 import { GitHubDataResponse } from '@/types/api-responses';
+import { GithubUser } from '@/api-helpers/exapi-sdk/types';
 
 const remove_users_login = (list: Array<string>, user_login: string) => {
   const indexToRemove = list.indexOf(user_login);
@@ -34,8 +35,10 @@ export const fetchGithubUnwrappedData = async (
   timezone: string,
   username?: string
 ): Promise<GitHubDataResponse> => {
-  const user = await fetchUser(token);
-  username = username || user.login;
+  const user = username
+    ? ({ login: username } as GithubUser)
+    : await fetchUser(token);
+
   const [
     pr_authored_data,
     pr_reviewed_data,
@@ -43,11 +46,11 @@ export const fetchGithubUnwrappedData = async (
     repo_wise_contribution_data,
     contribution_summary
   ] = await Promise.all([
-    fetchAllPullRequests(username, token),
-    fetchAllReviewedPRs(username, token),
-    fetchUserGitHubContributionCalendarMetrics(username, token),
-    fetchRepoWiseContributionsForUser(username, token),
-    fetchUserContributionSummaryMetrics(username, token)
+    fetchAllPullRequests(user.login, token),
+    fetchAllReviewedPRs(user.login, token),
+    fetchUserGitHubContributionCalendarMetrics(user.login, token),
+    fetchRepoWiseContributionsForUser(user.login, token),
+    fetchUserContributionSummaryMetrics(user.login, token)
   ]);
 
   const [authored_prs, authored_monthly_pr_counts] =
@@ -61,12 +64,12 @@ export const fetchGithubUnwrappedData = async (
 
   const top_reviewed_contributors = remove_users_login(
     getTopNRecurringAuthors(reviewed_prs),
-    username
+    user.login
   );
 
   const top_reviewers = remove_users_login(
     getTopNRecurringReviewers(authored_prs),
-    username
+    user.login
   );
 
   const monthly_contributions = getMonthWiseContributionCount(
@@ -78,12 +81,12 @@ export const fetchGithubUnwrappedData = async (
   const { day, night } = splitPRsByDayNight(authored_prs, timezone);
 
   const reviewed_prs_with_requested_changes_count =
-    getUserReviewCountWithRequestChanges(reviewed_prs, username);
+    getUserReviewCountWithRequestChanges(reviewed_prs, user.login);
 
   const repo_wise_opensource_contributions =
     getRepoWiseOpensourceContributionsCount(
       repo_wise_contribution_data,
-      username
+      user.login
     );
 
   return {

@@ -21,7 +21,7 @@ const Previews = () => {
     <div className="flex flex-col bg-white">
       <a
         className="m-4 bg-violet-400 w-fit mx-auto p-2 rounded-md hover:bg-violet-600 transform duration-300"
-        href={`/api/download`}
+        href={`/api/download?format=archive`}
       >
         Download all
       </a>

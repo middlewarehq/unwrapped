@@ -1,12 +1,13 @@
 import { createImageUsingVercel } from '@/api-helpers/vercel-generator';
 import { CardTypes } from '../../../types/cards';
 import { OSSContribsData } from '@/components/templates/OSSContribs';
+import { Username } from '@/components/templates';
 
 export const config = {
   runtime: 'edge'
 };
 
-const data: OSSContribsData = {
+const data: OSSContribsData & Username = {
   // up and down values for the graph
   contribs: [
     {
@@ -27,16 +28,13 @@ const data: OSSContribsData = {
       repo_name: 'unwrapped',
       org_avatar_url: 'https://github.com/middlewarehq.png'
     }
-  ]
+  ],
+  username: 'jayantbh'
 };
 
 const generateUsingVercel = async () => {
   return (
-    await createImageUsingVercel(
-      data as OSSContribsData,
-      CardTypes.OSS_CONTRIBUTION,
-      'browser'
-    )
+    await createImageUsingVercel(data, CardTypes.OSS_CONTRIBUTION, 'browser')
   ).image;
 };
 

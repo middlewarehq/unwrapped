@@ -22,7 +22,11 @@ const fetchAndDownloadImageBuffer = async (
   token = dec(token);
 
   try {
-    const data = await fetchGithubUnwrappedData(token, timezone);
+    const data = await fetchGithubUnwrappedData(
+      token,
+      timezone,
+      req.query.username as string
+    );
     const imageBuffer = await generateImages(data);
 
     if (req.query.format === 'archive') {

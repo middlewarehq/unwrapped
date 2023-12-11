@@ -2,6 +2,7 @@ import { createImageUsingVercel } from '@/api-helpers/vercel-generator';
 import { CardTypes } from '../../../types/cards';
 import { DependantsData } from '../../../components/templates/Dependants';
 import { GithubReview } from '../../../mocks/github';
+import { Username } from '@/components/templates';
 
 export const config = {
   runtime: 'edge'
@@ -31,9 +32,10 @@ const mockGithubUser: GithubReview = {
   avatar: 'https://picsum.photos/id/41/200'
 };
 
-const data: DependantsData = {
+const data: DependantsData & Username = {
   dependants: mockGithubDependants,
-  user: mockGithubUser
+  user: mockGithubUser,
+  username: 'jayantbh'
 };
 
 const generateUsingVercel = async () => {
