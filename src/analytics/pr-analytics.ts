@@ -135,3 +135,21 @@ export const getUserReviewCountWithRequestChanges = (
         rev.node.state === 'CHANGES_REQUESTED'
     )
   ).length;
+
+export const getCommitPercentile = (userCommitCount: number): number => {
+  const commitCounts = [
+    99727, 55127, 24692, 12298, 6132, 2697, 1672, 1157, 714, 481, 313, 233, 187,
+    155, 81, 36, 26, 19, 7, 4, 3, 2, 1
+  ];
+  const percentiles = [
+    0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 3, 4, 5, 10, 20,
+    25, 30, 50, 60, 70, 80, 90
+  ];
+  let percentile = 0.001;
+  for (let i in commitCounts) {
+    if (userCommitCount > commitCounts[i]) break;
+
+    percentile = percentiles[i];
+  }
+  return percentile;
+};

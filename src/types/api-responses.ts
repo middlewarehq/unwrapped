@@ -63,6 +63,10 @@ export type GitHubDataResponse = {
   contribution_percentile: number;
   global_contributions: number;
   reviewed_prs_with_requested_changes_count: number;
+  total_commit_contributions?: number;
+  total_pr_contributions?: number;
+  total_review_contributions?: number;
+  total_issue_contributions?: number;
 };
 
 export type GithubRepositoryContributionData = {
