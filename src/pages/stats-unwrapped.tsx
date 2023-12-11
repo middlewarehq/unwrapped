@@ -11,6 +11,7 @@ import Confetti from 'react-confetti';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { UpdatedImageFile } from '@/types/images';
+import { track } from '@/constants/events';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
 
@@ -60,17 +61,29 @@ export default function StatsUnwrapped() {
             singleImageSharingCallback={downloadImage}
           />
           <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
-            <FaDownload size={36} onClick={() => downloadImage({ images })} />
+            <FaDownload
+              size={36}
+              onClick={() => {
+                downloadImage({ images });
+                track('ZIP_DOWNLOAD_CLICKED');
+              }}
+            />
             <Link href={LINKEDIN_URL} target="_blank">
               <FaLinkedin
                 size={36}
-                onClick={() => downloadImagesAsPdf({ images })}
+                onClick={() => {
+                  downloadImagesAsPdf({ images });
+                  track('LINKEDIN_SHARE_CLICKED');
+                }}
               />
             </Link>
 
             <FaFilePdf
               size={36}
-              onClick={() => downloadImagesAsPdf({ images })}
+              onClick={() => {
+                downloadImagesAsPdf({ images });
+                track('PDF_DOWNLOAD_CLICKED');
+              }}
             />
           </div>
         </div>

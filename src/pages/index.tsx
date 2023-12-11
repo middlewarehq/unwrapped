@@ -1,21 +1,39 @@
 import { major } from '@/styles/fonts';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { MouseScrollAnim } from '@/components/MouseScrollAnim/MouseScrollAnim';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import LogoSvg from '@/assets/unwrapped-logo.svg';
 import { useRouter } from 'next/router';
+import { useTrackingConsent } from '@/components/TrackingConsent';
+import { track } from '@/constants/events';
 
 /**
  * DISABLE_PUBLIC_ONLY_CONTRIBUTIONS
  * Because this isn't implemented yet
  */
 const DISABLE_PUBLIC_ONLY_CONTRIBUTIONS = true;
+const TRACKING_CONSENT_BANNER_DELAY = 2000;
 
 export default function Home() {
-  const [showPrivate, setShowPrivate] = useState(true);
   const { status } = useSession();
   const router = useRouter();
+  const [showPrivate, setShowPrivate] = useState(true);
+  const [showTrackingBanner, setShowTrackingBanner] = useState(false);
+  const showTrackingConsent = useTrackingConsent();
+
+  useEffect(() => {
+    if (!showTrackingBanner) return;
+    showTrackingConsent();
+  }, [showTrackingBanner, showTrackingConsent]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(
+      () => setShowTrackingBanner(true),
+      TRACKING_CONSENT_BANNER_DELAY
+    );
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   return (
     <div className="justify-center w-full flex flex-col gap-4 box-border">
@@ -56,6 +74,7 @@ export default function Home() {
                 <button
                   className="bg-indigo-800 text-white px-4 py-2 rounded-md"
                   onClick={() => {
+                    track('UNWRAP_YOUR_YEAR_CLICKED');
                     router.replace('/stats-unwrapped');
                   }}
                 >
@@ -64,6 +83,7 @@ export default function Home() {
                 <button
                   className="bg-gray-400 bg-opacity-10 text-white px-4 py-1 rounded-md text-xs"
                   onClick={() => {
+                    track('SIGN_OUT_CLICKED');
                     signOut({ redirect: false });
                   }}
                 >
