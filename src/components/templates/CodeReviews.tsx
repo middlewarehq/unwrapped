@@ -24,7 +24,7 @@ export const CodeReviews: FC<CodeReviewsData & Username> = ({
           <p tw="m-0 mt-2">Insta followers</p>
         </div>
       </div>
-      <div tw="flex flex-col p-1 w-full h-full text-center relative justify-center items-center">
+      <div tw="flex flex-col p-1 w-full h-full text-center relative justify-center items-center -mt-4">
         <div tw="flex text-4xl -mt-12 text-black items-baseline text-center">
           <h1 tw="m-0 relative top-2">
             {totalReviewers} dev{totalReviewers === 1 ? '' : 's'}
