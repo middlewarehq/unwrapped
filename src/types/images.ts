@@ -5,3 +5,8 @@ export type ImageFile = {
   data: Buffer;
   image?: ImageResponse;
 };
+
+export type UpdatedImageFile = {
+  fileName: string;
+  data: string;
+};

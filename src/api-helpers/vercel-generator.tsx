@@ -15,11 +15,10 @@ import { SCALE_FACTOR } from '@/constants/general';
 export const createImageUsingVercel = async (
   data: CardTemplateData['data'],
   cardType: CardTypes,
-  env: 'node' | 'browser',
-  index?: number
+  env: 'node' | 'browser' = 'node'
 ): Promise<ImageFile> => {
+  const fileName = `${cardType.toLowerCase()}.png`;
   try {
-    const fileName = (index || 0) + 1 + '.png';
     const fonts = await getFontsForImageGeneration(env);
 
     const generatedImage = new ImageResponse(

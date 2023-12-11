@@ -1,24 +1,25 @@
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { useCallback } from 'react';
+import { UpdatedImageFile } from '@/types/images';
 
 interface DownloadImagesProps {
-  images: string | string[];
+  images: UpdatedImageFile | UpdatedImageFile[];
 }
-const downloadSingleImage = (url: string) => {
-  const fileName = 'unwrapped-image.png';
-  fetch(url)
+const downloadSingleImage = (image: UpdatedImageFile) => {
+  const fileName = image.fileName;
+  fetch(image.data)
     .then((response) => response.blob())
     .then((blob) => saveAs(blob, fileName))
     .catch((error) => console.error('Error downloading image:', error));
 };
 
-const downloadMultipleImages = (urls: string[]) => {
+const downloadMultipleImages = (images: UpdatedImageFile[]) => {
   const zip = new JSZip();
-  const promises = urls.map((url, index) => {
-    const fileName = `image${index + 1}.png`;
+  const promises = images.map((image) => {
+    const fileName = image.fileName;
 
-    return fetch(url)
+    return fetch(image.data)
       .then((response) => response.blob())
       .then((blob) => zip.file(fileName, blob));
   });
