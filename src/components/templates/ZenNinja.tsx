@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { RootCard } from '@/components/templates/RootCard';
 import { websiteUrl } from '../../constants/general';
 import { Username } from '@/components/templates/index';
+import { mean, median } from 'ramda';
 
 export type ZenNinjaData = {
   trends: number[];
@@ -11,15 +12,15 @@ export const ZenNinja: FC<ZenNinjaData & Username> = ({ trends, username }) => {
   const panda = `${websiteUrl}/assets/images/panda.png`;
   const ninja = `${websiteUrl}/assets/images/ninja.png`;
 
-  const isNinja = isErratic(trends);
+  const isNinja = isSpiky(trends);
 
   if (isNinja) {
     return (
       <RootCard bgColor="coralPink" username={username}>
         <div tw="flex flex-col p-1 relative w-full h-full">
           <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
-            <p>Swoop, slash, ...</p>
-            <p tw="m-0">Commit!</p>
+            <p>You execute</p>
+            <p tw="m-0">and deliver like a</p>
           </div>
           <div tw="flex text-4xl mt-8 text-black items-baseline">
             <h1 tw="m-0 relative top-2">Ninja</h1>
@@ -27,13 +28,13 @@ export const ZenNinja: FC<ZenNinjaData & Username> = ({ trends, username }) => {
           <div tw="flex mt-10 flex-col">
             <LineGraph data={trends} color="#611100" />
             <p tw="m-0 mt-4 text-xs text-[#611100] font-semibold">
-              Your contribs graph in 2023
+              Your contribs graph in 2023. Spiky!
             </p>
           </div>
           <div tw="flex text-xl leading-[16px] flex-col mt-12">
-            <p tw="m-0">You lurk in the</p>
-            <p>shadows, but you</p>
-            <p tw="m-0">ship like a shuriken</p>
+            <p tw="m-0">When you ship,</p>
+            <p>you ship entire</p>
+            <p tw="m-0">features in one go</p>
           </div>
         </div>
         <img
@@ -58,13 +59,13 @@ export const ZenNinja: FC<ZenNinjaData & Username> = ({ trends, username }) => {
           <div tw="flex mt-10 flex-col">
             <LineGraph data={trends} color="#004949" />
             <p tw="m-0 mt-4 text-xs text-[#004949] font-semibold">
-              Your contribs graph in 2023
+              Your contribs graph in 2023. Pretty consistent!
             </p>
           </div>
           <div tw="flex text-xl leading-[16px] flex-col mt-12">
-            <p tw="m-0">You’re a master...</p>
-            <p>Of productivity,</p>
-            <p tw="m-0">and consistency</p>
+            <p tw="m-0">You deliver...</p>
+            <p>consistently,</p>
+            <p tw="m-0">and regularly</p>
           </div>
         </div>
         <img
@@ -84,9 +85,7 @@ interface LineGraphProps {
 
 const LineGraph: React.FC<LineGraphProps> = ({ data, color }) => {
   const height = 80;
-
-  const minY = Math.min(...data);
-
+  const minY = 0;
   const maxY = Math.max(...data);
 
   const getYCoordinate = (value: number) =>
@@ -95,18 +94,18 @@ const LineGraph: React.FC<LineGraphProps> = ({ data, color }) => {
   const getPathData = () => {
     return data.map(
       (value, index) =>
-        `${(index * 1000) / 12}, ${height - getYCoordinate(value)}`
+        `${(index * 1000) / data.length}, ${height - getYCoordinate(value)}`
     );
   };
 
   return (
     <div tw="w-full flex h-10">
       {/* @ts-ignore */}
-      <svg tw="w-full h-full">
+      <svg tw="w-full h-full" viewBox="-10 -10 940 100">
         <polyline
           fill="none"
           stroke={color}
-          strokeWidth="4"
+          strokeWidth="8"
           strokeLinecap="round"
           strokeLinejoin="round"
           points={getPathData().join(' ')}
@@ -118,20 +117,13 @@ const LineGraph: React.FC<LineGraphProps> = ({ data, color }) => {
 
 export default LineGraph;
 
-const isErratic = (numbers: number[]): boolean => {
-  if (numbers.length < 3) {
-    return false;
-  }
-
-  const spikeRatioThreshold = 1.5;
-  for (let i = 1; i < numbers.length - 1; i++) {
-    const prevDiff = Math.abs(numbers[i] - numbers[i - 1]);
-    const nextDiff = Math.abs(numbers[i + 1] - numbers[i]);
-    const ratio = nextDiff / prevDiff;
-    if (ratio > spikeRatioThreshold) {
-      return true;
-    }
-  }
-
-  return false; // No spikes found
-};
+function isSpiky(data: number[]): boolean {
+  const avg = mean(data);
+  const med = median(data);
+  const hi = Math.max(...data);
+  const lo = Math.min(...data);
+  const diff = Math.abs(med - avg);
+  const range = hi - lo;
+  const perc = (diff * 100) / range;
+  return perc > 20;
+}

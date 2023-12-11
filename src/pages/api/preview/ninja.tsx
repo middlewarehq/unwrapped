@@ -8,8 +8,7 @@ export const config = {
 };
 
 const data: ZenNinjaData & Username = {
-  // up and down values for the graph
-  trends: [32, 34, 9, 12, 42, 34, 1, 67, 43, 22, 12, 50],
+  trends: [48, 69, 9, 8, 5, 7, 1, 67, 43, 10, 12, 7],
   username: 'jayantbh'
 };
 

@@ -59,8 +59,8 @@ export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
             <p tw="m-0">the sun!</p>
           </div>
           <div tw="flex flex-col text-4xl mt-8 text-black">
-            <h1 tw="m-0">Day</h1>
-            <h1 tw="m-0">Hawk</h1>
+            <h1 tw="m-0">Early</h1>
+            <h1 tw="m-0">Bird</h1>
           </div>
           <div tw="flex text-xl leading-[16px] flex-col mt-6">
             <p tw="m-0">&quot;Cock-a-doodle-doo!&quot;</p>
