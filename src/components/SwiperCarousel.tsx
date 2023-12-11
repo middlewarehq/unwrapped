@@ -12,6 +12,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { ShareButton } from './ShareButton';
 import { UpdatedImageFile } from '@/types/images';
+import { CardTypes, sequence } from '@/types/cards';
 
 interface SwiperCarouselProps {
   images: UpdatedImageFile[];
@@ -81,7 +82,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
           }
         }}
       >
-        {images.map((image, index) => (
+        {images.toSorted(sortImageCards).map((image, index) => (
           <SwiperSlide key={index} className="swiper-slide-img">
             <ShareButton
               className="share-active-image cursor-pointer"
@@ -112,3 +113,13 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
 };
 
 export default SwiperCarousel;
+
+const sortImageCards = (imageA: UpdatedImageFile, imageB: UpdatedImageFile) => {
+  const indexOfA = sequence.indexOf(
+    imageA?.fileName?.split('.')?.[0]?.toUpperCase() as CardTypes
+  );
+  const indexOfB = sequence.indexOf(
+    imageB?.fileName?.split('.')?.[0]?.toUpperCase() as CardTypes
+  );
+  return indexOfA - indexOfB;
+};
