@@ -15,6 +15,7 @@ export const Dependants: FC<DependantsData & Username> = ({
   userAvatar
 }) => {
   const village = `${websiteUrl}/assets/images/village.png`;
+  const abstract = `${websiteUrl}/assets/images/abstract-shape.png`;
   const attachedNodes = dependants
     .slice(0, 4)
     .map((userName) => '@' + shortenUsername(userName));
@@ -24,6 +25,14 @@ export const Dependants: FC<DependantsData & Username> = ({
   };
   return (
     <RootCard bgColor="pearlGreen" username={username}>
+      <img
+        tw="absolute top-[110px] right-[50px]"
+        width={270}
+        height={250}
+        src={abstract}
+        alt=""
+        style={{ transform: 'rotate(135deg)' }}
+      />
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
           <p>It takes a village</p>
