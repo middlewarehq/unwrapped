@@ -1,10 +1,6 @@
+import { ImageFile } from '@/types/images';
 import fs from 'fs/promises';
 import path from 'path';
-
-interface ImageFile {
-  fileName: string;
-  data: Buffer;
-}
 
 async function directoryExists(localDirectory: string): Promise<boolean> {
   try {
