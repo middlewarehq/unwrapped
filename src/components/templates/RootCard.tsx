@@ -28,11 +28,11 @@ export const RootCard: FC<RootCard> = ({ bgColor, children, style }) => {
         width={parseInt(CARD_WIDTH)}
         height={parseInt(CARD_HEIGHT)}
         tw="absolute top-0 right-0"
-        style={{ zIndex: '1' }}
+        style={{ zIndex: 1 }}
       />
 
       <Logo />
-      <div tw="flex z-10 h-full w-full relative" style={{ zIndex: '10' }}>
+      <div tw="flex z-10 h-full w-full relative" style={{ zIndex: 10 }}>
         {children}
       </div>
     </section>
@@ -43,7 +43,7 @@ const Logo = () => {
   return (
     <div
       tw="left-[20px] bottom-[20px] absolute flex items-center"
-      style={{ zIndex: '2' }}
+      style={{ zIndex: 2 }}
     >
       <svg
         width={622 / 5}
