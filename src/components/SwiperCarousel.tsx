@@ -1,7 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
-import { GiShare } from 'react-icons/gi';
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle
@@ -10,6 +9,7 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { ShareButton } from './ShareButton';
 
 interface SwiperCarouselProps {
   images: string[];
@@ -77,11 +77,9 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
       >
         {images.map((image, index) => (
           <SwiperSlide key={index} className="swiper-slide-img">
-            <GiShare
-              size={28}
-              fill="rgb(20, 24, 59)"
+            <ShareButton
               className="share-active-image cursor-pointer"
-              onClick={() => singleImageSharingCallback({ images: image })}
+              callBack={() => singleImageSharingCallback({ images: image })}
             />
             {index !== 0 && (
               <IoIosArrowDropleftCircle

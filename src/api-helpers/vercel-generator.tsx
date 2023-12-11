@@ -43,10 +43,10 @@ export const createImageUsingVercel = async (
       imageArrayBuffer = await generatedImage.arrayBuffer();
     } catch (arrayBufferError) {
       console.error(
-        'Error converting image to array buffer:',
+        `Error converting image to array buffer for ${cardType}:`,
         arrayBufferError
       );
-      throw new Error('Image array buffer conversion failed');
+      throw new Error(`Image buffer creation failed for ${cardType}`);
     }
 
     const imageBuffer = arrayBufferToBuffer(imageArrayBuffer);
@@ -57,7 +57,7 @@ export const createImageUsingVercel = async (
       image: imageCopy
     };
   } catch (error) {
-    console.error('Error in createImageUsingVercel:', error);
-    throw new Error('Image creation failed');
+    console.error(`Error in createImageUsingVercel for ${cardType}:`, error);
+    throw new Error(`Image creation failed for ${cardType}`);
   }
 };

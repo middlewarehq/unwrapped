@@ -18,7 +18,7 @@ export const CodeReviews: FC<CodeReviewsData & Username> = ({
   return (
     <RootCard bgColor="yellow" username={username} decoType="fireworks">
       <div tw="flex absolute w-[300px] top-[-40px] left-[-20px] text-md font-semibold">
-        <img width={160} src={drakeNope} alt="" />
+        <img width={160} height={290} src={drakeNope} alt="" />
         <div tw="flex relative top-[90px] right-[45px] flex-col">
           <p tw="m-0">Having a lot of</p>
           <p tw="m-0 mt-2">Insta followers</p>
@@ -46,6 +46,7 @@ export const CodeReviews: FC<CodeReviewsData & Username> = ({
         <img
           tw="absolute bottom-0 right-0"
           width={250}
+          height={210}
           src={drakeYeah}
           alt=""
         />
