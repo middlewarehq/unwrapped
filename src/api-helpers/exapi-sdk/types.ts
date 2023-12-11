@@ -105,7 +105,7 @@ export interface GithubContributionsCollection {
 
 export interface GitHubMetricsResponse {
   user: {
-    contributionsCollection: GithubContributionsCollection;
+    contributionsCollection?: GithubContributionsCollection;
   };
 }
 
@@ -127,7 +127,7 @@ export interface GithubContributionSummaryCollection {
 export interface GraphQLContributionSummaryResponse {
   data: {
     user: {
-      contributionsCollection: GithubContributionSummaryCollection;
+      contributionsCollection?: GithubContributionSummaryCollection;
     };
   };
 }
@@ -135,7 +135,7 @@ export interface GraphQLContributionSummaryResponse {
 export interface GraphQLRepositoryContributionData {
   data: {
     user: {
-      contributionsCollection: {
+      contributionsCollection?: {
         issueContributionsByRepository: RepositoryContributionData[];
         commitContributionsByRepository: RepositoryContributionData[];
         pullRequestContributionsByRepository: RepositoryContributionData[];

@@ -53,7 +53,15 @@ export const nextAuthConfig = (
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
       authorization:
-        'https://github.com/login/oauth/authorize?scope=read:user+user:email+repo'
+        'https://github.com/login/oauth/authorize?scope=read:user+user:email',
+      name: 'github-public'
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+      authorization:
+        'https://github.com/login/oauth/authorize?scope=read:user+user:email+repo',
+      name: 'github-private'
     })
   ],
   callbacks: {
@@ -64,7 +72,8 @@ export const nextAuthConfig = (
       profile?: Profile;
       account: Account | null;
     }) {
-      switch (account?.provider) {
+      console.log(9999999, account, profile);
+      switch (account?.provider?.split('-')[0]) {
         case 'github': {
           if (!account?.access_token) return false;
           setCookie(GH_COOKIE_ATTR, enc(account.access_token), res);

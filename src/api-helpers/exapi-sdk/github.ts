@@ -8,6 +8,8 @@ import {
   GraphQLContributionSummaryResponse,
   GraphQLRepositoryContributionData
 } from './types';
+import { GithubContributionCalendar } from '@/api-helpers/exapi-sdk/types';
+import { captureException } from '@sentry/nextjs';
 
 async function fetchPullRequestsForMonth(
   author: string,
@@ -238,7 +240,7 @@ export async function fetchUserGitHubContributionCalendarMetrics(
   author: string,
   token: string,
   year_string: string = '2023'
-) {
+): Promise<GithubContributionCalendar> {
   try {
     const response =
       await axios.post<GraphQLContributionCalendarMetricsResponse>(
@@ -272,10 +274,13 @@ export async function fetchUserGitHubContributionCalendarMetrics(
         }
       );
 
-    return response.data.data.user.contributionsCollection.contributionCalendar;
+    const collection = response.data.data.user.contributionsCollection;
+
+    if (collection) return collection.contributionCalendar;
   } catch (error: any) {
     console.error('Error fetching GitHub metrics:', error.message);
   }
+  return { totalContributions: 0, weeks: [] };
 }
 
 export async function fetchUserContributionSummaryMetrics(
@@ -322,79 +327,94 @@ export async function fetchRepoWiseContributionsForUser(
   token: string,
   year_string: string = '2023'
 ): Promise<GraphQLRepositoryContributionData> {
-  const response = await axios.post<GraphQLRepositoryContributionData>(
-    'https://api.github.com/graphql',
-    {
-      query: `
-          query {
-            user(login: "${author}") {
-              contributionsCollection(from: "${year_string}-01-01T00:00:00Z", to: "${year_string}-12-31T23:59:59Z"){
-                issueContributionsByRepository(maxRepositories: 100) {
-                  repository {
-                    name
-                    owner {
-                      login
-                      avatarUrl
+  try {
+    const response = await axios.post<GraphQLRepositoryContributionData>(
+      'https://api.github.com/graphql',
+      {
+        query: `
+            query {
+              user(login: "${author}") {
+                contributionsCollection(from: "${year_string}-01-01T00:00:00Z", to: "${year_string}-12-31T23:59:59Z"){
+                  issueContributionsByRepository(maxRepositories: 100) {
+                    repository {
+                      name
+                      owner {
+                        login
+                        avatarUrl
+                      }
+                      isPrivate
+                      isFork
                     }
-                    isPrivate
-                    isFork
-                  }
-                  contributions {
-                    totalCount
-                  }
-                }
-                commitContributionsByRepository(maxRepositories: 100) {
-                  repository {
-                    name
-                    owner {
-                      login
-                      avatarUrl
+                    contributions {
+                      totalCount
                     }
-                    isPrivate
-                    isFork
                   }
-                  contributions {
-                    totalCount
-                  }
-                }
-                pullRequestContributionsByRepository(maxRepositories: 100) {
-                  repository {
-                    name
-                    owner {
-                      login
-                      avatarUrl
+                  commitContributionsByRepository(maxRepositories: 100) {
+                    repository {
+                      name
+                      owner {
+                        login
+                        avatarUrl
+                      }
+                      isPrivate
+                      isFork
                     }
-                    isPrivate
-                    isFork
-                  }
-                  contributions {
-                    totalCount
-                  }
-                }
-                pullRequestReviewContributionsByRepository(maxRepositories: 100) {
-                  repository {
-                    name
-                    owner {
-                      login
-                      avatarUrl
+                    contributions {
+                      totalCount
                     }
-                    isPrivate
-                    isFork
                   }
-                  contributions {
-                    totalCount
+                  pullRequestContributionsByRepository(maxRepositories: 100) {
+                    repository {
+                      name
+                      owner {
+                        login
+                        avatarUrl
+                      }
+                      isPrivate
+                      isFork
+                    }
+                    contributions {
+                      totalCount
+                    }
+                  }
+                  pullRequestReviewContributionsByRepository(maxRepositories: 100) {
+                    repository {
+                      name
+                      owner {
+                        login
+                        avatarUrl
+                      }
+                      isPrivate
+                      isFork
+                    }
+                    contributions {
+                      totalCount
+                    }
                   }
                 }
               }
             }
-          }
-        `
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+          `
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }
-  );
-  return response.data;
+    );
+
+    const err = (response.data as any)?.errors?.[0]?.message;
+    if (err) throw new Error(err);
+
+    return response.data;
+  } catch (e: any) {
+    captureException(e.message || 'Error fetching contributions collection', {
+      originalException: e
+    });
+    return {
+      data: {
+        user: {}
+      }
+    };
+  }
 }

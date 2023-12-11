@@ -16,7 +16,6 @@ export default function Home() {
   const [showPrivate, setShowPrivate] = useState(true);
   const { status } = useSession();
   const router = useRouter();
-  const currentUrl = new URL(window.location.href);
 
   return (
     <div className="justify-center w-full flex flex-col gap-4 box-border">
@@ -57,9 +56,7 @@ export default function Home() {
                 <button
                   className="bg-indigo-800 text-white px-4 py-2 rounded-md"
                   onClick={() => {
-                    const url = new URL(currentUrl);
-                    url.pathname = '/stats-unwrapped';
-                    router.replace(url);
+                    router.replace('/stats-unwrapped');
                   }}
                 >
                   Unwrap your year, lets go! {'->'}
@@ -77,9 +74,14 @@ export default function Home() {
               <button
                 className="bg-indigo-800 text-white px-4 py-2 rounded-md"
                 onClick={() => {
-                  const url = new URL(currentUrl);
-                  url.pathname = '/stats-unwrapped';
-                  signIn('github', { callbackUrl: url.href });
+                  signIn(
+                    'github-private',
+                    { callbackUrl: '/stats-unwrapped' },
+                    {
+                      authorization:
+                        'https://github.com/login/oauth/authorize?scope=read:user+user:email'
+                    }
+                  );
                 }}
               >
                 Login with Github to start {'->'}

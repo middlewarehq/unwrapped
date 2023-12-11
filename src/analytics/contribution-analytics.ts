@@ -73,9 +73,11 @@ export const getRepoWiseOpensourceContributionsCount = (
   repoContributionData: GraphQLRepositoryContributionData,
   author: string
 ): Array<RepositoryContributionData> => {
-  const flattenedRepoContributionsList = Object.values(
-    repoContributionData.data.user.contributionsCollection
-  ).flat();
+  const collection = repoContributionData.data.user.contributionsCollection;
+
+  if (!collection) return [];
+
+  const flattenedRepoContributionsList = Object.values(collection).flat();
 
   const publicRepoContributions = flattenedRepoContributionsList.filter(
     (repoData) => !repoData.repository.isPrivate

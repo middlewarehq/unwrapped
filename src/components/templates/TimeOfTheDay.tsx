@@ -86,7 +86,7 @@ export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
             <p tw="m-0">sleep?</p>
           </div>
           <div tw="flex flex-col text-4xl mt-8 text-black">
-            <h1 tw="m-0">Nite</h1>
+            <h1 tw="m-0">Night</h1>
             <h1 tw="m-0">Owl</h1>
           </div>
           <div tw="flex text-xl leading-[16px] flex-col mt-6">
