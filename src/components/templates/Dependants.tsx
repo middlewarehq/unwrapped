@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { websiteUrl } from '../../constants/general';
 import { RootCard } from './RootCard';
 import { Username } from '@/components/templates/index';
+import { uniq } from 'ramda';
 
 export type DependantsData = {
   userAvatar: string;
@@ -14,9 +15,10 @@ export const Dependants: FC<DependantsData & Username> = ({
   dependants,
   userAvatar
 }) => {
+  const uniqUsers = uniq(dependants);
   const village = `${websiteUrl}/assets/images/village.png`;
   const abstract = `${websiteUrl}/assets/images/abstract-shape.png`;
-  const attachedNodes = dependants
+  const attachedNodes = uniqUsers
     .slice(0, 4)
     .map((userName) => '@' + shortenUsername(userName));
   const centralNode = {
@@ -45,7 +47,7 @@ export const Dependants: FC<DependantsData & Username> = ({
           <p tw="m-0">And shipping</p>
           <p>your code involved</p>
           <p tw="m-0">
-            <span tw="font-semibold mr-1">{dependants.length} people</span> this
+            <span tw="font-semibold mr-1">{uniqUsers.length} people</span> this
             year!
           </p>
         </div>
