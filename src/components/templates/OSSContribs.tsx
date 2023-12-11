@@ -25,23 +25,27 @@ export const OSSContribs: FC<OSSContribsData> = ({ contribs }) => {
             {contribs.length} {pluralize('repo', contribs.length)}
           </h1>
         </div>
-        <div tw="flex text-xl leading-[16px] flex-col mt-12">
+        <div tw="flex text-xl leading-[16px] flex-col mt-12 font-medium">
           <p tw="m-0">Had open source contribs</p>
           <p>by you this year</p>
         </div>
-        <div tw="flex text-xl leading-[16px] flex-col mt-12">
-          <p tw="m-0 font-bold">Top 3</p>
+        <div tw="flex flex-col mt-12">
+          <p tw="m-0 font-bold text-xl mb-3">
+            Top {contribs.slice(0, 3).length}
+          </p>
           {contribs.slice(0, 3).map((contrib, i) => (
-            <div key={i} tw="flex flex-col h-fit w-fit">
-              <p tw="text-sm leading-none">{contrib.org_name}</p>
-              <p tw="font-medium leading-none">{contrib.repo_name}</p>
+            <div key={i} tw="flex flex-col h-fit w-fit mb-2">
+              <span tw="text-sm leading-none">{contrib.org_name}</span>
+              <span tw="text-md font-medium leading-none">
+                {contrib.repo_name}
+              </span>
             </div>
           ))}
         </div>
       </div>
       <img
-        tw="absolute top-[317px] left-[153px]"
-        width={200}
+        tw="absolute top-[300px] left-[140px]"
+        width={250}
         src={img}
         alt=""
       />

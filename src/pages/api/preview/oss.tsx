@@ -14,6 +14,18 @@ const data: OSSContribsData = {
       org_name: 'middlewarehq',
       repo_name: 'web-manager-dash',
       org_avatar_url: 'https://github.com/middlewarehq.png'
+    },
+    {
+      contributions_count: 10,
+      org_name: 'middlewarehq',
+      repo_name: 'monorepo',
+      org_avatar_url: 'https://github.com/middlewarehq.png'
+    },
+    {
+      contributions_count: 5,
+      org_name: 'middlewarehq',
+      repo_name: 'unwrapped',
+      org_avatar_url: 'https://github.com/middlewarehq.png'
     }
   ]
 };
