@@ -5,6 +5,7 @@ export const getFontsForImageGeneration = async (
   env?: 'browser' | 'node'
 ): Promise<ArrayBuffer[] | Buffer[]> => {
   // fetch works in browser only, not in node, vice-versa with fs
+  console.log({ env });
   if (env === 'browser') {
     const fonts = await Promise.all([
       fetch(
@@ -38,6 +39,10 @@ export const getFontsForImageGeneration = async (
 
     return fonts;
   } else {
+    console.log(
+      11111,
+      path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Thin.ttf')
+    );
     const Thin = fs.readFileSync(
       path.join(process.cwd(), 'public', 'assets', 'fonts', 'Inter-Thin.ttf')
     );

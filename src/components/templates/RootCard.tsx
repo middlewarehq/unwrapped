@@ -36,15 +36,13 @@ export const RootCard: FC<RootCard> = ({
         width={parseInt(CARD_WIDTH)}
         height={parseInt(CARD_HEIGHT)}
         tw="absolute top-0 right-0"
-        style={{ zIndex: 1 }}
       />
 
       <Logo />
       <div
-        tw={`flex z-10 h-full w-full relative flex-col ${
+        tw={`flex h-full w-full relative flex-col ${
           Boolean(username) ? 'pt-4' : ''
         }`}
-        style={{ zIndex: 10 }}
       >
         {Boolean(username) && (
           <div tw="relative left-[5px] top-[-3] font-bold opacity-70 flex justify-between w-full mb-[-16px]">
@@ -60,10 +58,7 @@ export const RootCard: FC<RootCard> = ({
 
 const Logo = () => {
   return (
-    <div
-      tw="left-[20px] bottom-[20px] absolute flex items-center"
-      style={{ zIndex: 2 }}
-    >
+    <div tw="left-[20px] bottom-[20px] absolute flex items-center">
       <svg
         width={622 / 5}
         height={126 / 5}
