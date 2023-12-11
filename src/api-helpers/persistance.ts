@@ -31,7 +31,9 @@ export const saveCards = async (
   }
 };
 
-export const fetchCards = async (userLogin: string): Promise<ImageFile[]> => {
+export const fetchSavedCards = async (
+  userLogin: string
+): Promise<ImageFile[]> => {
   if (awsCredentialExits && bucketName) {
     return await fetchImagesFromS3Directory(bucketName, userLogin);
   } else {
@@ -41,7 +43,7 @@ export const fetchCards = async (userLogin: string): Promise<ImageFile[]> => {
   }
 };
 
-export const deleteCards = async (userLogin: string): Promise<void> => {
+export const deleteSaveCards = async (userLogin: string): Promise<void> => {
   if (awsCredentialExits && bucketName) {
     await deleteS3Directory(bucketName, userLogin);
   } else {
