@@ -13,6 +13,7 @@ import 'swiper/css/navigation';
 import { ShareButton } from './ShareButton';
 import { UpdatedImageFile } from '@/types/images';
 import { CardTypes, sequence } from '@/types/cards';
+import { track } from '@/constants/events';
 
 interface SwiperCarouselProps {
   images: UpdatedImageFile[];
@@ -32,11 +33,13 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
     sliderRef.current?.swiper.slidePrev();
+    track('PREV_IMAGE_CLICKED');
   }, []);
 
   const handleNext = useCallback(() => {
     if (!sliderRef.current) return;
     sliderRef.current?.swiper.slideNext();
+    track('NEXT_IMAGE_CLICKED');
   }, []);
 
   return (
@@ -86,7 +89,10 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
           <SwiperSlide key={index} className="swiper-slide-img">
             <ShareButton
               className="share-active-image cursor-pointer"
-              callBack={() => singleImageSharingCallback({ images: image })}
+              callBack={() => {
+                singleImageSharingCallback({ images: image });
+                track('SINGLE_IMAGE_SHARE_CLICKED');
+              }}
             />
             {index !== 0 && (
               <IoIosArrowDropleftCircle
