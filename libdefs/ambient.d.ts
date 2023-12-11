@@ -19,5 +19,7 @@ declare namespace NodeJS {
     AWS_SECRET_ACCESS_KEY: string;
     AWS_REGION: string;
     UNWRAPPED_PERSISTENCE_BUCKET_NAME: string;
+    NEXT_PUBLIC_MIXPANEL: string;
+    ZAPIER_WEBHOOK_URL: string;
   }
 }

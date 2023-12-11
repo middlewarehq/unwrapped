@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import { AppStateProvider } from '@/contexts/AppContext';
 import { AppLoadingStateWrapper } from '@/components/AppLoadingStateWrapper';
-
+import { Toaster } from 'react-hot-toast';
 import '@/styles/swiper.css';
 import { inter } from '@/styles/fonts';
 import Head from 'next/head';
@@ -24,6 +24,7 @@ export default function App({
         <SessionProvider session={session}>
           <AppStateProvider>
             <AppLoadingStateWrapper>
+              <Toaster />
               <Component {...pageProps} />
             </AppLoadingStateWrapper>
           </AppStateProvider>
