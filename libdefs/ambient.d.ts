@@ -15,5 +15,9 @@ declare namespace NodeJS {
     TOKEN_ENC_PUB_KEY: string;
     TOKEN_ENC_PRI_KEY: string;
     SENTRY_DSN: string;
+    AWS_ACCESS_KEY_ID: string;
+    AWS_SECRET_ACCESS_KEY: string;
+    AWS_REGION: string;
+    UNWRAPPED_PERSISTENCE_BUCKET_NAME: string;
   }
 }
