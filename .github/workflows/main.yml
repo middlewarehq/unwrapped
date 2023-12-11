@@ -11,7 +11,7 @@ on:
   workflow_call:
 
 env:
-  GH_COMMIT_MSG_TO_PROCESS: ${{ github.event.workflow_run.head_commit.message }}
+  GH_COMMIT_MSG_TO_PROCESS: ${{ github.event.head_commit.message }}
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   AWS_REGION: "ap-south-1"
   node-version: "20.10.0"
