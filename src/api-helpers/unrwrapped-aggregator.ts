@@ -108,8 +108,9 @@ export const fetchGithubUnwrappedData = async (
     ),
     total_commit_contributions: contribution_summary?.totalCommitContributions,
     total_pr_contributions: contribution_summary?.totalPullRequestContributions,
-    total_review_contributions: contribution_summary?.totalPullRequestReviewContributions,
+    total_review_contributions:
+      contribution_summary?.totalPullRequestReviewContributions,
     total_issue_contributions: contribution_summary?.totalIssueContributions,
-    global_contributions: 432094792
+    global_contributions: 4500000000
   };
 };
