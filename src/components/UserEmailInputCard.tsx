@@ -65,9 +65,8 @@ export const UserEmailInputCard = () => {
 
   return (
     <div className=" w-full h-full flex flex-col flex justify-between content-start p-6 dark:text-black">
-      <div className="flex  justify-between  font-medium">
-        <span>@shivam-bit</span>
-        <span>unwrapped</span>
+      <div className="flex  justify-end  font-medium">
+        <span>unwrapped.dev</span>
       </div>
       <h5 className="text-xl font-medium text-gray-900 dark:text-black text-left">
         Want to stay informed on how your growth journey is coming along?
