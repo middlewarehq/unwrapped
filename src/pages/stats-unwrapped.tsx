@@ -10,6 +10,7 @@ import { useImageDownloaderAsPdf } from '@/hooks/useImageDownloaderAsPdfHook';
 import Confetti from 'react-confetti';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { UpdatedImageFile } from '@/types/images';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
 
@@ -17,11 +18,13 @@ export default function StatsUnwrapped() {
   const [isLoading, setIsLoading] = useState(false);
   const downloadImage = useImageDownloader();
   const downloadImagesAsPdf = useImageDownloaderAsPdf();
-  const [images, setUnwrappedImages] = useState<string[] | null>(null);
-
+  const [images, setUnwrappedImages] = useState<UpdatedImageFile[] | null>(
+    null
+  );
+  console.log('Debugging', images);
   useEffect(() => {
     setIsLoading(true);
-    handleRequest<string[]>('/api/download')
+    handleRequest<UpdatedImageFile[]>('/api/download')
       .then((res) => {
         setUnwrappedImages(res);
       })

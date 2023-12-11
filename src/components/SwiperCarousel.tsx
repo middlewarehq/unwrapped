@@ -11,10 +11,15 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { ShareButton } from './ShareButton';
+import { UpdatedImageFile } from '@/types/images';
 
 interface SwiperCarouselProps {
-  images: string[];
-  singleImageSharingCallback: ({ images }: { images: string }) => void;
+  images: UpdatedImageFile[];
+  singleImageSharingCallback: ({
+    images
+  }: {
+    images: UpdatedImageFile;
+  }) => void;
 }
 
 const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
@@ -89,7 +94,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
                 onClick={handlePrev}
               />
             )}
-            <img src={image} alt={`Slide ${index + 1}`} />
+            <img src={image.data} alt={`Slide ${index + 1}`} />
 
             <IoIosArrowDroprightCircle
               size={36}

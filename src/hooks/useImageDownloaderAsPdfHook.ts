@@ -1,8 +1,9 @@
 import jsPDF from 'jspdf';
 import { rgbToHex, darkenHexColor } from '@/api-helpers/general';
+import { UpdatedImageFile } from '@/types/images';
 
 interface DownloadImagesAsPdfProps {
-  images: string[];
+  images: UpdatedImageFile[];
 }
 
 const IMAGE_HEIGHT = 600;
@@ -20,7 +21,7 @@ const downloadImagesAsPdf = async ({ images }: DownloadImagesAsPdfProps) => {
     compress: true
   });
   const colorsCodesByImageOrder = await Promise.all(
-    images.map(getColorFromImage)
+    images.map((item) => item.data).map(getColorFromImage)
   );
 
   images.forEach(async (imageUrl, index) => {
@@ -38,7 +39,7 @@ const downloadImagesAsPdf = async ({ images }: DownloadImagesAsPdfProps) => {
     pdf.setDrawColor(darkenHexCode);
     pdf.rect(0, 0, PAGE_WIDTH, PAGE_HEIGHT, 'F');
     pdf.addImage(
-      imageUrl,
+      imageUrl.data,
       'JPEG',
       IMAGE_MARGIN,
       IMAGE_MARGIN,
