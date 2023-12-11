@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useMemo, useState } from 'react';
 import { capitalize } from '@/utils/stringHelpers';
-import { fetchDataFromApi } from '@/utils/axios';
+import { handleRequest } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import { useLocalStorage } from 'usehooks-ts';
 import { useRouter } from 'next/router';
@@ -42,7 +42,7 @@ export default function StatsSummary() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchDataFromApi<ContributionSummaryApiResponse>(
+    handleRequest<ContributionSummaryApiResponse>(
       '/api/github/contribution_summary'
     )
       .then((res) => {
