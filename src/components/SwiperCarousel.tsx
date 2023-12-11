@@ -92,13 +92,12 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
               />
             )}
             <img src={image} alt={`Slide ${index + 1}`} />
-            {
-              <IoIosArrowDroprightCircle
-                size={36}
-                className="next-arrow left-[90%] sm:left-[102%]"
-                onClick={handleNext}
-              />
-            }
+
+            <IoIosArrowDroprightCircle
+              size={36}
+              className="next-arrow left-[90%] sm:left-[102%]"
+              onClick={handleNext}
+            />
           </SwiperSlide>
         ))}
         <SwiperSlide className="swiper-slide-img email-input-card flex flex-col w-full h-full bg-no-repeat bg-cover bg-center bg-fixed">
