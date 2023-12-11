@@ -69,6 +69,22 @@ export const fetchImagesFromLocalDirectory = async (
   }
 };
 
+export const fetchImageFromLocalDirectory = async (
+  filePath: string
+): Promise<ImageFile> => {
+  try {
+    const data = await fs.readFile(filePath);
+    return {
+      fileName: filePath,
+      data
+    };
+  } catch (error: any) {
+    throw new Error(
+      `Error fetching images from local directory: ${error.message}`
+    );
+  }
+};
+
 export const deleteLocalDirectory = async (
   localDirectory: string
 ): Promise<void> => {
