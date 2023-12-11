@@ -11,7 +11,10 @@ export const handleRequest = <T = any>(
   internal({
     url,
     ...params,
-    headers: { 'Content-Type': 'application/json' }
+    headers: {
+      'Content-Type': 'application/json',
+      'x-timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
+    }
   })
     .then(handleThen)
     .catch(handleCatch);
