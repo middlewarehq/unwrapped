@@ -5,6 +5,9 @@ import { archiveFiles } from '../../api-helpers/archive';
 // import { getCardLinksFromGithubData } from '@/api-helpers/general';
 import { fetchGithubUnwrappedData } from '@/api-helpers/unrwrapped-aggregator';
 import { dec } from '@/api-helpers/auth-supplementary';
+import { fetchSavedCards, saveCards } from '@/api-helpers/persistance';
+import { fetchUser } from '@/api-helpers/exapi-sdk/github';
+import { GithubUser } from '@/api-helpers/exapi-sdk/types';
 
 const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
@@ -22,12 +25,23 @@ const fetchAndDownloadImageBuffer = async (
   token = dec(token);
 
   try {
-    const data = await fetchGithubUnwrappedData(
-      token,
-      timezone,
-      req.query.username as string
-    );
-    const imageBuffer = await generateImages(data);
+    const user = req.query.username
+      ? ({ login: req.query.username } as GithubUser)
+      : await fetchUser(token);
+
+    const cachedCardsBuffer = await fetchSavedCards(user.login);
+
+    let imageBuffer = cachedCardsBuffer;
+
+    if (!imageBuffer?.length) {
+      const data = await fetchGithubUnwrappedData(
+        token,
+        timezone,
+        req.query.username as string
+      );
+      imageBuffer = await generateImages(data);
+      saveCards(user.login, imageBuffer);
+    }
 
     if (req.query.format === 'archive') {
       const zippedData = await archiveFiles(
