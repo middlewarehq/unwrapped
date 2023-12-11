@@ -40,3 +40,5 @@ next-env.d.ts
 
 # Sentry Config File
 .sentryclirc
+
+/unwrapped-cards
