@@ -31,7 +31,7 @@ export const OSSContribs: FC<OSSContribsData & Username> = ({
           <p tw="m-0">Had open source contribs</p>
           <p>by you this year</p>
         </div>
-        <div tw="flex flex-col mt-12">
+        <div tw="flex flex-col mt-4">
           <p tw="m-0 font-bold text-xl mb-3">
             Top {contribs.slice(0, 3).length}
           </p>

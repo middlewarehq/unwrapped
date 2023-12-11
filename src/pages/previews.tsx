@@ -15,7 +15,8 @@ const Previews = () => {
     `/api/preview/zen`,
     `/api/preview/ninja`,
     `/api/preview/streak`,
-    `/api/preview/codeReviewers`
+    `/api/preview/codeReviewers`,
+    `/api/preview/oss`
   ];
 
   return (
