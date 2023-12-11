@@ -20,7 +20,7 @@ export const Dependants: FC<DependantsData & Username> = ({
     .map((userName) => '@' + shortenUsername(userName));
   const centralNode = {
     userName: '@' + shortenUsername(username),
-    avatar: `${userAvatar}?size=40`
+    avatar: `${userAvatar}&size=80`
   };
   return (
     <RootCard bgColor="midnight" username={username}>
