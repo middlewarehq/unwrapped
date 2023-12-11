@@ -18,7 +18,7 @@ export default function Home() {
     <div className="justify-center w-full flex flex-col gap-4 box-border">
       <LogoSvg
         style={{
-          position: 'absolute',
+          position: 'fixed',
           right: '-150px',
           bottom: '-200px',
           opacity: 0.3
