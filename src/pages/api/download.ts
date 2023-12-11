@@ -44,9 +44,9 @@ const fetchAndDownloadImageBuffer = async (
     } else {
       res.setHeader('Content-Type', 'application/json');
       res.send(
-        imageBuffer.map(
-          ({ data }) => `data:image/png;base64,${data.toString('base64')}`
-        )
+        []
+        // imageBuffer
+        //   .map(({ data }) => `data:image/png;base64,${data.toString('base64')}`)
       );
     }
     console.log(chalk.green('Successfully sent buffer to client'));
