@@ -96,7 +96,7 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
   const userReviewers: DependantsData | null = data.top_reviewers.length
     ? {
         userAvatar: data.user.avatar_url,
-        dependants: data.top_reviewers.slice(0, 4),
+        dependants: data.top_reviewers,
         username: data.user.login
       }
     : null;

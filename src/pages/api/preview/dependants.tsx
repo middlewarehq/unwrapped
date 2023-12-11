@@ -7,7 +7,7 @@ export const config = {
 };
 
 const mockGithubDependants = [
-  'jayantbh',
+  'jayantbhjandoiahdoahdlal',
   'amoghjalan',
   'dhruvagarwal',
   'shivam-bit',
@@ -19,7 +19,7 @@ const mockGithubDependants = [
   'Palanikannan1437',
   'Dnouv',
   'dkurt'
-].slice(0, 4);
+];
 
 const mockGithubUser = 'eshaan007';
 
