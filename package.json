@@ -13,6 +13,7 @@
     "box-server-start": "yarn install && yarn box-server-start-wo-install"
   },
   "dependencies": {
+    "@sentry/nextjs": "^7.86.0",
     "@vercel/og": "^0.5.20",
     "archiver": "^6.0.1",
     "axios": "^1.6.2",
