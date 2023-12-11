@@ -29,7 +29,9 @@ const fetchAndDownloadImageBuffer = async (
       ? ({ login: req.query.username } as GithubUser)
       : await fetchUser(token);
 
-    const cachedCardsBuffer = await fetchSavedCards(user.login);
+    const cachedCardsBuffer = req.query.recache
+      ? []
+      : await fetchSavedCards(user.login);
 
     let imageBuffer = cachedCardsBuffer;
 
