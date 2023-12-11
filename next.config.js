@@ -17,10 +17,9 @@ const nextConfig = {
     return config;
   }
 };
+module.exports = nextConfig;
 
-if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development') {
-  module.exports = nextConfig;
-} else {
+if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT !== 'development') {
   module.exports = withSentryConfig(
     module.exports,
     {

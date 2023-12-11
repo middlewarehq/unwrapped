@@ -12,7 +12,7 @@ export default function App({
   pageProps: { session, ...pageProps }
 }: AppProps) {
   return (
-    <main className={inter}>
+    <main className={`${inter} text-white`}>
       <SessionProvider session={session}>
         <AppStateProvider>
           <AppLoadingStateWrapper>
