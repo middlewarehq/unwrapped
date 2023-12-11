@@ -83,7 +83,7 @@ export default function Home() {
                 <button
                   className="bg-gray-400 bg-opacity-10 text-white px-4 py-1 rounded-md text-xs"
                   onClick={() => {
-                    track('SING_OUT_CLICKED');
+                    track('SIGN_OUT_CLICKED');
                     signOut({ redirect: false });
                   }}
                 >
