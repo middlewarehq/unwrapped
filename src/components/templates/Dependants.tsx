@@ -15,7 +15,7 @@ export const Dependants: FC<DependantsData & Username> = ({
   username
 }) => {
   const village = `${websiteUrl}/assets/images/village.png`;
-  const attachedNodes = dependants.slice(0, 3).map((d) => '@' + d.userName);
+  const attachedNodes = dependants.map((d) => '@' + d.userName);
   const centralNode = { userName: '@' + user.userName, avatar: user.avatar };
   return (
     <RootCard bgColor="midnight" username={username}>
