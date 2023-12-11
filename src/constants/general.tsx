@@ -41,17 +41,18 @@ export const INTER_FONT_STYLES: FontStyles[] = [
 
 // Card colors
 export const cardColorsMap = {
-  red: '#AD4039',
+  red: '#F49783',
   orange: '#FB8500',
-  teal: '#219EBC',
+  teal: '#58C3DC',
   purple: '#A870F7',
   indigo: '#596CD0',
   grey: '#B7B7B7',
   pink: '#EF90D4',
-  midnight: '#596CD0',
+  pearlGreen: '#71C99A',
   lightGreen: '#1CB0B0',
   coralPink: '#E16666',
   babyBlue: '#67B8F3',
   yellow: '#E2A300',
-  green: '#6F994F'
+  green: '#71CB7F',
+  midnight: '#442773'
 };

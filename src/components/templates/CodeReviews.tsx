@@ -16,7 +16,7 @@ export const CodeReviews: FC<CodeReviewsData & Username> = ({
   const drakeNope = `${websiteUrl}/assets/images/drakeNope.png`;
   const drakeYeah = `${websiteUrl}/assets/images/drakeYeah.png`;
   return (
-    <RootCard bgColor="yellow" username={username}>
+    <RootCard bgColor="yellow" username={username} decoType="fireworks">
       <div tw="flex absolute w-[300px] top-[-40px] left-[-20px] text-md font-semibold">
         <img width={160} src={drakeNope} alt="" />
         <div tw="flex relative top-[90px] right-[45px] flex-col">

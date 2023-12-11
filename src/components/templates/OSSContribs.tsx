@@ -16,7 +16,7 @@ export const OSSContribs: FC<OSSContribsData & Username> = ({
   const img = `${websiteUrl}/assets/images/philanthropist.png`;
 
   return (
-    <RootCard bgColor="babyBlue" username={username}>
+    <RootCard bgColor="babyBlue" username={username} decoType="sunburst">
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
           <p>You know, I&apos;m something of</p>

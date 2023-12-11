@@ -9,7 +9,7 @@ export const config = {
 };
 
 const data: ZenNinjaData & Username = {
-  trends: Array.from({ length: 12 }, () => randInt(-1, 1) + 10),
+  trends: Array.from({ length: 12 }, () => randInt(-1, 1) + 20),
   username: 'jayantbh'
 };
 

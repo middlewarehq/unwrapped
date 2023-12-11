@@ -17,7 +17,7 @@ export const AuthoredReviewed: FC<AuthoredReviewedData & Username> = ({
 }) => {
   const joey = `${websiteUrl}/assets/images/joey.png`;
   return (
-    <RootCard bgColor="red" username={username}>
+    <RootCard bgColor="coralPink" username={username} decoType="left-tree">
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
           <p>Shipping code is</p>

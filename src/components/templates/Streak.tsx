@@ -10,7 +10,7 @@ export type StreakData = {
 export const Streak: FC<StreakData & Username> = ({ streak, username }) => {
   const office = `${websiteUrl}/assets/images/delorean.png`;
   return (
-    <RootCard bgColor="green" username={username}>
+    <RootCard bgColor="green" username={username} decoType="stars">
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex font-semibold flex-col">
           <p tw="text-xl leading-[16px] mb-6">Breaks?</p>

@@ -16,7 +16,7 @@ export const Contributions: FC<ContributionsData & Username> = ({
 }) => {
   const artemis = `${websiteUrl}/assets/images/artemis.png`;
   return (
-    <RootCard bgColor="orange" username={username}>
+    <RootCard bgColor="orange" username={username} decoType="sunburst">
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
           <p>Higher than</p>

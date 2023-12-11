@@ -7,13 +7,17 @@ type RootCard = {
   children: ReactNode;
   style?: CSSProperties;
   username: String;
+  decoType?: 'confetti' | 'sunburst' | 'stars' | 'fireworks' | 'left-tree';
+  showReflection?: boolean;
 };
 
 export const RootCard: FC<RootCard> = ({
   bgColor,
   children,
   style,
-  username
+  username,
+  decoType,
+  showReflection = true
 }) => {
   const computedStyle: CSSProperties = {
     width: CARD_WIDTH,
@@ -27,16 +31,19 @@ export const RootCard: FC<RootCard> = ({
 
   // this is the only way to pass image urls for the vercel/og library
   const reflection = `${websiteUrl}/assets/images/reflection.svg`;
+  const deco = `${websiteUrl}/assets/images/${decoType}.png`;
 
   return (
     <section style={computedStyle} tw="relative flex">
-      <img
-        src={reflection}
-        alt="reflection"
-        width={parseInt(CARD_WIDTH)}
-        height={parseInt(CARD_HEIGHT)}
-        tw="absolute top-0 right-0"
-      />
+      {showReflection && (
+        <img
+          src={reflection}
+          alt="reflection"
+          width={parseInt(CARD_WIDTH)}
+          height={parseInt(CARD_HEIGHT)}
+          tw="absolute top-0 right-0"
+        />
+      )}
 
       <Logo />
       <div
@@ -44,10 +51,49 @@ export const RootCard: FC<RootCard> = ({
           Boolean(username) ? 'pt-4' : ''
         }`}
       >
+        {decoType === 'confetti' ? (
+          <img
+            tw="absolute top-[-20px] left-[-20px] opacity-50"
+            width={400}
+            src={deco}
+            alt=""
+          />
+        ) : decoType === 'sunburst' ? (
+          <img
+            tw="absolute top-[-20px] left-[-140px]"
+            width={400}
+            src={deco}
+            alt=""
+          />
+        ) : decoType === 'stars' ? (
+          <img
+            tw="absolute top-[20px] right-[-20px]"
+            width={150}
+            src={deco}
+            alt=""
+          />
+        ) : decoType === 'fireworks' ? (
+          <img
+            tw="absolute top-[-20px] right-[-20px]"
+            width={180}
+            src={deco}
+            alt=""
+          />
+        ) : decoType === 'left-tree' ? (
+          <img
+            tw="absolute top-[20px] right-[-20px]"
+            width={180}
+            src={deco}
+            alt=""
+          />
+        ) : null}
         {Boolean(username) && (
-          <div tw="relative left-[5px] top-[-3] font-bold opacity-70 flex justify-between w-full">
+          <div
+            tw="relative left-[5px] top-[-3] font-bold opacity-70 flex justify-between w-full"
+            style={{ zIndex: 10 }}
+          >
             <span>@{username}</span>
-            <span>unwrapped.dev</span>
+            <span tw="right-2">unwrapped.dev</span>
           </div>
         )}
         {children}

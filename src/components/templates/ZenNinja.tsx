@@ -16,7 +16,7 @@ export const ZenNinja: FC<ZenNinjaData & Username> = ({ trends, username }) => {
 
   if (isNinja) {
     return (
-      <RootCard bgColor="coralPink" username={username}>
+      <RootCard bgColor="coralPink" username={username} decoType="stars">
         <div tw="flex flex-col p-1 relative w-full h-full">
           <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
             <p>You execute</p>
@@ -47,7 +47,7 @@ export const ZenNinja: FC<ZenNinjaData & Username> = ({ trends, username }) => {
     );
   } else
     return (
-      <RootCard bgColor="lightGreen" username={username}>
+      <RootCard bgColor="lightGreen" username={username} decoType="confetti">
         <div tw="flex flex-col p-1 relative w-full h-full">
           <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
             <p>Inner peace? That’s cool!</p>

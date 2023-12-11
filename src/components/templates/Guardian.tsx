@@ -13,7 +13,7 @@ export const Guardian: FC<GuardianData & Username> = ({
 }) => {
   const groot = `${websiteUrl}/assets/images/groot.png`;
   return (
-    <RootCard bgColor="teal" username={username}>
+    <RootCard bgColor="teal" username={username} decoType="confetti">
       <div tw="flex flex-col p-1 relative w-full h-full">
         <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
           <p>Guardian of the</p>
