@@ -8,20 +8,31 @@ export const config = {
   runtime: 'edge'
 };
 
+const generateStringOfNCharacters = (n: number) => {
+  return Array(n).fill('a').join('');
+};
+
+export const generateRandomNumberBetween = (
+  min: number = 0,
+  max: number = 40
+) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
 const mockGithubDependants: GithubReview[] = [
   {
     name: 'John Doe',
-    userName: 'johndoe',
+    userName: generateStringOfNCharacters(generateRandomNumberBetween()),
     avatar: 'https://picsum.photos/id/11/200'
   },
   {
     name: 'Jane Doe',
-    userName: 'janedoe',
+    userName: generateStringOfNCharacters(generateRandomNumberBetween()),
     avatar: 'https://picsum.photos/id/21/200'
   },
   {
     name: 'John Smith',
-    userName: 'johnsmith',
+    userName: generateStringOfNCharacters(generateRandomNumberBetween()),
     avatar: 'https://picsum.photos/id/31/200'
   }
 ];
