@@ -10,7 +10,7 @@ export const bcryptGen = (username: string): string => {
   const salt = process.env.HASHING_SALT as string;
   if (!salt) return '';
   const hash = hashSync(username, salt);
-  return hash.slice(-HASH_LENGTH);
+  return btoa(hash.slice(-HASH_LENGTH));
 };
 
 export const extractFilenameWithoutExtension = (input: string): string => {

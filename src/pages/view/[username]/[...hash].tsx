@@ -25,7 +25,7 @@ export default function StatsUnwrapped() {
     handleRequest<{
       isValid: boolean;
       data: UpdatedImageFile[];
-    }>('/api/getAllImages', {
+    }>('/api/get-all-images', {
       method: 'GET',
       params: {
         hash: hash,

@@ -17,7 +17,7 @@ const checkHash = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const userNameHash = bcryptGen(username as string);
-  const isValid = userNameHash === hash;
+  const isValid = userNameHash === (hash as string);
 
   if (isValid) {
     try {
