@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 import { UpdatedImageFile } from '@/types/images';
 import { track } from '@/constants/events';
 import { GithubUser } from '@/api-helpers/exapi-sdk/types';
+import { Tooltip } from 'react-tooltip';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
 
@@ -73,6 +74,7 @@ export default function StatsUnwrapped() {
             images={images}
             singleImageSharingCallback={downloadImage}
           />
+
           <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
             <FaDownload
               size={36}
@@ -80,6 +82,8 @@ export default function StatsUnwrapped() {
                 downloadImage({ images });
                 track('ZIP_DOWNLOAD_CLICKED');
               }}
+              data-tooltip-id="carousel-action-menu"
+              data-tooltip-content="Download as zip"
             />
             <Link href={LINKEDIN_URL} target="_blank">
               <FaLinkedin
@@ -88,6 +92,8 @@ export default function StatsUnwrapped() {
                   downloadImagesAsPdf({ images });
                   track('LINKEDIN_SHARE_CLICKED');
                 }}
+                data-tooltip-id="carousel-action-menu"
+                data-tooltip-content="Share on LinkedIn"
               />
             </Link>
 
@@ -97,8 +103,11 @@ export default function StatsUnwrapped() {
                 downloadImagesAsPdf({ images });
                 track('PDF_DOWNLOAD_CLICKED');
               }}
+              data-tooltip-id="carousel-action-menu"
+              data-tooltip-content="Download as PDF"
             />
           </div>
+          <Tooltip id="carousel-action-menu" />
         </div>
       )}
     </div>

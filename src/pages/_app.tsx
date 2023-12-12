@@ -4,7 +4,6 @@ import { SessionProvider } from 'next-auth/react';
 import { AppStateProvider } from '@/contexts/AppContext';
 import { AppLoadingStateWrapper } from '@/components/AppLoadingStateWrapper';
 import { Toaster } from 'react-hot-toast';
-import '@/styles/swiper.css';
 import { inter } from '@/styles/fonts';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -13,6 +12,8 @@ import { useEffect } from 'react';
 import { track, ALLOW_TRACKING_KEY } from '@/constants/events';
 import { useLocalStorage } from 'usehooks-ts';
 import Script from 'next/script';
+import '@/styles/swiper.css';
+import 'react-tooltip/dist/react-tooltip.css';
 
 export default function App({
   Component,
