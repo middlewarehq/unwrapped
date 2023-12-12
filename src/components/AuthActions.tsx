@@ -22,7 +22,7 @@ export const AuthActions = () => {
             className="bg-indigo-800 text-white px-6 py-3 rounded-md text-lg"
             onClick={() => {
               track('UNWRAP_YOUR_YEAR_CLICKED');
-              router.replace('/stats-unwrapped');
+              router.push('/stats-unwrapped');
             }}
           >
             Unwrap your year, lets go! {'->'}
