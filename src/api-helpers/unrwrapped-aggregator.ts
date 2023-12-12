@@ -7,6 +7,7 @@ import {
   getCommitPercentile,
   getPRListAndMonthlyCountsFromGqlResponse,
   getSumOfFirstResponseTimes,
+  getSumOfReworkTimes,
   getTopNRecurringAuthors,
   getTopNRecurringReviewers,
   getTotalCodeAdditions,
@@ -136,10 +137,11 @@ export const fetchImprovementMetricsData = async (
     getPRListAndMonthlyCountsFromGqlResponse(pr_authored_data);
 
   const sumOfFirstResponseTimes = getSumOfFirstResponseTimes(prs_authored_list);
+  const sumOfReworkTimes = getSumOfReworkTimes(prs_authored_list);
 
   return {
     rework_cycles_sum: 0,
     first_response_time_sum: sumOfFirstResponseTimes,
-    rework_time_sum: 0
+    rework_time_sum: sumOfReworkTimes
   };
 };
