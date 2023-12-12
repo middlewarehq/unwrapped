@@ -12,7 +12,8 @@ import {
   removeBotReviews,
   getPRFirstResponseTimeInSeconds,
   getSumOfFirstResponseTimes,
-  getReworkTimeInSeconds
+  getReworkTimeInSeconds,
+  getSumOfReworkTimes
 } from '../pr-analytics';
 import { getPullRequest, getReview } from '../test-utils/factories';
 
@@ -1224,4 +1225,111 @@ test('getReworkTimeInSeconds return correct Rework Time according to first appro
       parseISO(review0.createdAt)
     )
   );
+});
+
+test('getSumOfReworkTimes sends 0 for empty input', () => {
+  expect(getSumOfReworkTimes([])).toStrictEqual(0);
+});
+
+test('getSumOfReworkTimes sends correct values of rework time sum', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+
+  const review0 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'CHANGES_REQUESTED'
+  });
+  const review1 = getReview({
+    createdAt: '2023-06-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'COMMENTED'
+  });
+  const review2 = getReview({
+    createdAt: '2023-06-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'DISMISSED'
+  });
+  const review3 = getReview({
+    createdAt: '2023-07-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'APPROVED'
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review0, review1, review2, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    reviews: [review1, review2, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr3 = getPullRequest({
+    reviews: [review2, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const a =
+    differenceInSeconds(
+      parseISO(review3.createdAt),
+      parseISO(review1.createdAt)
+    ) +
+    differenceInSeconds(
+      parseISO(review3.createdAt),
+      parseISO(review0.createdAt)
+    ) +
+    differenceInSeconds(
+      parseISO(review3.createdAt),
+      parseISO(review2.createdAt)
+    );
+  expect(getSumOfReworkTimes([pr1, pr2, pr3])).toStrictEqual(a);
+});
+
+test('getSumOfReworkTimes does not account prs with negative rework.', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+
+  const review0 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'CHANGES_REQUESTED'
+  });
+  const review1 = getReview({
+    createdAt: '2023-06-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'COMMENTED'
+  });
+  const review2 = getReview({
+    createdAt: '2023-06-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'DISMISSED'
+  });
+  const review3 = getReview({
+    createdAt: '2023-07-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'APPROVED'
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review0, review1, review2, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    reviews: [review1, review2],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr3 = getPullRequest({
+    reviews: [review1],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const a = differenceInSeconds(
+    parseISO(review3.createdAt),
+    parseISO(review0.createdAt)
+  );
+  expect(getSumOfReworkTimes([pr1, pr2, pr3])).toStrictEqual(a);
 });
