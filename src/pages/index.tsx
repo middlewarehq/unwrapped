@@ -123,7 +123,7 @@ export default function Home() {
                   <button
                     className="bg-indigo-800 text-white px-4 py-2 rounded-md shrink-0"
                     onClick={() => {
-                      console.log('public');
+                      // console.log('public');
                     }}
                   >
                     {'->'}
