@@ -16,6 +16,8 @@ import { ZenNinja, ZenNinjaData } from '@/components/templates/ZenNinja';
 import { Streak, StreakData } from '@/components/templates/Streak';
 import { CodeReviews, CodeReviewsData } from './CodeReviews';
 import { OSSContribs, OSSContribsData } from './OSSContribs';
+import { Pioneer } from './Pioneer';
+import { Leader } from './Leader';
 
 export type Username = { username: string };
 
@@ -61,6 +63,10 @@ export const CardTemplate: FC<CardTemplateData> = ({ cardType, data }) => {
       return <Streak {...(data as Username & StreakData)} />;
     case CardTypes.TOP_REVIEWERS:
       return <CodeReviews {...(data as Username & CodeReviewsData)} />;
+    case CardTypes.PIONEER:
+      return <Pioneer {...(data as Username)} />;
+    case CardTypes.LEADER:
+      return <Leader {...(data as Username)} />;
     default:
       return <TimeOfTheDay {...(data as Username & TimeOfTheDayData)} />;
   }

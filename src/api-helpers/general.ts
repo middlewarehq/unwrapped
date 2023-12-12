@@ -1,8 +1,3 @@
-import { websiteUrl } from '../constants/general';
-import { GitHubDataResponse } from '../types/api-responses';
-import { CardTypes } from '../types/cards';
-import { getDataFromGithubResponse } from './card-data-adapter';
-
 export function arrayBufferToBuffer(arrayBuffer: ArrayBuffer): Buffer {
   const uint8Array = new Uint8Array(arrayBuffer);
   const nodeBuffer = Buffer.from(uint8Array);
@@ -31,37 +26,6 @@ export function generateParamUrl(
 
   return `${baseURL}?${paramString}`;
 }
-
-const urlMap: Record<CardTypes, string> = {
-  [CardTypes.UNWRAPPED_INTRO]: `${websiteUrl}/api/card_image/intro`,
-  [CardTypes.DAY_NIGHT_CYCLE]: `${websiteUrl}/api/card_image/timebased`,
-  [CardTypes.YOUR_CONTRIBUTIONS]: `${websiteUrl}/api/card_image/contributions`,
-  [CardTypes.PR_REVIEWED_VS_AUTHORED]: `${websiteUrl}/api/card_image/authoredReviewed`,
-  [CardTypes.GUARDIAN_OF_PROD]: `${websiteUrl}/api/card_image/guardian`,
-  // rest are null
-  [CardTypes.CONTRIBUTION_STREAK]: '',
-  [CardTypes.ZEN_OR_NINJA]: '',
-  [CardTypes.IT_TAKES_A_VILLAGE]: '',
-  [CardTypes.TOP_REVIEWERS]: '',
-  [CardTypes.PR_TIME_LAGS]: '',
-  [CardTypes.PRODUCTION_BREAKING]: '',
-  [CardTypes.OSS_CONTRIBUTION]: ''
-};
-
-export const getCardLinksFromGithubData = (
-  data: GitHubDataResponse
-): string[] => {
-  const adaptedData = getDataFromGithubResponse(data);
-
-  const cardLinks = Object.entries(adaptedData).map(([cardName, cardData]) => {
-    const cardUrl = urlMap[cardName as CardTypes];
-    const params = cardData as ParamsObject;
-    const cardLink = generateParamUrl(cardUrl, params);
-    return cardLink;
-  });
-
-  return cardLinks;
-};
 
 export function rgbToHex(r: number, g: number, b: number): string {
   const toHex = (value: number): string => {
