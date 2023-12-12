@@ -1,9 +1,15 @@
 <a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/unwrapped/assets/7949047/b8a01018-e5dd-4d0f-a5da-ab3cfe039862" width="100%" /></a>
 
 <blockquote align="center">
-  <h3><i>
-  Spotify Unwrapped - for devs. Showcase your contributions just like you flex your music!<br />Check it out at https://unwrapped.dev
-  </i></h3>
+  <h3>
+    <i>
+      Spotify Unwrapped - for devs
+      <br/>
+      Showcase your contributions just like you flex your music!
+      <br />
+      Check it out at https://unwrapped.dev
+    </i>
+  </h3>
 </blockquote>
 
 ---
