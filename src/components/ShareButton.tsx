@@ -24,7 +24,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   const [tweetText, setTweetText] = useState('');
 
   const domain = window.location.origin;
-  const imageUrl = `${domain}/shared/${userName}/${imageName?.split('.')[0]}`;
+  const imageUrl = `${domain}/shared/${userName}/${imageName}`;
 
   const shareToTwitter = () => {
     const encodedText = encodeURIComponent(tweetText || defaultText);

@@ -91,7 +91,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
           <SwiperSlide key={index} className="swiper-slide-img">
             <ShareButton
               userName={userName}
-              imageName={image.fileName}
+              imageName={extractFilenameWithoutExtension(image.fileName)}
               className="share-active-image cursor-pointer"
               callBack={() => {
                 singleImageSharingCallback({ images: image });
