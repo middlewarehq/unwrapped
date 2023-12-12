@@ -35,7 +35,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="justify-center w-full flex flex-col gap-4 box-border">
+    <div className="justify-center w-full flex flex-col gap-4 box-border overflow-hidden">
       <LogoSvg
         style={{
           position: 'fixed',
