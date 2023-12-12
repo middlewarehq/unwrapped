@@ -140,7 +140,6 @@ export const fetchImprovementMetricsData = async (
   const sumOfReworkTimes = getSumOfReworkTimes(prs_authored_list);
 
   return {
-    rework_cycles_sum: 0,
     first_response_time_sum: sumOfFirstResponseTimes,
     rework_time_sum: sumOfReworkTimes
   };
