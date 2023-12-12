@@ -3,6 +3,7 @@ import { GiPaperClip, GiShare } from 'react-icons/gi';
 import {} from 'react-icons';
 import { FaTwitter, FaDownload } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { track } from '@/constants/events';
 
 type ShareButtonProps = {
   imageUrl?: string;
@@ -111,6 +112,7 @@ const CopyPaperClip: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
       setTimeout(() => {
         setIsCopied(false);
       }, 2000);
+      track('SINGLE_IMAGE_PUBLIC_LINK_COPIED');
     } catch (err) {
       console.error('Error copying to clipboard:', err);
     }
