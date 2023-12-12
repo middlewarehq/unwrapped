@@ -1,6 +1,7 @@
 import jsPDF from 'jspdf';
 import { rgbToHex, darkenHexColor } from '@/api-helpers/general';
 import { UpdatedImageFile } from '@/types/images';
+import toast from 'react-hot-toast';
 
 interface DownloadImagesAsPdfProps {
   images: UpdatedImageFile[];
@@ -62,7 +63,21 @@ const downloadImagesAsPdf = async ({ images }: DownloadImagesAsPdfProps) => {
 };
 
 export const useImageDownloaderAsPdf = () => {
-  return downloadImagesAsPdf;
+  return ({ images }: DownloadImagesAsPdfProps) =>
+    toast.promise(
+      downloadImagesAsPdf({ images }),
+      {
+        loading: 'Processing PDF',
+        success: 'Downloaded',
+        error: 'Error while processing'
+      },
+      {
+        position: 'top-right',
+        success: {
+          duration: 3000
+        }
+      }
+    );
 };
 
 async function getColorFromImage(imageUrl: string): Promise<string> {
