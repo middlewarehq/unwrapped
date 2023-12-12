@@ -3,13 +3,14 @@ import { saveAs } from 'file-saver';
 import { useCallback } from 'react';
 import { UpdatedImageFile } from '@/types/images';
 import { logException } from '@/utils/logger';
+import toast from 'react-hot-toast';
 
 interface DownloadImagesProps {
   images: UpdatedImageFile | UpdatedImageFile[];
 }
 const downloadSingleImage = (image: UpdatedImageFile) => {
   const fileName = image.fileName;
-  fetch(image.data)
+  return fetch(image.data)
     .then((response) => response.blob())
     .then((blob) => saveAs(blob, fileName))
     .catch((error) =>
@@ -27,7 +28,7 @@ const downloadMultipleImages = (images: UpdatedImageFile[]) => {
       .then((blob) => zip.file(fileName, blob));
   });
 
-  Promise.all(promises)
+  return Promise.all(promises)
     .then(() => zip.generateAsync({ type: 'blob' }))
     .then((content) => saveAs(content, 'unwrapped-images.zip'))
     .catch((error) =>
@@ -38,11 +39,25 @@ const downloadMultipleImages = (images: UpdatedImageFile[]) => {
 export const useImageDownloader = () => {
   const downloadImages = useCallback(({ images }: DownloadImagesProps) => {
     if (Array.isArray(images)) {
-      downloadMultipleImages(images);
+      return downloadMultipleImages(images);
     } else {
-      downloadSingleImage(images);
+      return downloadSingleImage(images);
     }
   }, []);
 
-  return downloadImages;
+  return ({ images }: DownloadImagesProps) =>
+    toast.promise(
+      downloadImages({ images }),
+      {
+        loading: 'Processing Images',
+        success: 'Downloaded',
+        error: 'Error while processing'
+      },
+      {
+        position: 'top-right',
+        success: {
+          duration: 3000
+        }
+      }
+    );
 };
