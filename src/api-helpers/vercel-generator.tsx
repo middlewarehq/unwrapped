@@ -11,6 +11,7 @@ import {
 import { CardTemplate, CardTemplateData } from '../components/templates';
 import { getFontsForImageGeneration } from './fonts';
 import { SCALE_FACTOR } from '@/constants/general';
+import { logException } from '@/utils/logger';
 
 export const createImageUsingVercel = async (
   data: CardTemplateData['data'],
@@ -41,10 +42,9 @@ export const createImageUsingVercel = async (
     try {
       imageArrayBuffer = await generatedImage.arrayBuffer();
     } catch (arrayBufferError) {
-      console.error(
-        `Error converting image to array buffer for ${cardType}:`,
-        arrayBufferError
-      );
+      logException(`Error converting image to array buffer for ${cardType}`, {
+        originalException: arrayBufferError
+      });
       throw new Error(`Image buffer creation failed for ${cardType}`);
     }
 
@@ -56,7 +56,7 @@ export const createImageUsingVercel = async (
       image: imageCopy
     };
   } catch (error) {
-    console.error(`Error in createImageUsingVercel for ${cardType}:`, error);
+    logException(`Error in createImageUsingVercel for ${cardType}:`);
     throw new Error(`Image creation failed for ${cardType}`);
   }
 };

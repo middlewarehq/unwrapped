@@ -1,6 +1,7 @@
 import { ImageFile } from '@/types/images';
 import fs from 'fs/promises';
 import path from 'path';
+import { logException } from '../logger';
 
 async function directoryExists(localDirectory: string): Promise<boolean> {
   try {
@@ -19,7 +20,9 @@ async function ensureDirectoryExists(localDirectory: string) {
     if (error.code === 'EEXIST') {
       console.log(`Directory already exists: ${localDirectory}`);
     } else {
-      console.error(`Error creating directory: ${error.message}`);
+      logException('Error creating directory:', {
+        originalException: error
+      });
     }
   }
 }

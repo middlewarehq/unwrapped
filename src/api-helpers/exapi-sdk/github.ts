@@ -10,6 +10,7 @@ import {
 } from './types';
 import { GithubContributionCalendar } from '@/api-helpers/exapi-sdk/types';
 import { captureException } from '@sentry/nextjs';
+import { logException } from '@/utils/logger';
 
 async function fetchPullRequestsForMonth(
   author: string,
@@ -111,7 +112,7 @@ export async function fetchAllPullRequests(author: string, token: string) {
     );
     return results;
   } catch (error: any) {
-    console.error('Error fetching data:', error.message);
+    logException('Error fetching data:', { originalException: error });
   }
 }
 

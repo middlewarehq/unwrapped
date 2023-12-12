@@ -2,6 +2,7 @@ import { dec } from '@/api-helpers/auth-supplementary';
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchGithubUnwrappedData } from '@/api-helpers/unrwrapped-aggregator';
+import { logException } from '@/utils/logger';
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,7 +24,9 @@ export default async function handler(
 
     res.status(200).json(unwrappedData);
   } catch (e: any) {
-    console.error(e);
+    logException('Error in /api/github/unwrapped:', {
+      originalException: e
+    });
     res.status(400).send({ message: e.message });
   }
 }

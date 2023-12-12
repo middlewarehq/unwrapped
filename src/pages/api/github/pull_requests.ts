@@ -6,6 +6,7 @@ import {
   fetchUserGitHubContributionCalendarMetrics,
   fetchUser
 } from '@/api-helpers/exapi-sdk/github';
+import { logException } from '@/utils/logger';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -43,7 +44,9 @@ export default async function handler(
       user_metrics
     });
   } catch (e: any) {
-    console.error(e);
+    logException('Error in /api/github/contribution_summary:', {
+      originalException: e
+    });
     res.status(400).send({ message: e.message });
   }
 }
