@@ -1,7 +1,12 @@
 import { ResponseError } from '@/utils/errors';
-import { PullRequestEdge, PullRequest } from '../api-helpers/exapi-sdk/types';
+import {
+  PullRequestEdge,
+  PullRequest,
+  Review
+} from '../api-helpers/exapi-sdk/types';
 import { getTopNKeys } from './utils';
 import { logException } from '@/utils/logger';
+import { sum } from 'ramda';
 
 export const getPRListAndMonthlyCountsFromGqlResponse = (
   edges?: PullRequestEdge[][]
@@ -157,4 +162,41 @@ export const getCommitPercentile = (userCommitCount: number): number => {
     percentile = percentiles[i];
   }
   return percentile;
+};
+
+export const removeBotReviews = (reviews: Review[]) => {
+  if (!reviews) return [];
+  return reviews.filter((review) => !review.author.login?.includes('[bot]'));
+};
+
+export const removeReviewsForUser = (reviews: Review[], userLogin: string) => {
+  if (!reviews) return [];
+  return reviews.filter((review) => !(review.author.login === userLogin));
+};
+
+export const getPRFirstResponseTimeInSeconds = (pr: PullRequest) => {
+  let reviews = pr.reviews.edges.map((reviewEdge) => reviewEdge.node);
+  if (!reviews?.length) return -1;
+
+  reviews = removeReviewsForUser(reviews, pr.author.login);
+
+  let nonBotReviews = removeBotReviews(reviews);
+  if (!nonBotReviews?.length) return -1;
+
+  nonBotReviews.sort((review1, review2) => {
+    const date1 = new Date(review1.createdAt);
+    const date2 = new Date(review2.createdAt);
+    return date1.getTime() - date2.getTime();
+  });
+
+  const firstReview = nonBotReviews[0];
+  const reviewCreatedTimeStamp = new Date(firstReview.createdAt);
+  const prCreatedTimeStamp = new Date(pr.createdAt);
+  return (
+    (reviewCreatedTimeStamp.getTime() - prCreatedTimeStamp.getTime()) / 1000
+  );
+};
+
+export const getSumOfFirstResponseTimes = (prs: PullRequest[]) => {
+  return sum(prs.map((pr) => Math.max(0, getPRFirstResponseTimeInSeconds(pr))));
 };
