@@ -12,6 +12,7 @@ import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
 import { track, ALLOW_TRACKING_KEY } from '@/constants/events';
 import { useLocalStorage } from 'usehooks-ts';
+import Script from 'next/script';
 
 export default function App({
   Component,
@@ -84,6 +85,23 @@ export default function App({
             </AppLoadingStateWrapper>
           </AppStateProvider>
         </SessionProvider>
+
+        {Boolean(process.env.NEXT_PUBLIC_GA) && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA}`}
+            />
+            <Script id="google-analytics">
+              {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', '${process.env.NEXT_PUBLIC_GA}');
+        `}
+            </Script>
+          </>
+        )}
       </main>
     </>
   );
