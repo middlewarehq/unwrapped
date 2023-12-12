@@ -7,20 +7,27 @@ type ShareButtonProps = {
   imageUrl?: string;
   callBack?: (e?: any) => void;
   className?: string;
+  userName?: string;
+  imageName?: string;
 };
 
+const defaultText = 'Check out my GitHub Unwrapped of 2023!';
+
 export const ShareButton: React.FC<ShareButtonProps> = ({
-  imageUrl = 'https://picsum.photos/200',
   callBack,
+  userName,
+  imageName,
   className
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [tweetText, setTweetText] = useState('');
+  const domain = window.location.origin;
+  const imageUrl = `${domain}/api/shared/${userName}/${imageName?.split(
+    '.'
+  )[0]}`;
 
   const shareToTwitter = () => {
-    const encodedText = encodeURIComponent(
-      tweetText || 'Check out my GitHub journey of 2023!'
-    );
+    const encodedText = encodeURIComponent(tweetText || defaultText);
     const encodedImageUrl = encodeURIComponent(imageUrl);
 
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedImageUrl}`;
@@ -50,7 +57,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       {isMenuOpen && (
         <div className="absolute md:w-96 w-72 md:right-12 right-4 top-12 bg-[#11142e] rounded-md shadow-lg p-4">
           <textarea
-            placeholder="Check out my GitHub journey of 2023!"
+            placeholder={defaultText}
             value={tweetText}
             onChange={(e) => setTweetText(e.target.value)}
             className="w-full border text-white outline-none rounded-md p-2 mb-2 bg-[#1c2045] border-[#2d3479]"

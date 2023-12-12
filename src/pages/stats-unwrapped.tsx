@@ -12,6 +12,7 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { UpdatedImageFile } from '@/types/images';
 import { track } from '@/constants/events';
+import { GithubUser } from '@/api-helpers/exapi-sdk/types';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
 
@@ -22,6 +23,8 @@ export default function StatsUnwrapped() {
   const [images, setUnwrappedImages] = useState<UpdatedImageFile[] | null>(
     null
   );
+  const [userName, setUserName] = useState('');
+
   useEffect(() => {
     setIsLoading(true);
     handleRequest<UpdatedImageFile[]>('/api/download')
@@ -35,6 +38,16 @@ export default function StatsUnwrapped() {
       })
       .finally(() => {
         setIsLoading(false);
+      });
+    handleRequest<{ user: GithubUser }>('/api/github/user')
+      .then((r) => {
+        setUserName(r.user.login);
+        console.log('Debugging', r);
+      })
+      .catch((_) => {
+        toast.error('Something went wrong', {
+          position: 'top-right'
+        });
       });
   }, [setUnwrappedImages]);
 
@@ -57,6 +70,7 @@ export default function StatsUnwrapped() {
       {images?.length && (
         <div className="flex flex-col items-center gap-4 w-full ">
           <SwiperCarousel
+            userName={userName}
             images={images}
             singleImageSharingCallback={downloadImage}
           />

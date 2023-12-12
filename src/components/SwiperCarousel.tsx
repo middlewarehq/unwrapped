@@ -17,6 +17,7 @@ import { track } from '@/constants/events';
 
 interface SwiperCarouselProps {
   images: UpdatedImageFile[];
+  userName: string;
   singleImageSharingCallback: ({
     images
   }: {
@@ -26,6 +27,7 @@ interface SwiperCarouselProps {
 
 const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
   singleImageSharingCallback,
+  userName,
   images
 }) => {
   const sliderRef = useRef<SwiperRef | null>(null);
@@ -88,6 +90,8 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
         {images.toSorted(sortImageCards).map((image, index) => (
           <SwiperSlide key={index} className="swiper-slide-img">
             <ShareButton
+              userName={userName}
+              imageName={image.fileName}
               className="share-active-image cursor-pointer"
               callBack={() => {
                 singleImageSharingCallback({ images: image });
