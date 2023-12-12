@@ -20,7 +20,7 @@ const fetchAndDownloadImageBuffer = async (
 
     if (!cachedCardBuffer) {
       return res.status(404).json({
-        message: `Image not found for user ${username} and image name ${cardName}`
+        message: `Card not found for user ${username} and card name ${cardName}`
       });
     }
 

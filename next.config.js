@@ -15,6 +15,14 @@ const nextConfig = {
     });
 
     return config;
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/shared/:path*',
+        destination: '/api/shared/:path*'
+      }
+    ];
   }
 };
 module.exports = nextConfig;
