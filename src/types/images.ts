@@ -9,4 +9,5 @@ export type ImageFile = {
 export type UpdatedImageFile = {
   fileName: string;
   data: string;
+  url: string;
 };

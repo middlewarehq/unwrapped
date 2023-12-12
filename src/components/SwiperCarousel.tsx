@@ -14,6 +14,7 @@ import { ShareButton } from './ShareButton';
 import { UpdatedImageFile } from '@/types/images';
 import { CardTypes, sequence } from '@/types/cards';
 import { track } from '@/constants/events';
+import { extractFilenameWithoutExtension } from '@/utils/stringHelpers';
 
 interface SwiperCarouselProps {
   images: UpdatedImageFile[];
@@ -92,6 +93,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
             <ShareButton
               userName={userName}
               imageName={extractFilenameWithoutExtension(image.fileName)}
+              imageUrl={image.url}
               className="share-active-image cursor-pointer"
               callBack={() => {
                 singleImageSharingCallback({ images: image });
@@ -134,12 +136,4 @@ const sortImageCards = (imageA: UpdatedImageFile, imageB: UpdatedImageFile) => {
   );
 
   return indexOfA - indexOfB;
-};
-
-const extractFilenameWithoutExtension = (input: string): string => {
-  const parts = input.split('/');
-  const filenameWithExtension = parts[parts.length - 1];
-  const filenameParts = filenameWithExtension.split('.');
-  const filenameWithoutExtension = filenameParts[0];
-  return filenameWithoutExtension || '';
 };

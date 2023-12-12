@@ -16,19 +16,18 @@ const defaultText = 'Check out my GitHub Unwrapped of 2023!';
 
 export const ShareButton: React.FC<ShareButtonProps> = ({
   callBack,
-  userName,
-  imageName,
+  imageUrl,
   className
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [tweetText, setTweetText] = useState('');
 
   const domain = window.location.origin;
-  const imageUrl = `${domain}/shared/${userName}/${imageName}`;
 
+  const completeUrl = `${domain}${imageUrl}`;
   const shareToTwitter = () => {
     const encodedText = encodeURIComponent(tweetText || defaultText);
-    const encodedImageUrl = encodeURIComponent(imageUrl);
+    const encodedImageUrl = encodeURIComponent(completeUrl);
 
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedImageUrl}`;
 
@@ -54,7 +53,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           className="cursor-pointer"
           onClick={toggleMenu}
         />
-        <CopyPaperClip textToCopy={imageUrl} />
+        <CopyPaperClip textToCopy={completeUrl} />
       </div>
       {isMenuOpen && (
         <div className="absolute md:w-96 w-72 md:right-12 right-4 top-12 bg-[#11142e] rounded-md shadow-lg p-4">

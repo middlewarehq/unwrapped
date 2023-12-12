@@ -56,3 +56,5 @@ export const cardColorsMap = {
   green: '#71CB7F',
   midnight: '#442773'
 };
+
+export const HASH_LENGTH = 6;

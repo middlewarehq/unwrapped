@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchSavedCard } from '@/api-helpers/persistance';
+import { bcryptGen } from '@/utils/stringHelpers';
 
 const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
@@ -8,6 +9,15 @@ const fetchAndDownloadImageBuffer = async (
 ) => {
   let username = req.query.username as string;
   let cardName = req.query.cardname as string;
+
+  const generatedHash = bcryptGen(username + cardName);
+  const linkHash = (req.query.hash as string[]).join('/') as string;
+
+  if (generatedHash !== linkHash) {
+    return res.status(400).json({
+      message: 'Invalid parameters, must pass valid hash.'
+    });
+  }
 
   if (!username) {
     return res.status(400).json({
