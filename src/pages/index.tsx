@@ -49,12 +49,6 @@ export default function Home() {
         <ThrownCards />
         <div className="flex flex-col gap-4 justify-center grow">
           <span
-            className={`${major} text-lg md:text-2xl lg:text-4xl -mb-4`}
-            style={{ position: 'relative', left: '-0.08em' }}
-          >
-            Github
-          </span>
-          <span
             className={`${major} text-5xl md:text-7xl lg:text-9xl`}
             style={{ position: 'relative', left: '-0.08em' }}
           >
