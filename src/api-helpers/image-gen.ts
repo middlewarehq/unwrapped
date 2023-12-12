@@ -25,11 +25,11 @@ export const generateImages = async (
         createImageUsingVercel(
           { ...adaptedData[cardName], username: data.user.login },
           cardName
-        )
+        ).catch(() => null)
       )
     );
 
-    return imageFileBuffers;
+    return imageFileBuffers.filter(Boolean) as ImageFile[];
   } catch (error) {
     console.error('Error in generateImages:', error);
     logException('Error in generateImages', { originalException: error });

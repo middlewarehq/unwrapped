@@ -42,7 +42,7 @@ export const createImageUsingVercel = async (
     try {
       imageArrayBuffer = await generatedImage.arrayBuffer();
     } catch (error) {
-      logException('Error converting image to array buffer for ${cardType}', {
+      logException(`Error converting image to array buffer for ${cardType}`, {
         originalException: error
       });
       throw new Error(`Image buffer creation failed for ${cardType}`);
