@@ -21,5 +21,6 @@ declare namespace NodeJS {
     UNWRAPPED_PERSISTENCE_BUCKET_NAME: string;
     NEXT_PUBLIC_MIXPANEL: string;
     ZAPIER_WEBHOOK_URL: string;
+    USERNAME_HASHING_SALT: string;
   }
 }
