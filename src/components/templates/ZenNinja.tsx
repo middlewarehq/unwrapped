@@ -125,5 +125,5 @@ function isSpiky(data: number[]): boolean {
   const diff = Math.abs(med - avg);
   const range = hi - lo;
   const perc = (diff * 100) / range;
-  return perc > 20;
+  return perc > 15;
 }

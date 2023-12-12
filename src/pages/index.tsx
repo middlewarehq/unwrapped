@@ -2,11 +2,18 @@ import { major } from '@/styles/fonts';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { MouseScrollAnim } from '@/components/MouseScrollAnim/MouseScrollAnim';
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 
 import LogoSvg from '@/assets/unwrapped-logo.svg';
 import { useRouter } from 'next/router';
 import { useTrackingConsent } from '@/components/TrackingConsent';
 import { track } from '@/constants/events';
+import { IndexPageSection } from '@/components/IndexPageSection';
+import { TrustNotice } from '@/components/TrustNotice';
+
+const PopDevsMasonry = dynamic(() =>
+  import('@/components/PopDevsMasonry').then((m) => m.PopDevsMasonry)
+);
 
 /**
  * DISABLE_PUBLIC_ONLY_CONTRIBUTIONS
@@ -46,7 +53,7 @@ export default function Home() {
         }}
         className="scale-[2] md:scale-[3]"
       />
-      <div className="relative flex flex-col p-4 sm:p-6 md:p-8 lg:p-10 min-h-screen">
+      <IndexPageSection>
         <div className="flex flex-col gap-4 justify-center grow">
           <span
             className={`${major} text-5xl md:text-7xl lg:text-9xl`}
@@ -65,7 +72,7 @@ export default function Home() {
               href="https://middlewarehq.com"
               className="text-purple-400 border-b-2 border-dotted border-b-purple-400"
             >
-              By Middleware {'->'} launching soon
+              By Middleware {'->'}
             </a>
           </span>
           <div className="w-fit flex flex-col gap-2">
@@ -94,14 +101,7 @@ export default function Home() {
               <button
                 className="bg-indigo-800 text-white px-4 py-2 rounded-md"
                 onClick={() => {
-                  signIn(
-                    'github-private',
-                    { callbackUrl: '/stats-unwrapped' },
-                    {
-                      authorization:
-                        'https://github.com/login/oauth/authorize?scope=read:user+user:email'
-                    }
-                  );
+                  signIn('github', { callbackUrl: '/stats-unwrapped' });
                 }}
               >
                 Login with Github to start {'->'}
@@ -160,37 +160,11 @@ export default function Home() {
             <span className="text-purple-400">Scroll down...</span>
           </div>
         </div>
-      </div>
-      <div className="relative flex flex-col p-4 sm:p-6 md:p-8 lg:p-10 min-h-screen gap-2">
-        <span className="text-3xl font-medium mb-3">
-          Trust us? You don&apos;t have to!
-        </span>
-        <span>
-          We could say &quot;your privacy is important to us&quot; and all
-          that...
-        </span>
-        <span>But you won&apos;t believe that, and neither should you.</span>
-        <span>
-          We think the best way to show that, is to simply point you to the
-          <br />
-          <a
-            href="https://github.com/middlewarehq/unwrapped"
-            target="_parent"
-            rel="noreferrer nofollow noopener"
-            className="text-purple-400 border-b-2 border-dotted border-b-purple-400"
-          >
-            unwrapped repo {'->'}
-          </a>
-        </span>
-        <span className="font-semibold mt-8">Things to spot:</span>
-        <span>
-          {'->'} We&apos;re not sending your data anywhere without your consent.
-        </span>
-        <span>
-          {'->'} We do store <span className="font-bold">anonymized</span>{' '}
-          general product usage stats, but with your consent.
-        </span>
-      </div>
+      </IndexPageSection>
+      <IndexPageSection>
+        <TrustNotice />
+        <PopDevsMasonry />
+      </IndexPageSection>
     </div>
   );
 }

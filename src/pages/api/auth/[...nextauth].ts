@@ -53,31 +53,17 @@ export const nextAuthConfig = (
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
       authorization:
-        'https://github.com/login/oauth/authorize?scope=read:user+user:email',
-      name: 'github-public'
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-      authorization:
         'https://github.com/login/oauth/authorize?scope=read:user+user:email+repo',
-      name: 'github-private'
+      name: 'github'
     })
   ],
   callbacks: {
-    async signIn({
-      account,
-      profile
-    }: {
-      profile?: Profile;
-      account: Account | null;
-    }) {
-      console.log(9999999, account, profile);
+    async signIn({ account }: { profile?: Profile; account: Account | null }) {
       switch (account?.provider?.split('-')[0]) {
         case 'github': {
           if (!account?.access_token) return false;
           setCookie(GH_COOKIE_ATTR, enc(account.access_token), res);
-          return await handleGithubSignIn(account, profile);
+          return true;
         }
         default: {
           console.warn(
@@ -99,6 +85,3 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
   return await NextAuth(req, res, nextAuthConfig(req, res));
 }
-
-const handleGithubSignIn = async (...args: any[]) =>
-  !Boolean(console.log(...args));
