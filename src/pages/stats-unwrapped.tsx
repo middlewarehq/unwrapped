@@ -42,7 +42,6 @@ export default function StatsUnwrapped() {
     handleRequest<{ user: GithubUser }>('/api/github/user')
       .then((r) => {
         setUserName(r.user.login);
-        console.log('Debugging', r);
       })
       .catch((_) => {
         toast.error('Something went wrong', {
