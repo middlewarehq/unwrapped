@@ -75,3 +75,9 @@ export type GithubRepositoryContributionData = {
   org_avatar_url?: string;
   contributions_count: number;
 };
+
+export type UserImprovementMetrics = {
+  first_response_time_sum: number;
+  rework_time_sum: number;
+  rework_cycles_sum: number;
+};

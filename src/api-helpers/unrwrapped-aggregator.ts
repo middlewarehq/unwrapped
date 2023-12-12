@@ -6,6 +6,7 @@ import {
 import {
   getCommitPercentile,
   getPRListAndMonthlyCountsFromGqlResponse,
+  getSumOfFirstResponseTimes,
   getTopNRecurringAuthors,
   getTopNRecurringReviewers,
   getTotalCodeAdditions,
@@ -22,7 +23,10 @@ import {
   fetchUserContributionSummaryMetrics
 } from '@/api-helpers/exapi-sdk/github';
 import { getGithubRepositoryContributionData } from '@/api-helpers/card-data-adapter';
-import { GitHubDataResponse } from '@/types/api-responses';
+import {
+  GitHubDataResponse,
+  UserImprovementMetrics
+} from '@/types/api-responses';
 import { GithubUser } from '@/api-helpers/exapi-sdk/types';
 
 const remove_users_login = (list: Array<string>, user_login: string) => {
@@ -115,5 +119,27 @@ export const fetchGithubUnwrappedData = async (
       contribution_summary?.totalPullRequestReviewContributions,
     total_issue_contributions: contribution_summary?.totalIssueContributions,
     global_contributions: 4500000000
+  };
+};
+
+export const fetchImprovementMetricsData = async (
+  token: string,
+  username?: string
+): Promise<UserImprovementMetrics> => {
+  const user = username
+    ? ({ login: username } as GithubUser)
+    : await fetchUser(token);
+
+  const pr_authored_data = await fetchAllPullRequests(user.login, token);
+
+  const [prs_authored_list, _] =
+    getPRListAndMonthlyCountsFromGqlResponse(pr_authored_data);
+
+  const sumOfFirstResponseTimes = getSumOfFirstResponseTimes(prs_authored_list);
+
+  return {
+    rework_cycles_sum: 0,
+    first_response_time_sum: sumOfFirstResponseTimes,
+    rework_time_sum: 0
   };
 };
