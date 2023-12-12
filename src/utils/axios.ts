@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export const internal = axios.create({
@@ -21,6 +22,9 @@ export const handleRequest = <T = any>(
 
 export const handleThen = (r: AxiosResponse) => r.data;
 
-export const handleCatch = (r: { response: AxiosResponse }) => {
-  throw r.response;
+export const handleCatch = (err: { response: AxiosResponse }) => {
+  if (process.env.NODE_ENV === 'production') {
+    Sentry.captureException(err);
+  }
+  throw err.response;
 };
