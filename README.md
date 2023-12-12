@@ -1,16 +1,17 @@
-<a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/unwrapped/assets/7949047/a0adeffd-0aeb-47f6-829d-9d2ab0bdeea7" width="100%" /></a>
+<a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/unwrapped/assets/7949047/b8a01018-e5dd-4d0f-a5da-ab3cfe039862" width="100%" /></a>
 
 <blockquote align="center">
-  <b><i>
+  <h3><i>
   Spotify Unwrapped - for devs. Showcase your contributions just like you flex your music !
-  </i></b>
+  </i></h3>
 </blockquote>
 
 ---
 
 <a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/year-in-review/assets/7949047/8984725a-dcd0-4568-9922-9e50db20313f" width="100%" /></a>
 
-Welcome to **Year in review - for devs** :technologist:! This app is designed to provide you with insights into your coding activities throughout the year, think Spotify  Wrapped but for software developers.  
+## Welcome to **Unwrapped - by Middleware** :technologist:!  
+This app is designed to provide you with insights into your coding activities throughout the year, think Spotify  Wrapped but for software developers.  
 
 <h2 align='center'>🚀 Features 🚀</h2>
 
@@ -22,7 +23,7 @@ Welcome to **Year in review - for devs** :technologist:! This app is designed to
 - **Catching fires before they spread :firefighter:**: Are you often requesting changes and finding bugs before they reach production ?
 - **And Much More :woman_astronaut:**
 
-<img width="1463" alt="image" src="https://github.com/middlewarehq/unwrapped/assets/70485812/dbcb0c3c-d9c5-4986-86af-5984ab6778db">
+<a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/unwrapped/assets/7949047/390e9d7a-183e-41c6-bcde-599d91df732f" width="100%" /></a>
 
 <h2 align='center'>🧑‍💻 Project Setup 🧑‍💻</h2>
 
@@ -97,3 +98,6 @@ You can append these extra keys to your env file to unlock more functioanlity of
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
+
+
+<a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/unwrapped/assets/7949047/49024f49-86bc-49d5-acb6-3cc8037bface" width="100%" /></a>
