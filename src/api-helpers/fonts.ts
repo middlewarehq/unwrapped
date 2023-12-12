@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export const getFontsForImageGeneration = async (
+export const getInterFonts = async (
   env?: 'browser' | 'node'
 ): Promise<ArrayBuffer[] | Buffer[]> => {
   // fetch works in browser only, not in node, vice-versa with fs
