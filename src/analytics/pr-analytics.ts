@@ -7,6 +7,7 @@ import {
 import { getTopNKeys } from './utils';
 import { logException } from '@/utils/logger';
 import { sum } from 'ramda';
+import { differenceInSeconds, parseISO } from 'date-fns';
 
 export const getPRListAndMonthlyCountsFromGqlResponse = (
   edges?: PullRequestEdge[][]
@@ -174,6 +175,14 @@ export const removeReviewsForUser = (reviews: Review[], userLogin: string) => {
   return reviews.filter((review) => !(review.author.login === userLogin));
 };
 
+const sortReviews = (reviews: Review[]) => {
+  reviews.sort((review1, review2) => {
+    const date1 = new Date(review1.createdAt);
+    const date2 = new Date(review2.createdAt);
+    return date1.getTime() - date2.getTime();
+  });
+};
+
 export const getPRFirstResponseTimeInSeconds = (pr: PullRequest) => {
   let reviews = pr.reviews.edges.map((reviewEdge) => reviewEdge.node);
   if (!reviews?.length) return -1;
@@ -183,20 +192,43 @@ export const getPRFirstResponseTimeInSeconds = (pr: PullRequest) => {
   let nonBotReviews = removeBotReviews(reviews);
   if (!nonBotReviews?.length) return -1;
 
-  nonBotReviews.sort((review1, review2) => {
-    const date1 = new Date(review1.createdAt);
-    const date2 = new Date(review2.createdAt);
-    return date1.getTime() - date2.getTime();
-  });
+  sortReviews(nonBotReviews);
 
   const firstReview = nonBotReviews[0];
-  const reviewCreatedTimeStamp = new Date(firstReview.createdAt);
-  const prCreatedTimeStamp = new Date(pr.createdAt);
-  return (
-    (reviewCreatedTimeStamp.getTime() - prCreatedTimeStamp.getTime()) / 1000
+
+  return differenceInSeconds(
+    parseISO(firstReview.createdAt),
+    parseISO(pr.createdAt)
   );
 };
 
 export const getSumOfFirstResponseTimes = (prs: PullRequest[]) => {
   return sum(prs.map((pr) => Math.max(0, getPRFirstResponseTimeInSeconds(pr))));
+};
+
+export const getReworkTimeInSeconds = (pr: PullRequest) => {
+  let reviews = pr.reviews.edges.map((reviewEdge) => reviewEdge.node);
+  if (!reviews?.length) return -1;
+
+  reviews = removeReviewsForUser(reviews, pr.author.login);
+
+  let nonBotReviews = removeBotReviews(reviews);
+  if (!nonBotReviews?.length) return -1;
+
+  sortReviews(nonBotReviews);
+
+  const approvedReviews = nonBotReviews.filter(
+    (review) => review.state === 'APPROVED'
+  );
+
+  if (!approvedReviews?.length) return -1;
+  
+  return differenceInSeconds(
+    parseISO(approvedReviews[0].createdAt),
+    parseISO(nonBotReviews[0].createdAt)
+  );
+};
+
+export const getSumOfReworkTimes = (prs: PullRequest[]) => {
+  return sum(prs.map((pr) => Math.max(0, getReworkTimeInSeconds(pr))));
 };
