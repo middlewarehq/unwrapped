@@ -9,7 +9,7 @@ import {
   INTER_FONT_STYLES
 } from '../constants/general';
 import { CardTemplate, CardTemplateData } from '../components/templates';
-import { getFontsForImageGeneration } from './fonts';
+import { getInterFonts } from './fonts';
 import { SCALE_FACTOR } from '@/constants/general';
 import { logException } from '@/utils/logger';
 
@@ -20,7 +20,7 @@ export const createImageUsingVercel = async (
 ): Promise<ImageFile> => {
   const fileName = `${cardType.toLowerCase()}.png`;
   try {
-    const fonts = await getFontsForImageGeneration(env);
+    const interFonts = await getInterFonts(env);
 
     const generatedImage = new ImageResponse(
       <CardTemplate cardType={cardType} data={data} />,
@@ -29,7 +29,7 @@ export const createImageUsingVercel = async (
         height: parseInt(CARD_HEIGHT) * SCALE_FACTOR,
         fonts: INTER_FONT_STYLES.map((fontData, index) => ({
           name: 'Inter',
-          data: fonts[index],
+          data: interFonts[index],
           style: 'normal',
           weight: fontData.weight
         }))

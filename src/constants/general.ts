@@ -12,8 +12,16 @@ export const CARD_HEIGHT = '600px';
 
 export const SCALE_FACTOR = 3;
 
+// Cover dimensions
+
+export const COVER_WIDTH = '1200px';
+
+export const COVER_HEIGHT = '630px';
+
+export const COVER_SCALE_FACTOR = 2;
+
 // Fonts
-type FontStyles = {
+export type FontStyles = {
   weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
   name:
     | 'Black'
