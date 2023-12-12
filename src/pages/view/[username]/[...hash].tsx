@@ -25,7 +25,7 @@ export default function StatsUnwrapped() {
     handleRequest<{
       isValid: boolean;
       data: UpdatedImageFile[];
-    }>('/api/getAllImages', {
+    }>('/api/get-all-images', {
       method: 'GET',
       params: {
         hash: hash,
@@ -35,10 +35,10 @@ export default function StatsUnwrapped() {
       .then((res) => {
         setIsUrlValid(res.isValid);
         if (res.isValid) {
-          const imageData: UpdatedImageFile[] = res.data.map((link) => ({
-            url: `${window.location.origin}${link.url}`,
-            fileName: link.fileName,
-            data: link.data
+          const imageData: UpdatedImageFile[] = res.data.map((image) => ({
+            url: `${window.location.origin}${image.url}`,
+            fileName: image.fileName,
+            data: image.data
           }));
           setImages(imageData);
         }
@@ -73,7 +73,6 @@ export default function StatsUnwrapped() {
       {images?.length && (
         <div className="flex flex-col items-center gap-4 w-full ">
           <SwiperCarousel
-            useLinksToRenderImages
             hideShareButtons
             userName={userName}
             images={images}

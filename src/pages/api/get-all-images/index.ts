@@ -17,7 +17,7 @@ const checkHash = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const userNameHash = bcryptGen(username as string);
-  const isValid = userNameHash === hash;
+  const isValid = userNameHash === (hash as string);
 
   if (isValid) {
     try {
@@ -27,7 +27,8 @@ const checkHash = async (req: NextApiRequest, res: NextApiResponse) => {
         const hash = bcryptGen((username as string) + filename);
         return {
           ...image,
-          url: `/shared/${username}/${filename}/${hash}`
+          url: `/shared/${username}/${filename}/${hash}`,
+          data: `data:image/png;base64,${image.data.toString('base64')}`
         };
       });
 

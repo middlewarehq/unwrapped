@@ -24,7 +24,6 @@ interface SwiperCarouselProps {
   }: {
     images: UpdatedImageFile;
   }) => void;
-  useLinksToRenderImages?: boolean;
   hideShareButtons?: boolean;
 }
 
@@ -32,7 +31,6 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
   singleImageSharingCallback,
   userName,
   images,
-  useLinksToRenderImages = false,
   hideShareButtons = false
 }) => {
   const sliderRef = useRef<SwiperRef | null>(null);
@@ -113,10 +111,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
                 onClick={handlePrev}
               />
             )}
-            <img
-              src={useLinksToRenderImages ? image.url : image.data}
-              alt={`Slide ${index + 1}`}
-            />
+            <img src={image.data} alt={`Slide ${index + 1}`} />
 
             <IoIosArrowDroprightCircle
               size={36}
