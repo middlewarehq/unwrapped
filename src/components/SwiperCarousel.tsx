@@ -24,12 +24,16 @@ interface SwiperCarouselProps {
   }: {
     images: UpdatedImageFile;
   }) => void;
+  useLinksToRenderImages?: boolean;
+  hideShareButtons?: boolean;
 }
 
 const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
   singleImageSharingCallback,
   userName,
-  images
+  images,
+  useLinksToRenderImages = false,
+  hideShareButtons = false
 }) => {
   const sliderRef = useRef<SwiperRef | null>(null);
 
@@ -90,16 +94,18 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
       >
         {images.toSorted(sortImageCards).map((image, index) => (
           <SwiperSlide key={index} className="swiper-slide-img">
-            <ShareButton
-              userName={userName}
-              imageName={extractFilenameWithoutExtension(image.fileName)}
-              imageUrl={image.url}
-              className="share-active-image cursor-pointer"
-              callBack={() => {
-                singleImageSharingCallback({ images: image });
-                track('SINGLE_IMAGE_SHARE_CLICKED');
-              }}
-            />
+            {!hideShareButtons && (
+              <ShareButton
+                userName={userName}
+                imageName={extractFilenameWithoutExtension(image.fileName)}
+                imageUrl={image.url}
+                className="share-active-image cursor-pointer"
+                callBack={() => {
+                  singleImageSharingCallback({ images: image });
+                  track('SINGLE_IMAGE_SHARE_CLICKED');
+                }}
+              />
+            )}
             {index !== 0 && (
               <IoIosArrowDropleftCircle
                 size={36}
@@ -107,7 +113,10 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
                 onClick={handlePrev}
               />
             )}
-            <img src={image.data} alt={`Slide ${index + 1}`} />
+            <img
+              src={useLinksToRenderImages ? image.url : image.data}
+              alt={`Slide ${index + 1}`}
+            />
 
             <IoIosArrowDroprightCircle
               size={36}

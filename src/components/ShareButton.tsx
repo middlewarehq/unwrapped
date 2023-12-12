@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { GiPaperClip, GiShare } from 'react-icons/gi';
 import {} from 'react-icons';
 import { FaTwitter, FaDownload } from 'react-icons/fa';
-import toast from 'react-hot-toast';
 import { track } from '@/constants/events';
+import toast from 'react-hot-toast';
 import { logException } from '@/utils/logger';
 
 type ShareButtonProps = {
@@ -100,27 +100,19 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
 const CopyPaperClip: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
   const [isCopied, setIsCopied] = useState(false);
 
-  const copyToClipboard = async () => {
-    if (isCopied) return;
-    try {
-      await navigator.clipboard.writeText(textToCopy);
-      // toast
-      toast.success('Copied to clipboard!', {
-        position: 'top-right'
-      });
-      setIsCopied(true);
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 2000);
-      track('SINGLE_IMAGE_PUBLIC_LINK_COPIED');
-    } catch (err) {
-      logException('Error copying to clipboard', { originalException: err });
-    }
+  const onCopy = () => {
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+    track('SINGLE_IMAGE_PUBLIC_LINK_COPIED');
   };
 
   return (
     <div
-      onClick={copyToClipboard}
+      onClick={() => {
+        copyToClipboard(textToCopy, onCopy);
+      }}
       className="absolute flex items-center justify-center rounded-full -top-[6px] -left-14 w-10 h-10 bg-white"
     >
       <GiPaperClip
@@ -137,4 +129,23 @@ const CopyPaperClip: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
       )}
     </div>
   );
+};
+
+export const copyToClipboard = async (
+  textToCopy: string,
+  onCopy?: (e: any) => void,
+  onFailure?: (e: any) => void
+) => {
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    onCopy && onCopy(textToCopy);
+  } catch (err) {
+    toast.error('Error copying to clipboard', {
+      position: 'top-right'
+    });
+    logException(`Error copying to clipboard: ${textToCopy}`, {
+      originalException: err
+    });
+    onFailure && onFailure(err);
+  }
 };

@@ -13,6 +13,7 @@ import {
   extractFilenameWithoutExtension
 } from '@/utils/stringHelpers';
 import { logException } from '@/utils/logger';
+import { ImageAPIResponse } from '@/types/images';
 
 const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
@@ -63,20 +64,25 @@ const fetchAndDownloadImageBuffer = async (
       res.setHeader('Content-Type', 'application/zip');
       res.send(zippedData);
     } else {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(
-        imageBuffer.map(({ data, fileName }) => {
-          const file = extractFilenameWithoutExtension(fileName);
-          const username = user.login;
-          const hash = bcryptGen(username + file);
+      const username = user.login;
+      const userNameHash = bcryptGen(username);
+      const shareUrl = `/view/${user.login}/${userNameHash}`;
 
-          return {
-            fileName,
-            url: `/shared/${username}/${file}/${hash}`,
-            data: `data:image/png;base64,${data.toString('base64')}`
-          };
-        })
-      );
+      const imageData = imageBuffer.map(({ data, fileName }) => {
+        const file = extractFilenameWithoutExtension(fileName);
+        const hash = bcryptGen(username + file);
+
+        return {
+          fileName,
+          url: `/shared/${username}/${file}/${hash}`,
+          data: `data:image/png;base64,${data.toString('base64')}`
+        };
+      });
+      res.setHeader('Content-Type', 'application/json');
+      res.send({
+        shareAllUrl: shareUrl,
+        data: imageData
+      } as ImageAPIResponse);
     }
     console.log(chalk.green('Successfully sent buffer to client'));
   } catch (error: any) {
