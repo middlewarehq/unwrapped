@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { GiShare } from 'react-icons/gi';
+import { GiPaperClip, GiShare } from 'react-icons/gi';
 import {} from 'react-icons';
 import { FaTwitter, FaDownload } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 type ShareButtonProps = {
   imageUrl?: string;
@@ -21,6 +22,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [tweetText, setTweetText] = useState('');
+
   const domain = window.location.origin;
   const imageUrl = `${domain}/api/shared/${userName}/${imageName?.split(
     '.'
@@ -47,13 +49,15 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
 
   return (
     <div className={'relative inline-block ' + className}>
-      <GiShare
-        size={28}
-        fill="rgb(20, 24, 59)"
-        className="cursor-pointer"
-        onClick={toggleMenu}
-      />
-
+      <div className="relative">
+        <GiShare
+          size={28}
+          fill="rgb(20, 24, 59)"
+          className="cursor-pointer"
+          onClick={toggleMenu}
+        />
+        <CopyPaperClip textToCopy={imageUrl} />
+      </div>
       {isMenuOpen && (
         <div className="absolute md:w-96 w-72 md:right-12 right-4 top-12 bg-[#11142e] rounded-md shadow-lg p-4">
           <textarea
@@ -88,6 +92,47 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
               Cancel
             </button>
           </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const CopyPaperClip: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const copyToClipboard = async () => {
+    if (isCopied) return;
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      // toast
+      toast.success('Copied to clipboard!', {
+        position: 'top-right'
+      });
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
+    } catch (err) {
+      console.error('Error copying to clipboard:', err);
+    }
+  };
+
+  return (
+    <div
+      onClick={copyToClipboard}
+      className="absolute flex items-center justify-center rounded-full -left-1 -bottom-14 w-10 h-10 bg-white"
+    >
+      <GiPaperClip
+        size={24}
+        fill="rgb(20, 24, 59)"
+        style={{
+          opacity: isCopied ? 0.5 : 1
+        }}
+      />
+      {isCopied && (
+        <div className="absolute bottom-1 -left-20 text-white bg-[#2d3479] rounded-md px-2 py-1">
+          Copied!
         </div>
       )}
     </div>
