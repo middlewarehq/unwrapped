@@ -2,7 +2,7 @@
 
 <blockquote align="center">
   <h3><i>
-  Spotify Unwrapped - for devs. Showcase your contributions just like you flex your music !
+  Spotify Unwrapped - for devs. Showcase your contributions just like you flex your music!<br />Check it out at https://unwrapped.dev
   </i></h3>
 </blockquote>
 
