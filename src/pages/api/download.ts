@@ -8,6 +8,10 @@ import { dec } from '@/api-helpers/auth-supplementary';
 import { fetchSavedCards, saveCards } from '@/api-helpers/persistance';
 import { fetchUser } from '@/api-helpers/exapi-sdk/github';
 import { GithubUser } from '@/api-helpers/exapi-sdk/types';
+import {
+  bcryptGen,
+  extractFilenameWithoutExtension
+} from '@/utils/stringHelpers';
 
 const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
@@ -60,10 +64,17 @@ const fetchAndDownloadImageBuffer = async (
     } else {
       res.setHeader('Content-Type', 'application/json');
       res.send(
-        imageBuffer.map(({ data, fileName }) => ({
-          fileName,
-          data: `data:image/png;base64,${data.toString('base64')}`
-        }))
+        imageBuffer.map(({ data, fileName }) => {
+          const file = extractFilenameWithoutExtension(fileName);
+          const username = user.login;
+          const hash = bcryptGen(username + file);
+
+          return {
+            fileName,
+            url: `/shared/${username}/${file}/${hash}`,
+            data: `data:image/png;base64,${data.toString('base64')}`
+          };
+        })
       );
     }
     console.log(chalk.green('Successfully sent buffer to client'));
