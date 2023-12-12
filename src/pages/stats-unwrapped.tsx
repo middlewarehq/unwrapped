@@ -89,7 +89,6 @@ export default function StatsUnwrapped() {
               <FaLinkedin
                 size={36}
                 onClick={() => {
-                  downloadImagesAsPdf({ images });
                   track('LINKEDIN_SHARE_CLICKED');
                 }}
                 data-tooltip-id="carousel-action-menu"
@@ -99,7 +98,7 @@ export default function StatsUnwrapped() {
 
             <FaFilePdf
               size={36}
-              onClick={() => {
+              onClick={async () => {
                 downloadImagesAsPdf({ images });
                 track('PDF_DOWNLOAD_CLICKED');
               }}
