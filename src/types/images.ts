@@ -11,3 +11,8 @@ export type UpdatedImageFile = {
   data: string;
   url: string;
 };
+
+export type ImageAPIResponse = {
+  data: UpdatedImageFile[];
+  shareAllUrl: string;
+};

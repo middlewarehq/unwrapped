@@ -3,16 +3,17 @@ import { handleRequest } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
 import { FaDownload } from 'react-icons/fa';
-import { FaFilePdf } from 'react-icons/fa6';
+import { FaFilePdf, FaShare } from 'react-icons/fa6';
 import { FaLinkedin } from 'react-icons/fa';
 import { useImageDownloader } from '@/hooks/useImageDownloader';
 import { useImageDownloaderAsPdf } from '@/hooks/useImageDownloaderAsPdfHook';
 import Confetti from 'react-confetti';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { UpdatedImageFile } from '@/types/images';
+import { ImageAPIResponse, UpdatedImageFile } from '@/types/images';
 import { track } from '@/constants/events';
 import { GithubUser } from '@/api-helpers/exapi-sdk/types';
+import { copyToClipboard } from '@/components/ShareButton';
 import { Tooltip } from 'react-tooltip';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
@@ -25,12 +26,13 @@ export default function StatsUnwrapped() {
     null
   );
   const [userName, setUserName] = useState('');
-
+  const [shareUrl, setShareUrl] = useState('');
   useEffect(() => {
     setIsLoading(true);
-    handleRequest<UpdatedImageFile[]>('/api/download')
+    handleRequest<ImageAPIResponse>('/api/download')
       .then((res) => {
-        setUnwrappedImages(res);
+        setUnwrappedImages(res.data);
+        setShareUrl(res.shareAllUrl);
       })
       .catch((_) => {
         toast.error('Something went wrong', {
@@ -70,6 +72,7 @@ export default function StatsUnwrapped() {
       {images?.length && (
         <div className="flex flex-col items-center gap-4 w-full ">
           <SwiperCarousel
+            useLinksToRenderImages
             userName={userName}
             images={images}
             singleImageSharingCallback={downloadImage}
@@ -105,6 +108,14 @@ export default function StatsUnwrapped() {
               data-tooltip-id="carousel-action-menu"
               data-tooltip-content="Download as PDF"
             />
+            {shareUrl && (
+              <FaShare
+                size={36}
+                onClick={() => {
+                  copyToClipboard(window.location.origin + shareUrl);
+                }}
+              />
+            )}
           </div>
           <Tooltip id="carousel-action-menu" />
         </div>
