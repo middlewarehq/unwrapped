@@ -52,7 +52,7 @@ This app is designed to provide you with insights into your coding activities th
       Rstart your terminal and install node.
       ```
       nvm install 20.10.0
-      nvm use 20.10.9
+      nvm use 20.10.0
       ```
   
 <h3>CodeBase Setup</h3>
