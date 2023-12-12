@@ -7,7 +7,10 @@ import {
   getTopNRecurringAuthors,
   splitPRsByDayNight,
   getUserReviewCountWithRequestChanges,
-  getCommitPercentile
+  getCommitPercentile,
+  removeBotReviews,
+  getPRFirstResponseTimeInSeconds,
+  getSumOfFirstResponseTimes
 } from '../pr-analytics';
 import { getPullRequest, getReview } from '../test-utils/factories';
 
@@ -797,4 +800,237 @@ test('getCommitPercentile returns correct percentile', () => {
   expect(getCommitPercentile(0)).toStrictEqual(90);
   expect(getCommitPercentile(6140)).toStrictEqual(0.01);
   expect(getCommitPercentile(6140000)).toStrictEqual(0.001);
+});
+
+test('removeBotReviews return empty list for empty input list.', () => {
+  expect(removeBotReviews([])).toStrictEqual([]);
+});
+
+test('removeBotReviews return empty list for all bot reviews.', () => {
+  const reviewer3 = 'shivam-bit[bot]';
+  const reviewer4 = 'todo[bot]';
+
+  const review3 = getReview({ reviewerLogin: reviewer3 });
+  const review4 = getReview({ reviewerLogin: reviewer4 });
+
+  expect(removeBotReviews([review3])).toStrictEqual([]);
+  expect(removeBotReviews([review3, review4])).toStrictEqual([]);
+});
+
+test('removeBotReviews return same list for no bot reviews.', () => {
+  const reviewer1 = 'samad-yar-khan';
+  const reviewer2 = 'dhruv';
+
+  const review1 = getReview({ reviewerLogin: reviewer1 });
+  const review2 = getReview({ reviewerLogin: reviewer2 });
+
+  expect(removeBotReviews([review1])).toStrictEqual([review1]);
+  expect(removeBotReviews([review1, review2])).toStrictEqual([
+    review1,
+    review2
+  ]);
+});
+
+test('removeBotReviews filters out reviews where reviewers login contains [bot]', () => {
+  const reviewer1 = 'samad-yar-khan';
+  const reviewer2 = 'dhruv';
+  const reviewer3 = 'shivam-bit[bot]';
+  const reviewer4 = 'todo[bot]';
+
+  const review1 = getReview({ reviewerLogin: reviewer1 });
+  const review2 = getReview({ reviewerLogin: reviewer2 });
+  const review3 = getReview({ reviewerLogin: reviewer3 });
+  const review4 = getReview({ reviewerLogin: reviewer4 });
+
+  expect(removeBotReviews([review1, review2, review3, review4])).toStrictEqual([
+    review1,
+    review2
+  ]);
+});
+
+test('removeBotReviews  does not filters out reviews where reviewers login contains bot', () => {
+  const reviewer1 = 'samad-yar-khan';
+  const reviewer2 = 'dhruv';
+  const reviewer3 = 'shivam-bit[bot]';
+  const reviewer4 = 'todo[bot]';
+  const reviewer5 = 'jayantbot';
+
+  const review1 = getReview({ reviewerLogin: reviewer1 });
+  const review2 = getReview({ reviewerLogin: reviewer2 });
+  const review3 = getReview({ reviewerLogin: reviewer3 });
+  const review4 = getReview({ reviewerLogin: reviewer4 });
+  const review5 = getReview({ reviewerLogin: reviewer5 });
+
+  expect(
+    removeBotReviews([review1, review2, review3, review5, review4])
+  ).toStrictEqual([review1, review2, review5]);
+});
+
+test('removeBotReviews  does not filters out reviews where reviewers login contains bot', () => {
+  const reviewer1 = 'samad-yar-khan';
+  const reviewer2 = 'dhruv';
+  const reviewer3 = 'shivam-bit[bot]';
+  const reviewer4 = 'todo[bot]';
+  const reviewer5 = 'jayantbot';
+
+  const review1 = getReview({ reviewerLogin: reviewer1 });
+  const review2 = getReview({ reviewerLogin: reviewer2 });
+  const review3 = getReview({ reviewerLogin: reviewer3 });
+  const review4 = getReview({ reviewerLogin: reviewer4 });
+  const review5 = getReview({ reviewerLogin: reviewer5 });
+
+  expect(
+    removeBotReviews([review1, review2, review3, review5, review4])
+  ).toStrictEqual([review1, review2, review5]);
+});
+
+test('getPRFirstResponseTimeInSeconds  returns -1 for no Reviews', () => {
+  const pr1 = getPullRequest({ reviews: [] });
+  expect(getPRFirstResponseTimeInSeconds(pr1)).toStrictEqual(-1);
+});
+
+test('getPRFirstResponseTimeInSeconds  returns correct first response time', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+  const review1 = getReview({
+    createdAt: '2023-05-11T13:13:21Z',
+    reviewerLogin: reviewer
+  });
+  const review2 = getReview({
+    createdAt: '2023-05-11T13:48:03Z',
+    reviewerLogin: reviewer
+  });
+  const review3 = getReview({
+    createdAt: '2023-05-12T07:41:05Z',
+    reviewerLogin: reviewer
+  });
+  const review4 = getReview({
+    createdAt: '2023-05-12T12:40:28Z',
+    reviewerLogin: reviewer
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review2, review3, review1, review4],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  expect(getPRFirstResponseTimeInSeconds(pr1)).toStrictEqual(168629);
+});
+
+test('getPRFirstResponseTimeInSeconds ignores early comment by the  author itself.', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+
+  const review0 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: prAuthor
+  });
+  const review1 = getReview({
+    createdAt: '2023-05-11T13:13:21Z',
+    reviewerLogin: reviewer
+  });
+  const review2 = getReview({
+    createdAt: '2023-05-11T13:48:03Z',
+    reviewerLogin: reviewer
+  });
+  const review3 = getReview({
+    createdAt: '2023-05-12T07:41:05Z',
+    reviewerLogin: reviewer
+  });
+  const review4 = getReview({
+    createdAt: '2023-05-12T12:40:28Z',
+    reviewerLogin: reviewer
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review0, review2, review3, review1, review4],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  expect(getPRFirstResponseTimeInSeconds(pr1)).toStrictEqual(168629);
+});
+
+test('getSumOfFirstResponseTimes sends 0 for empty input', () => {
+  expect(getSumOfFirstResponseTimes([])).toStrictEqual(0);
+});
+
+test('getSumOfFirstResponseTimes send correct sum of first response time.', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+
+  const review0 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: prAuthor
+  });
+  const review1 = getReview({
+    createdAt: '2023-05-11T13:13:21Z',
+    reviewerLogin: reviewer
+  });
+  const review2 = getReview({
+    createdAt: '2023-05-11T13:48:03Z',
+    reviewerLogin: reviewer
+  });
+  const review3 = getReview({
+    createdAt: '2023-05-12T07:41:05Z',
+    reviewerLogin: reviewer
+  });
+  const review4 = getReview({
+    createdAt: '2023-05-12T12:40:28Z',
+    reviewerLogin: reviewer
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review0, review2, review3, review1, review4],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    reviews: [review0, review2, review3, review1, review4],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  expect(getSumOfFirstResponseTimes([pr1, pr2])).toStrictEqual(337258);
+});
+
+test('getSumOfFirstResponseTimes does not account PRs with negative first response time', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+
+  const review0 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: prAuthor
+  });
+  const review1 = getReview({
+    createdAt: '2023-05-11T13:13:21Z',
+    reviewerLogin: reviewer
+  });
+  const review2 = getReview({
+    createdAt: '2023-05-11T13:48:03Z',
+    reviewerLogin: reviewer
+  });
+  const review3 = getReview({
+    createdAt: '2023-05-12T07:41:05Z',
+    reviewerLogin: reviewer
+  });
+  const review4 = getReview({
+    createdAt: '2023-05-12T12:40:28Z',
+    reviewerLogin: reviewer
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review0, review2, review3, review1, review4],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    reviews: [review0],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr3 = getPullRequest({
+    reviews: [],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  expect(getSumOfFirstResponseTimes([pr1, pr2, pr3])).toStrictEqual(168629);
 });
