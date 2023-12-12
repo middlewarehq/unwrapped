@@ -21,6 +21,10 @@ const nextConfig = {
       {
         source: '/shared/:path*',
         destination: '/api/shared/:path*'
+      },
+      {
+        source: '/api/tunnel/mixpanel/:path*',
+        destination: 'https://api-js.mixpanel.com/:path*'
       }
     ];
   }

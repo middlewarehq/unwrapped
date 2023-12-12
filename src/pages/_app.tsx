@@ -10,7 +10,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
-import { track } from '@/constants/events';
+import { track, ALLOW_TRACKING_KEY } from '@/constants/events';
+import { useLocalStorage } from 'usehooks-ts';
 
 export default function App({
   Component,
@@ -18,15 +19,21 @@ export default function App({
 }: AppProps) {
   const router = useRouter();
 
+  const [trackingAllowed] = useLocalStorage<Boolean | null>(
+    ALLOW_TRACKING_KEY,
+    null
+  );
+
   useEffect(() => {
     const isDev = process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development';
 
     mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL, {
       debug: isDev,
-      api_host: isDev ? undefined : '/api/tunnel/mixpanel',
-      secure_cookie: true,
-      ignore_dnt: true
+      api_host: '/api/tunnel/mixpanel',
+      secure_cookie: true
     });
+
+    if (!trackingAllowed) return;
 
     const handleRouteChange = (url: string) => {
       mixpanel.track(router.pathname, {
@@ -52,7 +59,13 @@ export default function App({
       window.removeEventListener('beforeunload', onUnload);
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [router.asPath, router.events, router.isReady, router.pathname]);
+  }, [
+    router.asPath,
+    router.events,
+    router.isReady,
+    router.pathname,
+    trackingAllowed
+  ]);
 
   return (
     <>
