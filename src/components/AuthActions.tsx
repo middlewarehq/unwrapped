@@ -42,6 +42,7 @@ export const AuthActions = () => {
           <button
             className="bg-indigo-800 text-white px-4 py-2 rounded-md"
             onClick={() => {
+              track('LOGIN_CLICKED');
               signIn('github', { callbackUrl: '/stats-unwrapped' });
             }}
           >
@@ -52,21 +53,23 @@ export const AuthActions = () => {
               What&apos;s stopping you?
             </span>
             <span
-              onClick={() =>
+              onClick={() => {
+                track('SEE_HOW_WE_MANAGE_YOUR_TRUST_CLICKED');
                 document
                   .getElementById('trust-notice')
-                  ?.scrollIntoView({ behavior: 'smooth' })
-              }
+                  ?.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="cursor-pointer text-purple-400 text-sm"
             >
               See how we manage trust 🔒 {'->'}
             </span>
             <span
-              onClick={() =>
+              onClick={() => {
+                track('SEE_HOW_2023_WAS_FOR_TOP_DEVS_CLICKED');
                 document
                   .getElementById('popular-devs')
-                  ?.scrollIntoView({ behavior: 'smooth' })
-              }
+                  ?.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="cursor-pointer text-purple-400 text-sm"
             >
               See how 2023 was for top devs 🧑‍💻 {'->'}
