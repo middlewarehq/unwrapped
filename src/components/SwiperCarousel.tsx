@@ -126,10 +126,20 @@ export default SwiperCarousel;
 
 const sortImageCards = (imageA: UpdatedImageFile, imageB: UpdatedImageFile) => {
   const indexOfA = sequence.indexOf(
-    imageA?.fileName?.split('.')?.[0]?.toUpperCase() as CardTypes
+    extractFilenameWithoutExtension(imageA.fileName).toUpperCase() as CardTypes
   );
+
   const indexOfB = sequence.indexOf(
-    imageB?.fileName?.split('.')?.[0]?.toUpperCase() as CardTypes
+    extractFilenameWithoutExtension(imageB.fileName).toUpperCase() as CardTypes
   );
+
   return indexOfA - indexOfB;
+};
+
+const extractFilenameWithoutExtension = (input: string): string => {
+  const parts = input.split('/');
+  const filenameWithExtension = parts[parts.length - 1];
+  const filenameParts = filenameWithExtension.split('.');
+  const filenameWithoutExtension = filenameParts[0];
+  return filenameWithoutExtension || '';
 };
