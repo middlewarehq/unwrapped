@@ -121,7 +121,7 @@ const CopyPaperClip: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
   return (
     <div
       onClick={copyToClipboard}
-      className="absolute flex items-center justify-center rounded-full -left-1 -bottom-14 w-10 h-10 bg-white"
+      className="absolute flex items-center justify-center rounded-full -top-[6px] -left-14 w-10 h-10 bg-white"
     >
       <GiPaperClip
         size={24}
@@ -131,7 +131,7 @@ const CopyPaperClip: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
         }}
       />
       {isCopied && (
-        <div className="absolute bottom-1 -left-20 text-white bg-[#2d3479] rounded-md px-2 py-1">
+        <div className="absolute text-sm top-12 -left-4 text-black bg-white rounded-md px-2 py-1">
           Copied!
         </div>
       )}
