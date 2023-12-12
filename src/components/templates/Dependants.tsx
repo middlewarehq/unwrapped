@@ -26,7 +26,7 @@ export const Dependants: FC<DependantsData & Username> = ({
 
   const centralNode = {
     userName: '@' + shortenUsername(username),
-    avatar: userAvatar ? `${userAvatar}&size=80` : DEFAULT_AVATAR
+    avatar: userAvatar ? userAvatar : DEFAULT_AVATAR
   };
   return (
     <RootCard bgColor="pearlGreen" username={username}>
