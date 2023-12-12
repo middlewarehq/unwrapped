@@ -45,7 +45,9 @@ const urlMap: Record<CardTypes, string> = {
   [CardTypes.TOP_REVIEWERS]: '',
   [CardTypes.PR_TIME_LAGS]: '',
   [CardTypes.PRODUCTION_BREAKING]: '',
-  [CardTypes.OSS_CONTRIBUTION]: ''
+  [CardTypes.OSS_CONTRIBUTION]: '',
+  [CardTypes.PIONEER]: '',
+  [CardTypes.LEADER]: ''
 };
 
 export const getCardLinksFromGithubData = (
