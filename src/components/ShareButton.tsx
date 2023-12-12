@@ -14,7 +14,8 @@ type ShareButtonProps = {
   imageName?: string;
 };
 
-const defaultText = 'Check out my GitHub Unwrapped of 2023!';
+const defaultText =
+  "Here's a sneak peek of my 2023 in code! https://unwrapped.dev #MyUnwrappedIsBetterThanYours #UnwrappedByMiddleware";
 
 export const ShareButton: React.FC<ShareButtonProps> = ({
   callBack,
@@ -22,7 +23,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   className
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [tweetText, setTweetText] = useState('');
+  const [tweetText, setTweetText] = useState(defaultText);
 
   const domain = window.location.origin;
 
