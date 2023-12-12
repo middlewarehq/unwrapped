@@ -1,3 +1,4 @@
+import { differenceInSeconds, parseISO } from 'date-fns';
 import {
   getReviewerReviewsCountMap,
   getAuthorPRCountsMap,
@@ -10,7 +11,8 @@ import {
   getCommitPercentile,
   removeBotReviews,
   getPRFirstResponseTimeInSeconds,
-  getSumOfFirstResponseTimes
+  getSumOfFirstResponseTimes,
+  getReworkTimeInSeconds
 } from '../pr-analytics';
 import { getPullRequest, getReview } from '../test-utils/factories';
 
@@ -1033,4 +1035,193 @@ test('getSumOfFirstResponseTimes does not account PRs with negative first respon
     createdAt: '2023-05-09T14:22:52Z'
   });
   expect(getSumOfFirstResponseTimes([pr1, pr2, pr3])).toStrictEqual(168629);
+});
+
+test('getReworkTimeInSeconds return -1 for unapproved PR', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+
+  const review0 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'COMMENTED'
+  });
+  const review1 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'COMMENTED'
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review0, review1],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    reviews: [],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  expect(getReworkTimeInSeconds(pr1)).toStrictEqual(-1);
+  expect(getReworkTimeInSeconds(pr2)).toStrictEqual(-1);
+});
+
+test('getReworkTimeInSeconds return 0 for directly approved PRs despite of subsequent suggested changes.', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+
+  const review0 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'APPROVED'
+  });
+  const review1 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'COMMENTED'
+  });
+  const review2 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'DISMISSED'
+  });
+  const review3 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'CHANGES_REQUESTED'
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review0],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    reviews: [review0, review1],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr3 = getPullRequest({
+    reviews: [review0, review2],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr4 = getPullRequest({
+    reviews: [review0, review2, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  expect(getReworkTimeInSeconds(pr1)).toStrictEqual(0);
+  expect(getReworkTimeInSeconds(pr2)).toStrictEqual(0);
+  expect(getReworkTimeInSeconds(pr3)).toStrictEqual(0);
+  expect(getReworkTimeInSeconds(pr4)).toStrictEqual(0);
+});
+
+test('getReworkTimeInSeconds return correct Rework Time for reviewed and approved PRs.', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+
+  const review0 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'CHANGES_REQUESTED'
+  });
+  const review1 = getReview({
+    createdAt: '2023-06-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'COMMENTED'
+  });
+  const review2 = getReview({
+    createdAt: '2023-06-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'DISMISSED'
+  });
+  const review3 = getReview({
+    createdAt: '2023-07-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'APPROVED'
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review0, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    reviews: [review1, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr3 = getPullRequest({
+    reviews: [review2, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  const pr4 = getPullRequest({
+    reviews: [review0, review1, review2, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  expect(getReworkTimeInSeconds(pr1)).toStrictEqual(
+    differenceInSeconds(
+      parseISO(review3.createdAt),
+      parseISO(review0.createdAt)
+    )
+  );
+  expect(getReworkTimeInSeconds(pr2)).toStrictEqual(
+    differenceInSeconds(
+      parseISO(review3.createdAt),
+      parseISO(review1.createdAt)
+    )
+  );
+  expect(getReworkTimeInSeconds(pr3)).toStrictEqual(
+    differenceInSeconds(
+      parseISO(review3.createdAt),
+      parseISO(review2.createdAt)
+    )
+  );
+  expect(getReworkTimeInSeconds(pr4)).toStrictEqual(
+    differenceInSeconds(
+      parseISO(review3.createdAt),
+      parseISO(review0.createdAt)
+    )
+  );
+});
+
+test('getReworkTimeInSeconds return correct Rework Time according to first approval despite of multiple approvals.', () => {
+  const prAuthor = 'samad-yar-khan';
+  const reviewer = 'jayantbh';
+
+  const review0 = getReview({
+    createdAt: '2023-05-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'CHANGES_REQUESTED'
+  });
+  const review1 = getReview({
+    createdAt: '2023-06-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'APPROVED'
+  });
+  const review2 = getReview({
+    createdAt: '2023-06-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'DISMISSED'
+  });
+  const review3 = getReview({
+    createdAt: '2023-07-10T14:22:52Z',
+    reviewerLogin: reviewer,
+    state: 'APPROVED'
+  });
+
+  const pr1 = getPullRequest({
+    reviews: [review0, review1, review2, review3],
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T14:22:52Z'
+  });
+  expect(getReworkTimeInSeconds(pr1)).toStrictEqual(
+    differenceInSeconds(
+      parseISO(review1.createdAt),
+      parseISO(review0.createdAt)
+    )
+  );
 });

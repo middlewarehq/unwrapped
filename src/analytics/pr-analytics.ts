@@ -222,7 +222,7 @@ export const getReworkTimeInSeconds = (pr: PullRequest) => {
   );
 
   if (!approvedReviews?.length) return -1;
-  
+
   return differenceInSeconds(
     parseISO(approvedReviews[0].createdAt),
     parseISO(nonBotReviews[0].createdAt)
