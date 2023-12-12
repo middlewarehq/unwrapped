@@ -65,7 +65,11 @@ export async function sendToZapier(
 ): Promise<ZapierResponse> {
   const zapierWebhookUrl = process.env.ZAPIER_WEBHOOK_URL;
   return axios
-    .post(zapierWebhookUrl, payload)
+    .post(zapierWebhookUrl, {
+      ...payload,
+      gh_login: payload.username,
+      name: payload.fullName
+    })
     .then(handleThen)
     .catch(handleCatch);
 }
