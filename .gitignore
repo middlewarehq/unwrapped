@@ -42,3 +42,7 @@ next-env.d.ts
 .sentryclirc
 
 /unwrapped-cards
+/**/no-commit*
+/**/nocommit*
+/**/no-commit*/**
+/**/nocommit*/**
