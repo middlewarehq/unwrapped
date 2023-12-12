@@ -1,11 +1,14 @@
-<h1 align='center'>Dev <a href="https://unwrapped.dev/">Unwrapped<a/> By <a href="https://www.middlewarehq.com/">Middleware</a></h1>
+<a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/unwrapped/assets/7949047/a0adeffd-0aeb-47f6-829d-9d2ab0bdeea7" width="100%" /></a>
+
 <blockquote align="center">
   <b><i>
   Spotify Unwrapped - for devs. Showcase your contributions just like you flex your music !
   </i></b>
 </blockquote>
 
-<image src="https://github.com/middlewarehq/year-in-review/assets/7949047/8984725a-dcd0-4568-9922-9e50db20313f" alt="YIR Banner" width="100%" />
+---
+
+<a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/year-in-review/assets/7949047/8984725a-dcd0-4568-9922-9e50db20313f" width="100%" /></a>
 
 Welcome to **Year in review - for devs** :technologist:! This app is designed to provide you with insights into your coding activities throughout the year, think Spotify  Wrapped but for software developers.  
 
