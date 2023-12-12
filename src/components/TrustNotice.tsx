@@ -3,7 +3,7 @@ import { useState } from 'react';
 export const TrustNotice = () => {
   const [expanded, toggle] = useState(false);
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 -mt-6 pt-6" id="trust-notice">
       <span className="text-3xl font-medium mb-3">
         Trust us? You don&apos;t have to!
       </span>
@@ -15,6 +15,17 @@ export const TrustNotice = () => {
       </span>
       {expanded ? (
         <>
+          <div className="border rounded-md border-slate-400 p-4 max-w-xl w-full flex gap-1 flex-col mb-8">
+            <span className="font-semibold">Core tenets:</span>
+            <span>
+              {'->'} We&apos;re not sending your data anywhere without your
+              consent.
+            </span>
+            <span>
+              {'->'} We do store <span className="font-bold">anonymized</span>{' '}
+              product usage stats, with your consent.
+            </span>
+          </div>
           <span>
             We could say &quot;your privacy is important to us&quot; and all
             that...
@@ -31,15 +42,6 @@ export const TrustNotice = () => {
             >
               unwrapped repo {'->'}
             </a>
-          </span>
-          <span className="font-semibold mt-8">Things to spot:</span>
-          <span>
-            {'->'} We&apos;re not sending your data anywhere without your
-            consent.
-          </span>
-          <span>
-            {'->'} We do store <span className="font-bold">anonymized</span>{' '}
-            general product usage stats, but with your consent.
           </span>
         </>
       ) : null}

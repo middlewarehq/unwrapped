@@ -23,7 +23,10 @@ export const PopDevsMasonry = () => {
   };
   return (
     <>
-      <hr className="border-gray-500 border-opacity-60 my-10" />
+      <hr
+        className="border-gray-500 border-opacity-60 my-10"
+        id="popular-devs"
+      />
       <div className="w-full min-h-full mr-auto max-w-[900px] mt-10 flex flex-col gap-10">
         <span className="text-3xl font-medium">
           Check out what popular dev leaders have been up to...

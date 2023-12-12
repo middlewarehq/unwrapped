@@ -71,10 +71,6 @@ export default function Home() {
         </div>
         <div className="flex flex-col mt-8">
           <MouseScrollAnim fontSize="1.4em" />
-          <div className="text-xs text-gray-400 mt-4">
-            How do I trust you with my data?{' '}
-            <span className="text-purple-400">Scroll down...</span>
-          </div>
         </div>
       </IndexPageSection>
       <IndexPageSection>

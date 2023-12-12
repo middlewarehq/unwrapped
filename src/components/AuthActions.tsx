@@ -38,14 +38,41 @@ export const AuthActions = () => {
           </button>
         </div>
       ) : showPrivate ? (
-        <button
-          className="bg-indigo-800 text-white px-4 py-2 rounded-md"
-          onClick={() => {
-            signIn('github', { callbackUrl: '/stats-unwrapped' });
-          }}
-        >
-          Login with Github to start {'->'}
-        </button>
+        <>
+          <button
+            className="bg-indigo-800 text-white px-4 py-2 rounded-md"
+            onClick={() => {
+              signIn('github', { callbackUrl: '/stats-unwrapped' });
+            }}
+          >
+            Login with Github to start {'->'}
+          </button>
+          <div className="flex flex-col gap-1 mt-2">
+            <span className="text-slate-100 text-sm font-semibold">
+              What&apos;s stopping you?
+            </span>
+            <span
+              onClick={() =>
+                document
+                  .getElementById('trust-notice')
+                  ?.scrollIntoView({ behavior: 'smooth' })
+              }
+              className="cursor-pointer text-purple-400 text-sm"
+            >
+              See how we manage trust 🔒 {'->'}
+            </span>
+            <span
+              onClick={() =>
+                document
+                  .getElementById('popular-devs')
+                  ?.scrollIntoView({ behavior: 'smooth' })
+              }
+              className="cursor-pointer text-purple-400 text-sm"
+            >
+              See how 2023 was for top devs 🧑‍💻 {'->'}
+            </span>
+          </div>
+        </>
       ) : (
         <div className="w-fit">
           <form
