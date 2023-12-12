@@ -17,7 +17,7 @@ export function logException(
   exc: string | Error,
   msgOrCtx?: string | CaptureCtx,
   ctx?: CaptureCtx
-): CaptureExc {
+): CaptureExc | void {
   const message = typeof msgOrCtx === 'string' ? msgOrCtx : undefined;
   const context = typeof msgOrCtx === 'object' ? msgOrCtx : ctx;
   const name = (() => {
@@ -42,6 +42,9 @@ export function logException(
   const err = new Error(message || name);
   err.name = name;
   if (stack) err.stack = stack;
+
+  if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT !== 'production')
+    return console.error(err);
 
   return captureException(err, {
     ...context,

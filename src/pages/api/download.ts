@@ -12,6 +12,7 @@ import {
   bcryptGen,
   extractFilenameWithoutExtension
 } from '@/utils/stringHelpers';
+import { logException } from '@/utils/logger';
 
 const fetchAndDownloadImageBuffer = async (
   req: NextApiRequest,
@@ -79,6 +80,9 @@ const fetchAndDownloadImageBuffer = async (
     }
     console.log(chalk.green('Successfully sent buffer to client'));
   } catch (error: any) {
+    logException('Error fetching or sending buffer', {
+      originalException: error
+    });
     console.log(chalk.red('Error fetching or sending buffer:'), error);
     res.status(error.status || 500).json({ message: error.message });
   }

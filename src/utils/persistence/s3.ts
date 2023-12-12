@@ -1,5 +1,6 @@
 import { ImageFile } from '@/types/images';
 import { S3 } from 'aws-sdk';
+import { logException } from '../logger';
 
 const s3 = new S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -23,6 +24,9 @@ export const uploadImagesToS3 = async (
     try {
       await s3.upload(uploadParams).promise();
     } catch (error: any) {
+      logException(`Error uploading image to S3: ${error.message}`, {
+        originalException: error
+      });
       throw new Error(`Error uploading image to S3: ${error.message}`);
     }
   });
@@ -56,6 +60,9 @@ export const fetchImagesFromS3Directory = async (
 
     return images;
   } catch (error: any) {
+    logException(`Error fetching images from S3: ${error.message}`, {
+      originalException: error
+    });
     throw new Error(`Error fetching images from S3: ${error.message}`);
   }
 };
@@ -74,7 +81,10 @@ export const fetchFileFromS3Directory = async (
       data: imageBuffer.Body as Buffer
     };
   } catch (error: any) {
-    throw new Error(`Error fetching images from S3: ${error.message}`);
+    logException(`Error fetching file from S3: ${error.message}`, {
+      originalException: error
+    });
+    throw new Error(`Error fetching file from S3: ${error.message}`);
   }
 };
 
@@ -101,6 +111,9 @@ export const deleteS3Directory = async (
       await s3.deleteObjects(deleteObjectsParams).promise();
     }
   } catch (error: any) {
+    logException(`Error deleting directory from S3: ${error.message}`, {
+      originalException: error
+    });
     throw new Error(`Error deleting directory from S3: ${error.message}`);
   }
 };

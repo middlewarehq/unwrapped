@@ -10,7 +10,8 @@
     "build": "./scripts/build.sh",
     "zip": "./scripts/zip.sh",
     "box-server-start-wo-install": "./scripts/server-init.sh",
-    "box-server-start": "yarn install && yarn box-server-start-wo-install"
+    "box-server-start": "yarn install && yarn box-server-start-wo-install",
+    "qc": "yarn tsc && yarn lint"
   },
   "dependencies": {
     "@sentry/nextjs": "^7.86.0",

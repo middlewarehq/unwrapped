@@ -4,6 +4,7 @@ import {} from 'react-icons';
 import { FaTwitter, FaDownload } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { track } from '@/constants/events';
+import { logException } from '@/utils/logger';
 
 type ShareButtonProps = {
   imageUrl?: string;
@@ -113,7 +114,7 @@ const CopyPaperClip: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
       }, 2000);
       track('SINGLE_IMAGE_PUBLIC_LINK_COPIED');
     } catch (err) {
-      console.error('Error copying to clipboard:', err);
+      logException('Error copying to clipboard', { originalException: err });
     }
   };
 

@@ -4,6 +4,7 @@ import { createImageUsingVercel } from './vercel-generator';
 import { getDataFromGithubResponse } from '@/api-helpers/card-data-adapter';
 import { CardTypes, sequence } from '../types/cards';
 import { ImageFile } from '@/types/images';
+import { logException } from '@/utils/logger';
 
 export const generateImages = async (
   data: GitHubDataResponse,
@@ -31,6 +32,7 @@ export const generateImages = async (
     return imageFileBuffers;
   } catch (error) {
     console.error('Error in generateImages:', error);
+    logException('Error in generateImages', { originalException: error });
     throw new Error('Image generation failed');
   }
 };

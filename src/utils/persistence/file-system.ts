@@ -1,6 +1,7 @@
 import { ImageFile } from '@/types/images';
 import fs from 'fs/promises';
 import path from 'path';
+import { logException } from '../logger';
 
 async function directoryExists(localDirectory: string): Promise<boolean> {
   try {
@@ -17,9 +18,11 @@ async function ensureDirectoryExists(localDirectory: string) {
     console.log(`Directory created: ${localDirectory}`);
   } catch (error: any) {
     if (error.code === 'EEXIST') {
-      console.log(`Directory already exists: ${localDirectory}`);
+      console.error(`Directory already exists: ${localDirectory}`);
     } else {
-      console.error(`Error creating directory: ${error.message}`);
+      logException(`Error creating directory: ${error.message}`, {
+        originalException: error
+      });
     }
   }
 }
@@ -38,9 +41,10 @@ export const saveImagesToLocalDirectory = async (
 
     await Promise.all(savePromises);
   } catch (error: any) {
-    throw new Error(
-      `Error fetching images from local directory: ${error.message}`
-    );
+    logException(`Error saving images to local directory: ${error.message}`, {
+      originalException: error
+    });
+    throw new Error(`Error saving images to local directory: ${error.message}`);
   }
 };
 
@@ -63,6 +67,10 @@ export const fetchImagesFromLocalDirectory = async (
 
     return images;
   } catch (error: any) {
+    logException(
+      `Error fetching images from local directory: ${error.message}`,
+      { originalException: error }
+    );
     throw new Error(
       `Error fetching images from local directory: ${error.message}`
     );
@@ -79,8 +87,12 @@ export const fetchImageFromLocalDirectory = async (
       data
     };
   } catch (error: any) {
+    logException(
+      `Error fetching single image from local directory: ${error.message}`,
+      { originalException: error }
+    );
     throw new Error(
-      `Error fetching images from local directory: ${error.message}`
+      `Error fetching single image from local directory: ${error.message}`
     );
   }
 };
@@ -94,6 +106,9 @@ export const deleteLocalDirectory = async (
 
     await fs.rmdir(localDirectory, { recursive: true });
   } catch (error: any) {
+    logException(`Error deleting local directory: ${error.message}`, {
+      originalException: error
+    });
     throw new Error(`Error deleting local directory: ${error.message}`);
   }
 };

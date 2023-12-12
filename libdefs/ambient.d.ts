@@ -7,6 +7,7 @@ declare type DateString = string;
 
 declare namespace NodeJS {
   export interface ProcessEnv {
+    NEXT_PUBLIC_APP_ENVIRONMENT: 'production' | 'development';
     NEXTAUTH_URL: string;
     NEXTAUTH_SECRET: string;
     GITHUB_ID: string;

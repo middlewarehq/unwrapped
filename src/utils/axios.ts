@@ -23,8 +23,6 @@ export const handleRequest = <T = any>(
 export const handleThen = (r: AxiosResponse) => r.data;
 
 export const handleCatch = (err: AxiosError) => {
-  if (process.env.NODE_ENV === 'production') {
-    logException(err);
-  }
+  logException(err);
   throw err.response;
 };

@@ -10,6 +10,7 @@ import {
 } from './types';
 import { GithubContributionCalendar } from '@/api-helpers/exapi-sdk/types';
 import { captureException } from '@sentry/nextjs';
+import { logException } from '@/utils/logger';
 
 async function fetchPullRequestsForMonth(
   author: string,
@@ -111,7 +112,7 @@ export async function fetchAllPullRequests(author: string, token: string) {
     );
     return results;
   } catch (error: any) {
-    console.error('Error fetching data:', error.message);
+    logException('Error fetching PRs', { originalException: error });
   }
 }
 
@@ -128,6 +129,9 @@ export async function fetchUser(token: string) {
     const userData: GithubUser = response.data;
     return userData;
   } catch (error: any) {
+    logException(`Error fetching user data: ${error.message}`, {
+      originalException: error
+    });
     throw new Error(`Error fetching user data: ${error.message}`);
   }
 }
@@ -232,7 +236,9 @@ export async function fetchAllReviewedPRs(author: string, token: string) {
     );
     return results;
   } catch (error: any) {
-    console.error('Error fetching reviews:', error.message);
+    logException('Error fetching reviews for ' + author, {
+      originalException: error
+    });
   }
 }
 
@@ -278,7 +284,9 @@ export async function fetchUserGitHubContributionCalendarMetrics(
 
     if (collection) return collection.contributionCalendar;
   } catch (error: any) {
-    console.error('Error fetching GitHub metrics:', error.message);
+    logException('Error fetching GitHub metrics for ' + author, {
+      originalException: error
+    });
   }
   return { totalContributions: 0, weeks: [] };
 }
@@ -318,7 +326,9 @@ export async function fetchUserContributionSummaryMetrics(
 
     return response.data.data.user.contributionsCollection;
   } catch (error: any) {
-    console.error('Error fetching GitHub metrics:', error.message);
+    logException('Error fetching GitHub metrics for ' + author, {
+      originalException: error
+    });
   }
 }
 

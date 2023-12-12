@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { logException } from '@/utils/logger';
 
 interface AppStateInterface {
   isLoading: boolean;
@@ -40,6 +41,7 @@ export const AppStateProvider = ({ children }: AppStateProviderInterface) => {
 export const useAppState = () => {
   const context = useContext(AppStateContext);
   if (!context) {
+    logException('useGlobalState must be used within a GlobalStateContext');
     throw new Error('useGlobalState must be used within a GlobalStateContext');
   }
   return context;
