@@ -115,7 +115,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
             {index !== 0 && (
               <IoIosArrowDropleftCircle
                 size={36}
-                className="prev-arrow right-[90%] sm:right-[102%]"
+                className="prev-arrow right-[90%] sm:right-[102%] hidden md:block"
                 onClick={handlePrev}
               />
             )}
@@ -123,7 +123,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
             {(index !== images.length - 1 || !hideEmailInput) && (
               <IoIosArrowDroprightCircle
                 size={36}
-                className="next-arrow left-[90%] sm:left-[102%]"
+                className="next-arrow left-[90%] sm:left-[102%] hidden md:block"
                 onClick={handleNext}
               />
             )}
@@ -133,7 +133,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
           <SwiperSlide className="swiper-slide-img email-input-card flex flex-col w-full h-full bg-no-repeat bg-cover bg-center bg-fixed">
             <IoIosArrowDropleftCircle
               size={36}
-              className="prev-arrow right-[90%] sm:right-[102%]"
+              className="prev-arrow right-[90%] sm:right-[102%] hidden md:block"
               onClick={handlePrev}
             />
             <UserEmailInputCard />
