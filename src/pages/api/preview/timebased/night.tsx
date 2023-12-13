@@ -8,7 +8,9 @@ export const config = {
 const data = {
   prsDuringDay: 1000,
   totalPrs: 4000,
-  username: 'jayantbh'
+  productiveHour: 19,
+  productiveDay: 'tuesday',
+  username: 'eshaan-yadav'
 };
 
 const generateUsingVercel = async () => {

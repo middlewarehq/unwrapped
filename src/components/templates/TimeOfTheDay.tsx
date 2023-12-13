@@ -7,12 +7,16 @@ const TIME_OF_DAY_THRESHOLD = 0.4;
 export type TimeOfTheDayData = {
   prsDuringDay: number;
   totalPrs: number;
+  productiveDay: string;
+  productiveHour: number;
 };
 
 export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
   prsDuringDay,
   totalPrs,
-  username
+  username,
+  productiveDay,
+  productiveHour
 }) => {
   const prsDuringNight = totalPrs - prsDuringDay;
   const isNightOwl = prsDuringNight / totalPrs >= TIME_OF_DAY_THRESHOLD;
@@ -26,21 +30,14 @@ export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
   if (isRoundTheClock) {
     return (
       <RootCard bgColor="orange" username={username} decoType="fireworks">
-        <div tw="flex flex-col p-1 relative w-full h-full">
-          <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
-            <p>I code the way</p>
-            <p tw="m-0">I breathe. All day!</p>
-          </div>
-          <div tw="flex flex-col text-4xl mt-8 text-black">
-            <h1 tw="m-0">All Day</h1>
-            <h1 tw="m-0">Coder</h1>
-          </div>
-          <div tw=" flex text-xl leading-[16px] flex-col mt-6">
-            <p tw="m-0">I pretend to listen</p>
-            <p>to you while</p>
-            <p tw="m-0">I debug my code</p>
-            <p>in my head!</p>
-          </div>
+        <div tw="flex flex-col p-1">
+          <CardSubtitle text="I code when I breathe..." />
+          <CardTitle text="All Day~Coder" />
+          <CardSubText text="You deliver throughout the day" />
+          <ProductiveTimes
+            productiveHour={productiveHour}
+            productiveDay={productiveDay}
+          />
         </div>
         <img
           tw="absolute bottom-[-20px] right-[-20px]"
@@ -54,20 +51,13 @@ export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
     return (
       <RootCard bgColor="pink" username={username} decoType="confetti">
         <div tw="flex flex-col p-1">
-          <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
-            <p>I rise with</p>
-            <p tw="m-0">the sun!</p>
-          </div>
-          <div tw="flex flex-col text-4xl mt-8 text-black">
-            <h1 tw="m-0">Early</h1>
-            <h1 tw="m-0">Bird</h1>
-          </div>
-          <div tw="flex text-xl leading-[16px] flex-col mt-6">
-            <p tw="m-0">&quot;Cock-a-doodle-doo!&quot;</p>
-            <p>Gotta be my </p>
-            <p tw="m-0">favorite artist</p>
-            <p>of all time!</p>
-          </div>
+          <CardSubtitle text="They say I catch the what?" />
+          <CardTitle text="Early~Bird" />
+          <CardSubText text="You prefer a 9-5 job" />
+          <ProductiveTimes
+            productiveHour={productiveHour}
+            productiveDay={productiveDay}
+          />
         </div>
         <img
           tw="absolute bottom-[-20px] right-[-20px]"
@@ -81,20 +71,13 @@ export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
     return (
       <RootCard bgColor="purple" username={username} decoType="stars">
         <div tw="flex flex-col p-1">
-          <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
-            <p>Wh... what is...</p>
-            <p tw="m-0">sleep?</p>
-          </div>
-          <div tw="flex flex-col text-4xl mt-8 text-black">
-            <h1 tw="m-0">Night</h1>
-            <h1 tw="m-0">Owl</h1>
-          </div>
-          <div tw="flex text-xl leading-[16px] flex-col mt-6">
-            <p tw="m-0">When the world</p>
-            <p>sleeps...</p>
-            <p tw="m-0">You’re shipping</p>
-            <p>code!</p>
-          </div>
+          <CardSubtitle text="Wh... what is... sleep?" />
+          <CardTitle text="Night~Owl" />
+          <CardSubText text="Other sleep, you ship" />
+          <ProductiveTimes
+            productiveHour={productiveHour}
+            productiveDay={productiveDay}
+          />
         </div>
         <img
           tw="absolute bottom-[-20px] right-[-20px]"
@@ -104,5 +87,60 @@ export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
         />
       </RootCard>
     );
+  }
+};
+
+const CardSubtitle = ({ text }: { text: string }) => {
+  return (
+    <div tw="flex text-2xl leading-[8px] font-semibold flex-col">
+      <p>{text}</p>
+    </div>
+  );
+};
+
+const CardTitle = ({ text }: { text: string }) => {
+  const splitText = text.split('~');
+  return (
+    <div tw="flex flex-col text-[40px] mt-3 text-black">
+      <h1 tw="m-0">{splitText[0]}</h1>
+      <h1 tw="-mt-5">{splitText[1]}</h1>
+    </div>
+  );
+};
+
+const CardSubText = ({ text }: { text: string }) => {
+  return (
+    <div tw="flex text-xl leading-[16px] flex-col -mt-4">
+      <p tw="m-0">{text}</p>
+    </div>
+  );
+};
+
+const ProductiveTimes = ({
+  productiveDay,
+  productiveHour
+}: {
+  productiveDay: string;
+  productiveHour: number;
+}) => {
+  return (
+    <div tw="flex flex-col font-bold mt-10">
+      {productiveHour !== -1 ? <p tw="mt-0">Most Active Hour</p> : null}
+      {productiveHour !== -1 ? (
+        <p tw="-mt-4 text-2xl">{getAmPm(productiveHour)}</p>
+      ) : null}
+      <p tw="mt-0">Most Active Day</p>
+      <p tw="-mt-4 text-2xl capitalize">{productiveDay}</p>
+    </div>
+  );
+};
+
+const getAmPm = (hour: number): string => {
+  if (hour === 0 || hour === 24) return '12am';
+  if (hour === 12) return '12pm';
+  if (hour >= 12) {
+    return (hour % 12) + 'pm';
+  } else {
+    return (hour % 12) + 'am';
   }
 };
