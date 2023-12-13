@@ -257,7 +257,7 @@ export const getMostProductiveDayOfWeek = (
   prs: PullRequest[],
   timeZone: string
 ) => {
-  if (!prs?.length) return -1;
+  if (!prs?.length) return undefined;
 
   let hourWisePrFrequencyBucket = new Array(7).fill(0);
 

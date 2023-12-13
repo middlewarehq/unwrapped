@@ -1431,8 +1431,8 @@ test('getMostProductiveHour return earliest hour for equal distribution of PRs a
   ).toStrictEqual(0);
 });
 
-test('getMostProductiveDayOfWeek return -1 for no PRs', () => {
-  expect(getMostProductiveDayOfWeek([], 'UTC')).toStrictEqual(-1);
+test('getMostProductiveDayOfWeek return undefined for no PRs', () => {
+  expect(getMostProductiveDayOfWeek([], 'UTC')).toStrictEqual(undefined);
 });
 
 test('getMostProductiveDayOfWeek return correct day index PR data for different days.', () => {
