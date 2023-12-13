@@ -55,8 +55,6 @@ export default function StatsUnwrapped() {
       });
   }, [userName, hash, isUrlValid]);
 
-  console.log({ userName, ...router });
-
   const Header = () => (
     <>
       <NextSeo
