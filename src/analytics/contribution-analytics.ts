@@ -5,7 +5,7 @@ import {
   RepositoryContributionData
 } from '@/api-helpers/exapi-sdk/types';
 import { getMonth, parseISO } from 'date-fns';
-import { clone } from 'ramda';
+import { clone, sum } from 'ramda';
 
 export const getContributionDaysList = (
   contributionCalendar: GithubContributionCalendar
@@ -35,6 +35,16 @@ export const getMonthWiseContributionCount = (
   }
 
   return monthNumberToContributionsCountMap;
+};
+
+export const getWeekWiseContributionCount = (
+  contributionCalendar?: GithubContributionCalendar
+) => {
+  return (
+    contributionCalendar?.weeks.map((w) =>
+      sum(w.contributionDays.map((d) => d.contributionCount))
+    ) || []
+  );
 };
 
 export const getLongestContributionStreak = (

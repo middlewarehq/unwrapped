@@ -1,7 +1,8 @@
 import {
   getLongestContributionStreak,
   getMonthWiseContributionCount,
-  getRepoWiseOpensourceContributionsCount
+  getRepoWiseOpensourceContributionsCount,
+  getWeekWiseContributionCount
 } from '@/analytics/contribution-analytics';
 import {
   getCommitPercentile,
@@ -81,6 +82,10 @@ export const fetchGithubUnwrappedData = async (
     user_daily_contributions
   );
 
+  const weekly_contributions = getWeekWiseContributionCount(
+    user_daily_contributions
+  );
+
   const longest_streak = getLongestContributionStreak(user_daily_contributions);
 
   const { day, night } = splitPRsByDayNight(authored_prs, timezone);
@@ -104,6 +109,7 @@ export const fetchGithubUnwrappedData = async (
     top_reviewed_contributors,
     top_reviewers,
     monthly_contributions,
+    weekly_contributions,
     longest_streak,
     reviewed_prs_with_requested_changes_count,
     oss_contributions: repo_wise_opensource_contributions.map((obj) =>

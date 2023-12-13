@@ -61,11 +61,7 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
 
   const zenOrNinja: ZenNinjaData | null =
     data.total_contributions > 50
-      ? {
-          trends: Object.entries(data.monthly_contributions)
-            .sort(([a], [b]) => parseInt(b) - parseInt(a))
-            .map(([, contributions]) => contributions)
-        }
+      ? { trends: data.weekly_contributions }
       : null;
 
   const contributionStreak: StreakData | null =

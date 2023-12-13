@@ -56,6 +56,7 @@ export type GitHubDataResponse = {
   top_reviewed_contributors: string[];
   top_reviewers: string[];
   monthly_contributions: Record<string, number>;
+  weekly_contributions: number[];
   longest_streak: number;
   oss_contributions: GithubRepositoryContributionData[];
   prs_opened_during_day: number;

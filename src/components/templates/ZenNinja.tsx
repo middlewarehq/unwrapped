@@ -117,13 +117,47 @@ const LineGraph: React.FC<LineGraphProps> = ({ data, color }) => {
 
 export default LineGraph;
 
+function getPercentile(argarr: number[], percentile: number): number {
+  const arr = [...argarr];
+  // Sort the array in ascending order
+  const sortedArr = arr.sort((a, b) => a - b);
+
+  // Calculate the index of the percentile element
+  const index = ((sortedArr.length - 1) * percentile) / 100;
+
+  // Check if the index is an integer
+  if (Number.isInteger(index)) {
+    // If it is, return the element at that index
+    return sortedArr[index];
+  } else {
+    // If not, interpolate between the two surrounding elements
+    const lowerIndex = Math.floor(index);
+    const upperIndex = Math.ceil(index);
+    const weight = index - lowerIndex;
+    return (
+      sortedArr[lowerIndex] * (1 - weight) + sortedArr[upperIndex] * weight
+    );
+  }
+}
+
 function isSpiky(data: number[]): boolean {
   const avg = mean(data);
   const med = median(data);
+  const p90 = getPercentile(data, 90);
   const hi = Math.max(...data);
   const lo = Math.min(...data);
-  const diff = Math.abs(med - avg);
+  const diff = Math.abs(p90 - avg);
   const range = hi - lo;
   const perc = (diff * 100) / range;
+  console.log({
+    avg,
+    med,
+    hi,
+    lo,
+    diff,
+    range,
+    perc,
+    p90: getPercentile(data, 90)
+  });
   return perc > 15;
 }

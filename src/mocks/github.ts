@@ -1,4 +1,5 @@
 import { GitHubDataResponse } from '@/types/api-responses';
+import { randInt } from '@/utils/number';
 
 export const ghData = {
   data: {
@@ -156,6 +157,7 @@ export const updatedGhData = {
     '10': 215,
     '11': 171
   },
+  weekly_contributions: Array.from({ length: 52 }, () => randInt(20, 40)),
   longest_streak: 19,
   oss_contributions: [
     {
