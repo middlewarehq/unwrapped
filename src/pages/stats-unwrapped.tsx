@@ -15,14 +15,13 @@ import { GithubUser } from '@/api-helpers/exapi-sdk/types';
 import { copyToClipboard } from '@/components/ShareButton';
 import { Tooltip } from 'react-tooltip';
 import { AxiosError } from 'axios';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
-import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
-const DEBOUNCE_TIME = 600;
 
 export default function StatsUnwrapped() {
+  const { status } = useSession();
   const { somethingWentWrongToast, unauthenticatedToast } = usePrebuiltToasts();
   const [isLoading, setIsLoading] = useState(false);
   const downloadImage = useImageDownloader();
@@ -63,19 +62,15 @@ export default function StatsUnwrapped() {
       .catch(handleErr);
   }, [handleErr]);
 
-  const debouncedFetchImages = useDebouncedCallback(fetchImages, DEBOUNCE_TIME);
-  const debouncedFetchUserName = useDebouncedCallback(
-    fetchUserName,
-    DEBOUNCE_TIME
-  );
+  useEffect(() => {
+    if (status === 'loading') return;
+    fetchImages();
+  }, [fetchImages, status]);
 
   useEffect(() => {
-    debouncedFetchImages();
-  }, [debouncedFetchImages]);
-
-  useEffect(() => {
-    debouncedFetchUserName();
-  }, [debouncedFetchUserName]);
+    if (status === 'loading') return;
+    fetchUserName();
+  }, [fetchUserName, status]);
 
   if (isLoading) {
     return (
