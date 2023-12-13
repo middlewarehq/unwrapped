@@ -232,3 +232,22 @@ export const getReworkTimeInSeconds = (pr: PullRequest) => {
 export const getSumOfReworkTimes = (prs: PullRequest[]) => {
   return sum(prs.map((pr) => Math.max(0, getReworkTimeInSeconds(pr))));
 };
+
+export const getMostProductiveHour = (
+  prs: PullRequest[],
+  timeZone: string
+): number => {
+  if (!prs?.length) return -1;
+
+  let hourWisePrFrequencyBucket = new Array(24).fill(0);
+
+  for (let pr of prs) {
+    const createdAt = new Date(pr.createdAt);
+    const localTime = new Date(createdAt.toLocaleString('en-US', { timeZone }));
+    const hour = localTime.getHours();
+    hourWisePrFrequencyBucket[hour] += 1;
+  }
+  return hourWisePrFrequencyBucket.indexOf(
+    Math.max(...hourWisePrFrequencyBucket)
+  );
+};
