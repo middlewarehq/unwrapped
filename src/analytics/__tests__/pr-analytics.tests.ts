@@ -13,7 +13,8 @@ import {
   getPRFirstResponseTimeInSeconds,
   getSumOfFirstResponseTimes,
   getReworkTimeInSeconds,
-  getSumOfReworkTimes
+  getSumOfReworkTimes,
+  getMostProductiveHour
 } from '../pr-analytics';
 import { getPullRequest, getReview } from '../test-utils/factories';
 
@@ -1332,4 +1333,98 @@ test('getSumOfReworkTimes does not account prs with negative rework.', () => {
     parseISO(review0.createdAt)
   );
   expect(getSumOfReworkTimes([pr1, pr2, pr3])).toStrictEqual(a);
+});
+
+test('getMostProductiveHour return -1 for no PRs', () => {
+  expect(getMostProductiveHour([], 'UTC')).toStrictEqual(-1);
+});
+
+test('getMostProductiveHour return correct hour for different timezone', () => {
+  const prAuthor = 'samad-yar-khan';
+
+  const pr1 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T12:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T05:22:52Z'
+  });
+  const pr3 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-12T01:22:52Z'
+  });
+  const pr4 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-11T11:22:52Z'
+  });
+  const pr5 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-11T12:22:52Z'
+  });
+  const pr6 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-10T14:22:52Z'
+  });
+  const pr7 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T12:22:52Z'
+  });
+
+  expect(
+    getMostProductiveHour([pr1, pr2, pr3, pr4, pr5, pr6, pr7], 'UTC')
+  ).toStrictEqual(12);
+  expect(
+    getMostProductiveHour([pr1, pr2, pr3, pr4, pr5, pr6, pr7], 'EST')
+  ).toStrictEqual(7);
+  expect(
+    getMostProductiveHour([pr1, pr2, pr3, pr4, pr5, pr6, pr7], 'Asia/Kolkata')
+  ).toStrictEqual(17);
+  expect(
+    getMostProductiveHour([pr1, pr2, pr3, pr4, pr5, pr6, pr7], 'IST')
+  ).toStrictEqual(17);
+});
+
+test('getMostProductiveHour return earliest hour for equal distribution of PRs across day', () => {
+  const prAuthor = 'samad-yar-khan';
+
+  const pr1 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T12:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T13:22:52Z'
+  });
+  const pr3 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-12T14:22:52Z'
+  });
+  const pr4 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-11T15:22:52Z'
+  });
+  const pr5 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-11T16:22:52Z'
+  });
+  const pr6 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-10T17:22:52Z'
+  });
+  const pr7 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T18:22:52Z'
+  });
+  const pr8 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T00:22:52Z'
+  });
+
+  expect(
+    getMostProductiveHour([pr1, pr2, pr3, pr4, pr5, pr6, pr7], 'UTC')
+  ).toStrictEqual(12);
+  expect(
+    getMostProductiveHour([pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr8], 'UTC')
+  ).toStrictEqual(0);
 });
