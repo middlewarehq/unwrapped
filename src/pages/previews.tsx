@@ -2,8 +2,11 @@ import React from 'react';
 import { CARD_HEIGHT, CARD_WIDTH } from '../constants/general';
 import Image from 'next/image';
 import { ShareButton } from '@/components/ShareButton';
+import { useIsClient } from 'usehooks-ts';
 
 const Previews = () => {
+  const isClient = useIsClient();
+
   const links = [
     `/api/preview/intro`,
     `/api/preview/timebased/allday`,
@@ -19,6 +22,8 @@ const Previews = () => {
     `/api/preview/codeReviewers`,
     `/api/preview/oss`
   ];
+
+  if (!isClient) return;
 
   return (
     <div className="flex flex-col bg-white text-black">

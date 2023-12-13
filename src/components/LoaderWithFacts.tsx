@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScatterBoxLoader } from 'react-awesome-loaders';
 import { randInt } from '@/utils/number';
+import { useIsClient } from 'usehooks-ts';
 
 const openSourceStats = [
   "Did you know: Rust has been the consistently most loved language in the last 3 years of StackOverflow's dev survey",
@@ -29,12 +30,9 @@ export const LoaderWithFacts = () => {
     };
   }, [currentIndex]);
 
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useIsClient();
 
   useEffect(() => {
-    setIsClient(true);
-
-    if (!window) return;
     setCurrentText(openSourceStats[currentIndex]);
   }, [currentIndex]);
 
