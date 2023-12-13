@@ -20,7 +20,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['react', 'prettier', 'unused-imports', '@stylistic'],
+  plugins: ['react', 'prettier', 'unused-imports', '@stylistic', 'react-hooks'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     '@next/next/no-img-element': 'off',
@@ -46,6 +46,7 @@ module.exports = {
         prev: ['*'],
         next: ['interface', 'type', 'export']
       }
-    ]
+    ],
+    'react-hooks/exhaustive-deps': 'warn'
   }
 };
