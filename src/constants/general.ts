@@ -66,3 +66,13 @@ export const cardColorsMap = {
 };
 
 export const HASH_LENGTH = 6;
+
+export const DayOfWeek = [
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday'
+] as const;
