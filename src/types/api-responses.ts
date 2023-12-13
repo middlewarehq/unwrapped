@@ -69,6 +69,7 @@ export type GitHubDataResponse = {
   total_review_contributions?: number;
   total_issue_contributions?: number;
   hour_with_max_opened_prs?: number;
+  week_day_with_max_opened_prs?: string;
 };
 
 export type GithubRepositoryContributionData = {
