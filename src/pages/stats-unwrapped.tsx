@@ -42,6 +42,9 @@ export default function StatsUnwrapped() {
       .finally(() => {
         setIsLoading(false);
       });
+  }, [setUnwrappedImages]);
+
+  useEffect(() => {
     handleRequest<{ user: GithubUser }>('/api/github/user')
       .then((r) => {
         setUserName(r.user.login);
@@ -51,7 +54,7 @@ export default function StatsUnwrapped() {
           position: 'top-right'
         });
       });
-  }, [setUnwrappedImages]);
+  }, []);
 
   if (isLoading) {
     return (
