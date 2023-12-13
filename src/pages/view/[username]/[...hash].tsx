@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type { GetServerSideProps } from 'next';
 import { handleRequest } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
@@ -53,6 +54,8 @@ export default function StatsUnwrapped() {
         setIsLoading(false);
       });
   }, [userName, hash, isUrlValid]);
+
+  console.log({ userName, ...router });
 
   const Header = () => (
     <>
@@ -114,3 +117,7 @@ export default function StatsUnwrapped() {
     </>
   );
 }
+
+export const getServerSideProps = (async (_ctx) => {
+  return { props: {} };
+}) satisfies GetServerSideProps;
