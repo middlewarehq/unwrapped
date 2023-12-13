@@ -105,12 +105,7 @@ export default function App({
         <SessionProvider session={session}>
           <AppStateProvider>
             <AppLoadingStateWrapper>
-              <Toaster
-                position="top-right"
-                toastOptions={{
-                  style: { background: '#363636', color: '#fff' }
-                }}
-              />
+              <Toaster />
               <Component {...pageProps} />
             </AppLoadingStateWrapper>
           </AppStateProvider>
