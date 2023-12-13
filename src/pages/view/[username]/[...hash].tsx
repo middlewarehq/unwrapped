@@ -9,6 +9,8 @@ import toast from 'react-hot-toast';
 import { UpdatedImageFile } from '@/types/images';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
+import Link from 'next/link';
+import { track } from '@/constants/events';
 
 export default function StatsUnwrapped() {
   const [isLoading, setIsLoading] = useState(false);
@@ -111,6 +113,14 @@ export default function StatsUnwrapped() {
             />
           </div>
         )}
+        <Link href={'/'} target="_blank">
+          <span
+            className="font-semibold text-[#bc9aef] underline decoration-dashed"
+            onClick={() => track('WISH_TO_CREATE_YOUR_OWN_CLICKED')}
+          >
+            Wish to create your own? Click here {'->'}
+          </span>
+        </Link>
       </div>
     </>
   );
