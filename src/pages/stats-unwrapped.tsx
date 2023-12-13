@@ -17,8 +17,10 @@ import { Tooltip } from 'react-tooltip';
 import { AxiosError } from 'axios';
 import { signOut } from 'next-auth/react';
 import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
+import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
+const DEBOUNCE_TIME = 600;
 
 export default function StatsUnwrapped() {
   const { somethingWentWrongToast, unauthenticatedToast } = usePrebuiltToasts();
@@ -42,7 +44,7 @@ export default function StatsUnwrapped() {
     [somethingWentWrongToast, unauthenticatedToast]
   );
 
-  useEffect(() => {
+  const fetchImages = useCallback(() => {
     setIsLoading(true);
     handleRequest<ImageAPIResponse>('/api/download')
       .then((res) => {
@@ -53,13 +55,27 @@ export default function StatsUnwrapped() {
       .finally(() => setIsLoading(false));
   }, [handleErr]);
 
-  useEffect(() => {
+  const fetchUserName = useCallback(() => {
     handleRequest<{ user: GithubUser }>('/api/github/user')
       .then((r) => {
         setUserName(r.user.login);
       })
       .catch(handleErr);
   }, [handleErr]);
+
+  const debouncedFetchImages = useDebouncedCallback(fetchImages, DEBOUNCE_TIME);
+  const debouncedFetchUserName = useDebouncedCallback(
+    fetchUserName,
+    DEBOUNCE_TIME
+  );
+
+  useEffect(() => {
+    debouncedFetchImages();
+  }, [debouncedFetchImages]);
+
+  useEffect(() => {
+    debouncedFetchUserName();
+  }, [debouncedFetchUserName]);
 
   if (isLoading) {
     return (
