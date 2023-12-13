@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { RootCard } from '@/components/templates/RootCard';
 import { websiteUrl } from '../../constants/general';
 import { Username } from '@/components/templates/index';
-import { mean, median } from 'ramda';
+import { mean } from 'ramda';
 
 export type ZenNinjaData = {
   trends: number[];
@@ -142,7 +142,6 @@ function getPercentile(argarr: number[], percentile: number): number {
 
 function isSpiky(data: number[]): boolean {
   const avg = mean(data);
-  const med = median(data);
   const p90 = getPercentile(data, 90);
   const hi = Math.max(...data);
   const lo = Math.min(...data);
