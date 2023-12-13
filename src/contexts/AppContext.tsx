@@ -8,6 +8,7 @@ import React, {
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { logException } from '@/utils/logger';
+import { useIsClient } from 'usehooks-ts';
 
 interface AppStateInterface {
   isLoading: boolean;
@@ -24,8 +25,9 @@ interface AppStateProviderInterface {
 export const AppStateProvider = ({ children }: AppStateProviderInterface) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const isClient = useIsClient();
   useSession({
-    required: true,
+    required: isClient,
     onUnauthenticated() {
       router.pathname !== '/' &&
         !router.pathname.startsWith('/view') &&

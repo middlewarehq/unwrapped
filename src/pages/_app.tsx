@@ -13,6 +13,8 @@ import { useLocalStorage } from 'usehooks-ts';
 import Script from 'next/script';
 import '@/styles/swiper.css';
 import 'react-tooltip/dist/react-tooltip.css';
+import Head from 'next/head';
+import { DefaultSeo } from 'next-seo';
 
 export default function App({
   Component,
@@ -70,6 +72,35 @@ export default function App({
 
   return (
     <>
+      <DefaultSeo
+        title="Unwrapped by Middleware"
+        description="A yearly recap of your GitHub, like Spotify Wrapped. If you are a developer, you will love it! ❤️"
+        openGraph={{
+          type: 'website',
+          url: process.env.NEXT_PUBLIC_APP_URL,
+          images: [
+            {
+              url: `${process.env.NEXT_PUBLIC_APP_URL}/assets/images/og-image.png`
+            }
+          ]
+        }}
+        twitter={{
+          cardType: 'summary_large_card',
+          site: process.env.NEXT_PUBLIC_APP_URL,
+          handle: 'middlewarehq'
+        }}
+      />
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="keywords"
+          content="developer,unwrap,app,recap,yearly,review,annual,github,spotify,wrapped,year-in-review,year in review,middleware,software,engineering,annual review,appraisal,december,github unwrapped,githubunwrapped,github-unwrapped,software engineers,jayant bhawal,eshaan yadav,samad yar khan,shivam singh,dhruv agarwal,varun narula,adnan hashmi,cadence,management,dora metrics,open source,open-source,contributions,bottlenecks"
+        />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+      </Head>
       <main className={`${inter} text-white`}>
         <SessionProvider session={session}>
           <AppStateProvider>

@@ -11,7 +11,7 @@ export const generateImages = async (
   customSequence?: CardTypes[]
 ): Promise<ImageFile[]> => {
   try {
-    console.log(chalk.yellow('Generating images...'));
+    console.info(chalk.yellow('Generating images...'));
 
     const cardSequence = customSequence || sequence;
 

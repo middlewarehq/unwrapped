@@ -7,7 +7,7 @@ import Confetti from 'react-confetti';
 import toast from 'react-hot-toast';
 import { UpdatedImageFile } from '@/types/images';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 
 export default function StatsUnwrapped() {
   const [isLoading, setIsLoading] = useState(false);
@@ -54,57 +54,42 @@ export default function StatsUnwrapped() {
       });
   }, [userName, hash, isUrlValid]);
 
+  const Header = () => (
+    <>
+      <NextSeo
+        title={`${userName}'s Unwrapped 2023`}
+        description={`${userName}'s 2023 on GitHub Unwrapped, by Middleware. It's like Spotify Wrapped, but for developers. You'll love it.`}
+        openGraph={{
+          type: 'website',
+          url: `${process.env.NEXT_PUBLIC_APP_URL}/view/${userName}/${hash}`,
+          images: [
+            {
+              url: `${process.env.NEXT_PUBLIC_APP_URL}/api/get_cover/${userName}/${hash}`
+            }
+          ]
+        }}
+        twitter={{
+          cardType: 'summary_large_card',
+          site: `${process.env.NEXT_PUBLIC_APP_URL}/view/${userName}/${hash}`,
+          handle: 'middlewarehq'
+        }}
+      />
+    </>
+  );
+
   if (isLoading) {
     return (
-      <div className="h-screen flex flex-col items-center justify-between p-10">
-        <LoaderWithFacts />
-      </div>
+      <>
+        <Header />
+        <div className="h-screen flex flex-col items-center justify-between p-10">
+          <LoaderWithFacts />
+        </div>
+      </>
     );
   }
   return (
     <>
-      <Head>
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" />
-
-        <title>{userName}&apos;s Unwrapped 2023</title>
-
-        {/* Open Graph meta tags */}
-        <link
-          rel={`${process.env.NEXT_PUBLIC_APP_URL}/api/get_cover/${userName}/${hash}`}
-        />
-
-        <meta property="og:title" content={`${userName}'s Unwrapped 2023`} />
-        <meta
-          property="og:description"
-          content={`${userName}'s 2023 on GitHub Unwrapped, by Middleware. It's like Spotify Wrapped, but for developers. You'll love it.`}
-        />
-        <meta
-          property="og:image"
-          content={`${process.env.NEXT_PUBLIC_APP_URL}/api/get_cover/${userName}/${hash}`}
-        />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_APP_URL} />
-        <meta property="og:type" content="website" />
-
-        {/* Other meta tags */}
-        <meta
-          name="description"
-          content={`${userName}'s 2023 on GitHub Unwrapped, by Middleware. It's like Spotify Wrapped, but for developers. You'll love it.`}
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        {/* Twitter meta tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Unwrapped by Middleware" />
-        <meta
-          name="twitter:description"
-          content={`${userName}'s 2023 on GitHub Unwrapped, by Middleware. It's like Spotify Wrapped, but for developers. You'll love it.`}
-        />
-        <meta
-          name="twitter:image"
-          content={`${process.env.NEXT_PUBLIC_APP_URL}/api/get_cover/${userName}/${hash}`}
-        />
-      </Head>
+      <Header />
       <div className="items-center justify-center p-4 min-h-screen w-full flex flex-col gap-10 text-center">
         <div>
           <h2 className="text-2xl">

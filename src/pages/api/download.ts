@@ -84,12 +84,12 @@ const fetchAndDownloadImageBuffer = async (
         data: imageData
       } as ImageAPIResponse);
     }
-    console.log(chalk.green('Successfully sent buffer to client'));
+    console.info(chalk.green('Successfully sent buffer to client'));
   } catch (error: any) {
     logException('Error fetching or sending buffer', {
       originalException: error
     });
-    console.log(chalk.red('Error fetching or sending buffer:'), error);
+    console.info(chalk.red('Error fetching or sending buffer:'), error);
     res.status(error.status || 500).json({ message: error.message });
   }
 };

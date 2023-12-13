@@ -15,7 +15,7 @@ async function directoryExists(localDirectory: string): Promise<boolean> {
 async function ensureDirectoryExists(localDirectory: string) {
   try {
     await fs.mkdir(localDirectory, { recursive: true });
-    console.log(`Directory created: ${localDirectory}`);
+    console.info(`Directory created: ${localDirectory}`);
   } catch (error: any) {
     if (error.code === 'EEXIST') {
       console.error(`Directory already exists: ${localDirectory}`);
