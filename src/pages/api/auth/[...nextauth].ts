@@ -1,4 +1,5 @@
 import { enc } from '@/api-helpers/auth-supplementary';
+import { addMonths } from 'date-fns';
 import NextAuth, {
   type AuthOptions,
   type Profile,
@@ -63,7 +64,14 @@ export const nextAuthConfig = (
       switch (account?.provider?.split('-')[0]) {
         case 'github': {
           if (!account?.access_token) return false;
-          setCookie(GH_COOKIE_ATTR, enc(account.access_token), res);
+          const loginDate = new Date();
+          setCookie(
+            GH_COOKIE_ATTR,
+            enc(account.access_token),
+            res,
+            true,
+            addMonths(loginDate, 2).toUTCString()
+          );
           return true;
         }
         default: {
