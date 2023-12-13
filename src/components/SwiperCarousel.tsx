@@ -25,13 +25,15 @@ interface SwiperCarouselProps {
     images: UpdatedImageFile;
   }) => void;
   hideShareButtons?: boolean;
+  hideEmailInput?: boolean;
 }
 
 const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
   singleImageSharingCallback,
   userName,
   images,
-  hideShareButtons = false
+  hideShareButtons = false,
+  hideEmailInput
 }) => {
   const sliderRef = useRef<SwiperRef | null>(null);
 
@@ -126,9 +128,11 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
             />
           </SwiperSlide>
         ))}
-        <SwiperSlide className="swiper-slide-img email-input-card flex flex-col w-full h-full bg-no-repeat bg-cover bg-center bg-fixed">
-          <UserEmailInputCard />
-        </SwiperSlide>
+        {!hideEmailInput && (
+          <SwiperSlide className="swiper-slide-img email-input-card flex flex-col w-full h-full bg-no-repeat bg-cover bg-center bg-fixed">
+            <UserEmailInputCard />
+          </SwiperSlide>
+        )}
       </Swiper>
     </div>
   );
