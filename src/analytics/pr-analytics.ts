@@ -8,6 +8,7 @@ import { getTopNKeys } from './utils';
 import { logException } from '@/utils/logger';
 import { sum } from 'ramda';
 import { differenceInSeconds, parseISO } from 'date-fns';
+import { DayOfWeek } from '@/constants/general';
 
 export const getPRListAndMonthlyCountsFromGqlResponse = (
   edges?: PullRequestEdge[][]
@@ -250,4 +251,24 @@ export const getMostProductiveHour = (
   return hourWisePrFrequencyBucket.indexOf(
     Math.max(...hourWisePrFrequencyBucket)
   );
+};
+
+export const getMostProductiveDayOfWeek = (
+  prs: PullRequest[],
+  timeZone: string
+) => {
+  if (!prs?.length) return -1;
+
+  let hourWisePrFrequencyBucket = new Array(7).fill(0);
+
+  for (let pr of prs) {
+    const createdAt = new Date(pr.createdAt);
+    const localTime = new Date(createdAt.toLocaleString('en-US', { timeZone }));
+    const hour = localTime.getDay();
+    hourWisePrFrequencyBucket[hour] += 1;
+  }
+
+  return DayOfWeek[
+    hourWisePrFrequencyBucket.indexOf(Math.max(...hourWisePrFrequencyBucket))
+  ];
 };
