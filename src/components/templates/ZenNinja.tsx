@@ -149,15 +149,5 @@ function isSpiky(data: number[]): boolean {
   const diff = Math.abs(p90 - avg);
   const range = hi - lo;
   const perc = (diff * 100) / range;
-  console.log({
-    avg,
-    med,
-    hi,
-    lo,
-    diff,
-    range,
-    perc,
-    p90: getPercentile(data, 90)
-  });
   return perc > 15;
 }
