@@ -5,18 +5,19 @@ import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
 import { useImageDownloader } from '@/hooks/useImageDownloader';
 import Confetti from 'react-confetti';
-import toast from 'react-hot-toast';
 import { UpdatedImageFile } from '@/types/images';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import { track } from '@/constants/events';
+import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
 
 export default function StatsUnwrapped() {
+  const router = useRouter();
+  const { noImagesToast, invalidUrlToast } = usePrebuiltToasts();
   const [isLoading, setIsLoading] = useState(false);
   const downloadImage = useImageDownloader();
 
-  const router = useRouter();
   const userName = router.query.username as string;
   const hash = (router.query.hash as string[])?.join('/');
 
@@ -44,18 +45,21 @@ export default function StatsUnwrapped() {
             fileName: image.fileName,
             data: image.data
           }));
+          if (!imageData.length) {
+            router.replace('/');
+            return noImagesToast();
+          }
           setImages(imageData);
         }
       })
       .catch((_) => {
-        toast.error('Invalid URL', {
-          position: 'top-right'
-        });
+        router.replace('/');
+        return invalidUrlToast();
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [userName, hash, isUrlValid]);
+  }, [userName, hash, isUrlValid, router, noImagesToast, invalidUrlToast]);
 
   const Header = () => (
     <>
