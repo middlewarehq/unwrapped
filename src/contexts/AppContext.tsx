@@ -27,7 +27,9 @@ export const AppStateProvider = ({ children }: AppStateProviderInterface) => {
   useSession({
     required: true,
     onUnauthenticated() {
-      router.pathname !== '/' && router.push('/');
+      router.pathname !== '/' &&
+        !router.pathname.startsWith('/view') &&
+        router.push('/');
     }
   });
 

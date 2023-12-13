@@ -9,12 +9,13 @@ import {
 import { getInterFonts } from '@/api-helpers/fonts';
 import { COVER_WIDTH } from '@/constants/general';
 import LogoSvg from '@/assets/unwrapped-logo.svg';
+import { arrayBufferToBuffer } from './general';
 
 export const createCoverUsingVercel = async (
   username: string,
   images: string[]
-): Promise<ImageResponse> => {
-  const interFonts = await getInterFonts('browser');
+): Promise<Buffer> => {
+  const interFonts = await getInterFonts('node');
   try {
     const generatedImage = new ImageResponse(
       (
@@ -96,7 +97,10 @@ export const createCoverUsingVercel = async (
       }
     );
 
-    return generatedImage;
+    const imageArrayBuffer = await generatedImage.arrayBuffer();
+    const imageBuffer = arrayBufferToBuffer(imageArrayBuffer);
+
+    return imageBuffer;
   } catch (error) {
     console.error(error);
     throw new Error(`Image creation failed for cover`);
