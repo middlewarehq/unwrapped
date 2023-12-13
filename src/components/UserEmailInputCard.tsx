@@ -85,7 +85,7 @@ export const UserEmailInputCard = () => {
     setState('inflight');
     handleRequest<UserImprovementMetrics>('/api/github/improvement_metrics')
       .then((r) => {
-        setTotalTime(r.first_response_time_sum + r.rework_time_sum);
+        setTotalTime(r.first_response_time_sum);
       })
       .finally(() => {
         setState('done');
