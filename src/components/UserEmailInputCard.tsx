@@ -36,9 +36,7 @@ export const UserEmailInputCard = () => {
   const markUserEmailAsInvalid = useCallback(
     (isInvalidEmailType: InvalidEmailEnum) => {
       setIsInvalidEmail(isInvalidEmailType);
-      return toast.error(InvalidEmailMessage[isInvalidEmailType], {
-        position: 'top-right'
-      });
+      return toast.error(InvalidEmailMessage[isInvalidEmailType]);
     },
     []
   );
@@ -60,9 +58,7 @@ export const UserEmailInputCard = () => {
     })
       .then(() => {
         setIsEmailSubmitted(true);
-        toast.success('Success', {
-          position: 'top-right'
-        });
+        toast.success('Success');
       })
       .catch(() => setIsEmailSubmitted(false));
   }, [markUserEmailAsInvalid, saveUsernameAndFullName, userEmail]);

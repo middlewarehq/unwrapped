@@ -9,7 +9,6 @@ import { useImageDownloader } from '@/hooks/useImageDownloader';
 import { useImageDownloaderAsPdf } from '@/hooks/useImageDownloaderAsPdfHook';
 import Confetti from 'react-confetti';
 import Link from 'next/link';
-import toast from 'react-hot-toast';
 import { ImageAPIResponse, UpdatedImageFile } from '@/types/images';
 import { track } from '@/constants/events';
 import { GithubUser } from '@/api-helpers/exapi-sdk/types';
@@ -17,10 +16,12 @@ import { copyToClipboard } from '@/components/ShareButton';
 import { Tooltip } from 'react-tooltip';
 import { AxiosError } from 'axios';
 import { signOut } from 'next-auth/react';
+import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
 
 export default function StatsUnwrapped() {
+  const { somethingWentWrongToast, unauthenticatedToast } = usePrebuiltToasts();
   const [isLoading, setIsLoading] = useState(false);
   const downloadImage = useImageDownloader();
   const downloadImagesAsPdf = useImageDownloaderAsPdf();
@@ -40,13 +41,10 @@ export default function StatsUnwrapped() {
       handledErrStatus = err.status;
 
       if (err.status === 403) {
-        toast.error(
-          "Seems like you aren't authenticated. Taking you back home.",
-          { position: 'top-right' }
-        );
+        unauthenticatedToast();
         return signOut({ redirect: false });
       }
-      toast.error('Something went wrong', { position: 'top-right' });
+      somethingWentWrongToast();
     };
 
     Promise.all([
@@ -62,7 +60,7 @@ export default function StatsUnwrapped() {
         })
         .catch(handleErr)
     ]).finally(() => setIsLoading(false));
-  }, [setUnwrappedImages]);
+  }, [setUnwrappedImages, somethingWentWrongToast, unauthenticatedToast]);
 
   if (isLoading) {
     return (

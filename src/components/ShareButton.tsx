@@ -139,14 +139,10 @@ export const copyToClipboard = async (
 ) => {
   try {
     await navigator.clipboard.writeText(textToCopy);
-    toast.success('Copied to clipboard', {
-      position: 'top-right'
-    });
+    toast.success('Copied to clipboard');
     onCopy && onCopy(textToCopy);
   } catch (err) {
-    toast.error('Error copying to clipboard', {
-      position: 'top-right'
-    });
+    toast.error('Error copying to clipboard');
     logException(`Error copying to clipboard: ${textToCopy}`, {
       originalException: err
     });
