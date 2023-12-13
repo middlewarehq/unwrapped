@@ -11,21 +11,21 @@ import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import { track } from '@/constants/events';
 import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
+import { useSession } from 'next-auth/react';
 
 export default function StatsUnwrapped() {
   const router = useRouter();
+  const { status } = useSession();
   const { noImagesToast, invalidUrlToast } = usePrebuiltToasts();
   const [isLoading, setIsLoading] = useState(false);
   const downloadImage = useImageDownloader();
 
   const userName = router.query.username as string;
   const hash = (router.query.hash as string[])?.join('/');
-
-  const [isUrlValid, setIsUrlValid] = useState(false);
   const [images, setImages] = useState<UpdatedImageFile[] | null>(null);
 
   useEffect(() => {
-    if (!userName || !hash || isUrlValid) return;
+    if (!userName || !hash || status === 'loading') return;
     setIsLoading(true);
     handleRequest<{
       isValid: boolean;
@@ -38,7 +38,6 @@ export default function StatsUnwrapped() {
       }
     })
       .then((res) => {
-        setIsUrlValid(res.isValid);
         if (res.isValid) {
           const imageData: UpdatedImageFile[] = res.data.map((image) => ({
             url: `${window.location.origin}${image.url}`,
@@ -59,7 +58,7 @@ export default function StatsUnwrapped() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [userName, hash, isUrlValid, router, noImagesToast, invalidUrlToast]);
+  }, [userName, hash, router, noImagesToast, invalidUrlToast, status]);
 
   const Header = () => (
     <>

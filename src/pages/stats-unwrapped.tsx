@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { handleRequest } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
@@ -15,12 +15,13 @@ import { GithubUser } from '@/api-helpers/exapi-sdk/types';
 import { copyToClipboard } from '@/components/ShareButton';
 import { Tooltip } from 'react-tooltip';
 import { AxiosError } from 'axios';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
 
 export default function StatsUnwrapped() {
+  const { status } = useSession();
   const { somethingWentWrongToast, unauthenticatedToast } = usePrebuiltToasts();
   const [isLoading, setIsLoading] = useState(false);
   const downloadImage = useImageDownloader();
@@ -31,36 +32,45 @@ export default function StatsUnwrapped() {
   const [userName, setUserName] = useState('');
   const [shareUrl, setShareUrl] = useState('');
 
-  useEffect(() => {
-    setIsLoading(true);
-    let handledErrStatus: number | undefined;
-
-    const handleErr = (err: AxiosError) => {
-      if (handledErrStatus) return;
-
-      handledErrStatus = err.status;
-
+  const handleErr = useCallback(
+    (err: AxiosError) => {
       if (err.status === 403) {
         unauthenticatedToast();
         return signOut({ redirect: false });
       }
       somethingWentWrongToast();
-    };
+    },
+    [somethingWentWrongToast, unauthenticatedToast]
+  );
 
-    Promise.all([
-      handleRequest<ImageAPIResponse>('/api/download')
-        .then((res) => {
-          setUnwrappedImages(res.data);
-          setShareUrl(res.shareAllUrl);
-        })
-        .catch(handleErr),
-      handleRequest<{ user: GithubUser }>('/api/github/user')
-        .then((r) => {
-          setUserName(r.user.login);
-        })
-        .catch(handleErr)
-    ]).finally(() => setIsLoading(false));
-  }, [setUnwrappedImages, somethingWentWrongToast, unauthenticatedToast]);
+  const fetchImages = useCallback(() => {
+    setIsLoading(true);
+    handleRequest<ImageAPIResponse>('/api/download')
+      .then((res) => {
+        setUnwrappedImages(res.data);
+        setShareUrl(res.shareAllUrl);
+      })
+      .catch(handleErr)
+      .finally(() => setIsLoading(false));
+  }, [handleErr]);
+
+  const fetchUserName = useCallback(() => {
+    handleRequest<{ user: GithubUser }>('/api/github/user')
+      .then((r) => {
+        setUserName(r.user.login);
+      })
+      .catch(handleErr);
+  }, [handleErr]);
+
+  useEffect(() => {
+    if (status === 'loading') return;
+    fetchImages();
+  }, [fetchImages, status]);
+
+  useEffect(() => {
+    if (status === 'loading') return;
+    fetchUserName();
+  }, [fetchUserName, status]);
 
   if (isLoading) {
     return (

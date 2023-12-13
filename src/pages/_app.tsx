@@ -2,7 +2,6 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import { AppStateProvider } from '@/contexts/AppContext';
-import { AppLoadingStateWrapper } from '@/components/AppLoadingStateWrapper';
 import { Toaster } from 'react-hot-toast';
 import { inter } from '@/styles/fonts';
 import { useRouter } from 'next/router';
@@ -15,6 +14,8 @@ import '@/styles/swiper.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import Head from 'next/head';
 import { DefaultSeo } from 'next-seo';
+import NextNProgress from 'nextjs-progressbar';
+import { AppLoadingStateWrapper } from '@/components/AppLoadingStateWrapper';
 
 export default function App({
   Component,
@@ -111,6 +112,7 @@ export default function App({
                   style: { background: '#363636', color: '#fff' }
                 }}
               />
+              <NextNProgress />
               <Component {...pageProps} />
             </AppLoadingStateWrapper>
           </AppStateProvider>

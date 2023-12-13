@@ -31,6 +31,7 @@
     "next": "14.0.3",
     "next-auth": "^4.24.5",
     "next-seo": "^6.4.0",
+    "nextjs-progressbar": "^0.0.16",
     "pluralize": "^8.0.0",
     "ramda": "^0.29.1",
     "react": "^18",

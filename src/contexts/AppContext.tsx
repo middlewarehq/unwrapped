@@ -1,19 +1,10 @@
-import React, {
-  useState,
-  useContext,
-  createContext,
-  SetStateAction,
-  Dispatch
-} from 'react';
+import React, { useContext, createContext } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { logException } from '@/utils/logger';
 import { useIsClient } from 'usehooks-ts';
 
-interface AppStateInterface {
-  isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
-}
+interface AppStateInterface {}
 
 const AppStateContext = createContext({} as AppStateInterface);
 
@@ -24,7 +15,6 @@ interface AppStateProviderInterface {
 
 export const AppStateProvider = ({ children }: AppStateProviderInterface) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
   const isClient = useIsClient();
   useSession({
     required: isClient,
@@ -36,9 +26,7 @@ export const AppStateProvider = ({ children }: AppStateProviderInterface) => {
   });
 
   return (
-    <AppStateContext.Provider value={{ isLoading, setIsLoading }}>
-      {children}
-    </AppStateContext.Provider>
+    <AppStateContext.Provider value={{}}>{children}</AppStateContext.Provider>
   );
 };
 
