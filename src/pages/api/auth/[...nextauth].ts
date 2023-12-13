@@ -15,7 +15,8 @@ const getRemainingCookies = (key: string, res: NextApiResponse) =>
 const unsafeCookieAttrs = ['Secure', 'Path=/'].join(';');
 const cookieAttrs = `${unsafeCookieAttrs};HttpOnly`;
 const cookieDeleteAttr = 'Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-const GH_COOKIE_ATTR = 'ghct';
+
+export const GH_COOKIE_ATTR = 'ghct';
 
 export const setCookie = (
   key: string,
