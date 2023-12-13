@@ -177,5 +177,7 @@ export const updatedGhData = {
   prs_opened_during_night: 350,
   contribution_percentile: 98,
   global_contributions: 432094792,
-  reviewed_prs_with_requested_changes_count: 32
+  reviewed_prs_with_requested_changes_count: 32,
+  hour_with_max_opened_prs: 19,
+  weekday_with_max_opened_prs: 'wednesday'
 } as GitHubDataResponse;

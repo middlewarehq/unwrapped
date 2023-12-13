@@ -56,7 +56,9 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
 
   const timeBasedData: TimeOfTheDayData | null = {
     prsDuringDay: data.prs_opened_during_day,
-    totalPrs: data.prs_opened_during_day + data.prs_opened_during_night
+    totalPrs: data.prs_opened_during_day + data.prs_opened_during_night,
+    productiveDay: data.weekday_with_max_opened_prs as string,
+    productiveHour: data.hour_with_max_opened_prs as number
   };
 
   const zenOrNinja: ZenNinjaData | null =
