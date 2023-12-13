@@ -5,7 +5,6 @@ import { AppStateProvider } from '@/contexts/AppContext';
 import { AppLoadingStateWrapper } from '@/components/AppLoadingStateWrapper';
 import { Toaster } from 'react-hot-toast';
 import { inter } from '@/styles/fonts';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
@@ -71,46 +70,6 @@ export default function App({
 
   return (
     <>
-      <Head>
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" />
-
-        <title>Unwrapped by Middleware</title>
-
-        <meta
-          name="keywords"
-          content="developer,unwrap,app,recap,yearly,review,annual,github,spotify,wrapped,year-in-review,year in review,middleware,software,engineering,annual review,appraisal,new year,new year's eve,december,github unwrapped,githubunwrapped,github-unwrapped,software engineers,jayant bhawal,eshaan yadav,samad yar khan,shivam singh,dhruv agarwal,varun narula,adnan hashmi,cadence,management,dora metrics,open source,open-source,contributions,bottlenecks,pull requests,prs,issues,commits,lines of code,loc,languages,repositories,repos,stars,forks,github insights"
-        />
-
-        <meta property="og:title" content={`Unwrapped by Middleware`} />
-        <meta
-          property="og:description"
-          content="A yearly recap of your GitHub, like Spotify Wrapped. If you are a developer, you will love it! ❤️"
-        />
-        <meta property="og:image" content="/assets/images/og-image.png" />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_APP_URL} />
-        <meta property="og:type" content="website" />
-
-        {/* Other meta tags */}
-        <meta
-          name="description"
-          content="A yearly recap of your GitHub, like Spotify Wrapped. If you are a developer, you will love it! ❤️"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        {/* Twitter meta tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Unwrapped by Middleware" />
-        <meta
-          name="twitter:description"
-          content="A yearly recap of your GitHub, like Spotify Wrapped. If you are a developer, you will love it! ❤️"
-        />
-        <meta name="twitter:image" content="/assets/images/og-image.png" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-      </Head>
       <main className={`${inter} text-white`}>
         <SessionProvider session={session}>
           <AppStateProvider>
