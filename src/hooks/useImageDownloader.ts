@@ -54,9 +54,8 @@ export const useImageDownloader = () => {
         error: 'Error while processing'
       },
       {
-        position: 'top-right',
         success: {
-          duration: 3000
+          duration: 5000
         }
       }
     );
