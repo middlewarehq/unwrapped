@@ -13,12 +13,7 @@
   </h3>
 </blockquote>
 
-
-
-# Unwrapped - by Middleware :      <a href="https://unwrapped.dev"><img src="https://github.com/devdnv/wrapped/assets/147969535/c9e6dfc5-4e55-4c2b-b09b-8d4c405378a8" width="5%" align='right' /></a>
-
-
-
+# Unwrapped - by Middleware      <a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/unwrapped/assets/7949047/10114508-10be-4a94-b950-2ffaed3cd3c8" width="5%" align='right' /></a>
 
 ![Stargazers](https://img.shields.io/github/stars/middlewarehq/unwrapped?style=social) 
 ![Forks](https://img.shields.io/github/forks/middlewarehq/unwrapped?style=social) 
