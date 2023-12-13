@@ -6,6 +6,7 @@ import {
 } from '@/analytics/contribution-analytics';
 import {
   getCommitPercentile,
+  getMostProductiveHour,
   getPRListAndMonthlyCountsFromGqlResponse,
   getSumOfFirstResponseTimes,
   getSumOfReworkTimes,
@@ -99,6 +100,11 @@ export const fetchGithubUnwrappedData = async (
       user.login
     );
 
+  const hour_with_max_opened_prs = getMostProductiveHour(
+    authored_prs,
+    timezone
+  );
+
   return {
     user,
     authored_monthly_pr_counts,
@@ -125,7 +131,8 @@ export const fetchGithubUnwrappedData = async (
     total_review_contributions:
       contribution_summary?.totalPullRequestReviewContributions,
     total_issue_contributions: contribution_summary?.totalIssueContributions,
-    global_contributions: 4500000000
+    global_contributions: 4500000000,
+    hour_with_max_opened_prs: hour_with_max_opened_prs
   };
 };
 
