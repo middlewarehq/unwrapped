@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { handleRequest } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
@@ -31,36 +31,35 @@ export default function StatsUnwrapped() {
   const [userName, setUserName] = useState('');
   const [shareUrl, setShareUrl] = useState('');
 
-  useEffect(() => {
-    setIsLoading(true);
-    let handledErrStatus: number | undefined;
-
-    const handleErr = (err: AxiosError) => {
-      if (handledErrStatus) return;
-
-      handledErrStatus = err.status;
-
+  const handleErr = useCallback(
+    (err: AxiosError) => {
       if (err.status === 403) {
         unauthenticatedToast();
         return signOut({ redirect: false });
       }
       somethingWentWrongToast();
-    };
+    },
+    [somethingWentWrongToast, unauthenticatedToast]
+  );
 
-    Promise.all([
-      handleRequest<ImageAPIResponse>('/api/download')
-        .then((res) => {
-          setUnwrappedImages(res.data);
-          setShareUrl(res.shareAllUrl);
-        })
-        .catch(handleErr),
-      handleRequest<{ user: GithubUser }>('/api/github/user')
-        .then((r) => {
-          setUserName(r.user.login);
-        })
-        .catch(handleErr)
-    ]).finally(() => setIsLoading(false));
-  }, [setUnwrappedImages, somethingWentWrongToast, unauthenticatedToast]);
+  useEffect(() => {
+    setIsLoading(true);
+    handleRequest<ImageAPIResponse>('/api/download')
+      .then((res) => {
+        setUnwrappedImages(res.data);
+        setShareUrl(res.shareAllUrl);
+      })
+      .catch(handleErr)
+      .finally(() => setIsLoading(false));
+  }, [handleErr]);
+
+  useEffect(() => {
+    handleRequest<{ user: GithubUser }>('/api/github/user')
+      .then((r) => {
+        setUserName(r.user.login);
+      })
+      .catch(handleErr);
+  }, [handleErr]);
 
   if (isLoading) {
     return (
