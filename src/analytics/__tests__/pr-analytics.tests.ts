@@ -14,9 +14,11 @@ import {
   getSumOfFirstResponseTimes,
   getReworkTimeInSeconds,
   getSumOfReworkTimes,
-  getMostProductiveHour
+  getMostProductiveHour,
+  getMostProductiveDayOfWeek
 } from '../pr-analytics';
 import { getPullRequest, getReview } from '../test-utils/factories';
+import { DayOfWeek } from '@/constants/general';
 
 test('getReviewerReviewsCountMap returns empty object for empty PR Array', () => {
   expect(getReviewerReviewsCountMap([])).toStrictEqual({});
@@ -1427,4 +1429,95 @@ test('getMostProductiveHour return earliest hour for equal distribution of PRs a
   expect(
     getMostProductiveHour([pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr8], 'UTC')
   ).toStrictEqual(0);
+});
+
+test('getMostProductiveDayOfWeek return undefined for no PRs', () => {
+  expect(getMostProductiveDayOfWeek([], 'UTC')).toStrictEqual(undefined);
+});
+
+test('getMostProductiveDayOfWeek return correct day index PR data for different days.', () => {
+  const prAuthor = 'samad-yar-khan';
+
+  const pr1 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T12:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-16T13:22:52Z'
+  });
+  const pr3 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-12T12:22:52Z'
+  });
+  const pr4 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-10T15:22:52Z'
+  });
+  const pr5 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-11T16:22:52Z'
+  });
+  const pr6 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-10T17:22:52Z'
+  });
+  const pr7 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T18:22:52Z'
+  });
+  const pr8 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T19:22:52Z'
+  });
+
+  expect(getMostProductiveDayOfWeek([pr1, pr2, pr3, pr4], 'UTC')).toStrictEqual(
+    DayOfWeek[2]
+  );
+  expect(
+    getMostProductiveDayOfWeek([pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr8], 'IST')
+  ).toStrictEqual(DayOfWeek[2]);
+  expect(
+    getMostProductiveDayOfWeek(
+      [pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr8],
+      'Pacific/Fiji'
+    )
+  ).toStrictEqual(DayOfWeek[3]);
+});
+
+test('getMostProductiveDayOfWeek return earliest occurring day of day if PRs are spread out equally throughout week.', () => {
+  const prAuthor = 'samad-yar-khan';
+
+  const pr1 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-09T12:22:52Z'
+  });
+  const pr2 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-10T13:22:52Z'
+  });
+  const pr3 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-11T12:22:52Z'
+  });
+  const pr4 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-12T15:22:52Z'
+  });
+  const pr5 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-13T16:22:52Z'
+  });
+  const pr6 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-14T17:22:52Z'
+  });
+  const pr7 = getPullRequest({
+    authorLogin: prAuthor,
+    createdAt: '2023-05-15T18:22:52Z'
+  });
+
+  expect(
+    getMostProductiveDayOfWeek([pr1, pr2, pr3, pr4, pr5, pr6, pr7], 'IST')
+  ).toStrictEqual(DayOfWeek[0]);
 });
