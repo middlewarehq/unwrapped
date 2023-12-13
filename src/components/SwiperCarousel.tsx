@@ -120,16 +120,22 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
               />
             )}
             <img src={image.data} alt={`Slide ${index + 1}`} />
-
-            <IoIosArrowDroprightCircle
-              size={36}
-              className="next-arrow left-[90%] sm:left-[102%]"
-              onClick={handleNext}
-            />
+            {(index !== images.length - 1 || !hideEmailInput) && (
+              <IoIosArrowDroprightCircle
+                size={36}
+                className="next-arrow left-[90%] sm:left-[102%]"
+                onClick={handleNext}
+              />
+            )}
           </SwiperSlide>
         ))}
         {!hideEmailInput && (
           <SwiperSlide className="swiper-slide-img email-input-card flex flex-col w-full h-full bg-no-repeat bg-cover bg-center bg-fixed">
+            <IoIosArrowDropleftCircle
+              size={36}
+              className="prev-arrow right-[90%] sm:right-[102%]"
+              onClick={handlePrev}
+            />
             <UserEmailInputCard />
           </SwiperSlide>
         )}
