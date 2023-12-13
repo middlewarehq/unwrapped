@@ -15,6 +15,8 @@ import { track } from '@/constants/events';
 import { GithubUser } from '@/api-helpers/exapi-sdk/types';
 import { copyToClipboard } from '@/components/ShareButton';
 import { Tooltip } from 'react-tooltip';
+import { AxiosError } from 'axios';
+import { signOut } from 'next-auth/react';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/';
 
@@ -27,34 +29,40 @@ export default function StatsUnwrapped() {
   );
   const [userName, setUserName] = useState('');
   const [shareUrl, setShareUrl] = useState('');
-  useEffect(() => {
-    setIsLoading(true);
-    handleRequest<ImageAPIResponse>('/api/download')
-      .then((res) => {
-        setUnwrappedImages(res.data);
-        setShareUrl(res.shareAllUrl);
-      })
-      .catch((_) => {
-        toast.error('Something went wrong', {
-          position: 'top-right'
-        });
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [setUnwrappedImages]);
 
   useEffect(() => {
-    handleRequest<{ user: GithubUser }>('/api/github/user')
-      .then((r) => {
-        setUserName(r.user.login);
-      })
-      .catch((_) => {
-        toast.error('Something went wrong', {
-          position: 'top-right'
-        });
-      });
-  }, []);
+    setIsLoading(true);
+    let handledErrStatus: number | undefined;
+
+    const handleErr = (err: AxiosError) => {
+      if (handledErrStatus) return;
+
+      handledErrStatus = err.status;
+
+      if (err.status === 403) {
+        toast.error(
+          "Seems like you aren't authenticated. Taking you back home.",
+          { position: 'top-right' }
+        );
+        return signOut({ redirect: false });
+      }
+      toast.error('Something went wrong', { position: 'top-right' });
+    };
+
+    Promise.all([
+      handleRequest<ImageAPIResponse>('/api/download')
+        .then((res) => {
+          setUnwrappedImages(res.data);
+          setShareUrl(res.shareAllUrl);
+        })
+        .catch(handleErr),
+      handleRequest<{ user: GithubUser }>('/api/github/user')
+        .then((r) => {
+          setUserName(r.user.login);
+        })
+        .catch(handleErr)
+    ]).finally(() => setIsLoading(false));
+  }, [setUnwrappedImages]);
 
   if (isLoading) {
     return (
