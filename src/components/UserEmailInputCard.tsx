@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { secondsInDay } from 'date-fns/constants';
 import { getDurationString } from '@/utils/datetime';
 import { UserImprovementMetrics } from '@/types/api-responses';
+import { logException } from '@/utils/logger';
 
 const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
@@ -60,7 +61,13 @@ export const UserEmailInputCard = () => {
         setIsEmailSubmitted(true);
         toast.success('Success');
       })
-      .catch(() => setIsEmailSubmitted(false));
+      .catch((err) => {
+        logException(err);
+        toast.error(
+          "Whoops. Something went wrong and we couldn't sign you up. Try again?"
+        );
+        setIsEmailSubmitted(false);
+      });
   }, [markUserEmailAsInvalid, saveUsernameAndFullName, userEmail]);
 
   const updateEmail = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +90,7 @@ export const UserEmailInputCard = () => {
       .then((r) => {
         setTotalTime(r.first_response_time_sum);
       })
+      .catch(logException)
       .finally(() => {
         setState('done');
       });
