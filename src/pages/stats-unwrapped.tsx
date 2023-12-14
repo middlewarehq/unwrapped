@@ -80,7 +80,7 @@ export default function StatsUnwrapped() {
   };
 
   return (
-    <div className="items-center justify-center p-4 min-h-screen w-full flex flex-col gap-10 text-center">
+    <div className="items-center justify-center p-4 min-h-screen w-full flex flex-col gap-8 text-center">
       <div>
         <h2 className="text-2xl">
           🚀 Let&apos;s unwrap your GitHub journey of 2023! 🎉
@@ -121,6 +121,19 @@ export default function StatsUnwrapped() {
           </div>
         </div>
       )}
+      <a
+        href="https://www.producthunt.com/posts/unwrapped-by-middleware?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-unwrapped&#0045;by&#0045;middleware"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=428918&theme=light"
+          alt="Unwrapped&#0032;by&#0032;Middleware - Your&#0032;Dev&#0032;year&#0032;2023&#0032;unwrapped | Product Hunt"
+          style={{ width: '250px', height: '54px' }}
+          width="250"
+          height="54"
+        />
+      </a>
     </div>
   );
 }
