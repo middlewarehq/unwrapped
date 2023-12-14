@@ -26,7 +26,7 @@ const fetchAndDownloadImageBuffer = async (
       message: 'Invalid parameters, must pass valid hash.'
     });
   }
-  const imageData = await fetchSavedCards(username);
+  const imageData = await fetchSavedCards(username, false);
 
   const images = imageData
     .sort((a, b) => {
