@@ -13,6 +13,7 @@ export const AuthActions = () => {
   const { status } = useSession();
   const router = useRouter();
   const [showPrivate, setShowPrivate] = useState(true);
+  const [username, setUsername] = useState('');
 
   return (
     <div className="w-fit flex flex-col gap-2">
@@ -63,11 +64,12 @@ export const AuthActions = () => {
               type="text"
               placeholder="GH Username"
               autoFocus
+              onChange={(e) => setUsername(e.target.value)}
             />
             <button
               className="bg-indigo-800 text-white px-4 py-2 rounded-md shrink-0"
               onClick={() => {
-                console.info('public');
+                router.push(`/view/public/${username}`);
               }}
             >
               {'->'}
