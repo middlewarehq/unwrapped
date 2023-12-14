@@ -106,7 +106,6 @@ export default function StatsUnwrapped() {
           <div className="flex flex-col items-center gap-4 w-full ">
             <SwiperCarousel
               hideEmailInput
-              hideShareButtons
               userName={userName}
               images={images}
               singleImageSharingCallback={downloadImage}

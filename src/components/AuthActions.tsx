@@ -7,7 +7,7 @@ import { track } from '@/constants/events';
  * DISABLE_PUBLIC_ONLY_CONTRIBUTIONS
  * Because this isn't implemented yet
  */
-const DISABLE_PUBLIC_ONLY_CONTRIBUTIONS = true;
+const DISABLE_PUBLIC_ONLY_CONTRIBUTIONS = false;
 
 export const AuthActions = () => {
   const { status } = useSession();
@@ -48,33 +48,6 @@ export const AuthActions = () => {
           >
             Login with Github to start {'->'}
           </button>
-          <div className="flex flex-col gap-1 mt-2">
-            <span className="text-slate-100 text-sm font-semibold">
-              What&apos;s stopping you?
-            </span>
-            <span
-              onClick={() => {
-                track('SEE_HOW_WE_MANAGE_YOUR_TRUST_CLICKED');
-                document
-                  .getElementById('trust-notice')
-                  ?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="cursor-pointer text-purple-400 text-sm"
-            >
-              See how we manage trust 🔒 {'->'}
-            </span>
-            <span
-              onClick={() => {
-                track('SEE_HOW_2023_WAS_FOR_TOP_DEVS_CLICKED');
-                document
-                  .getElementById('popular-devs')
-                  ?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="cursor-pointer text-purple-400 text-sm"
-            >
-              See how 2023 was for top devs 🧑‍💻 {'->'}
-            </span>
-          </div>
         </>
       ) : (
         <div className="w-fit">
@@ -89,11 +62,12 @@ export const AuthActions = () => {
               id="username"
               type="text"
               placeholder="GH Username"
+              autoFocus
             />
             <button
               className="bg-indigo-800 text-white px-4 py-2 rounded-md shrink-0"
               onClick={() => {
-                // console.info('public');
+                console.info('public');
               }}
             >
               {'->'}
@@ -101,26 +75,51 @@ export const AuthActions = () => {
           </form>
         </div>
       )}
-      {!DISABLE_PUBLIC_ONLY_CONTRIBUTIONS && (
-        <div>
-          <div className="flex items-center">
-            <input
-              id="private-contribs"
-              type="checkbox"
-              checked={showPrivate}
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              onChange={() => setShowPrivate(!showPrivate)}
-              disabled={DISABLE_PUBLIC_ONLY_CONTRIBUTIONS}
-            />
-            <label
-              htmlFor="private-contribs"
-              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-            >
-              Include my private contributions?
-            </label>
-          </div>
+      <div>
+        <div className="flex items-center">
+          <input
+            id="private-contribs"
+            type="checkbox"
+            checked={showPrivate}
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            onChange={() => setShowPrivate(!showPrivate)}
+            disabled={DISABLE_PUBLIC_ONLY_CONTRIBUTIONS}
+          />
+          <label
+            htmlFor="private-contribs"
+            className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            Include private contributions?
+          </label>
         </div>
-      )}
+      </div>
+      <div className="flex flex-col gap-1 mt-2">
+        <span className="text-slate-100 text-sm font-semibold">
+          What&apos;s stopping you?
+        </span>
+        <span
+          onClick={() => {
+            track('SEE_HOW_WE_MANAGE_YOUR_TRUST_CLICKED');
+            document
+              .getElementById('trust-notice')
+              ?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="cursor-pointer text-purple-400 text-sm"
+        >
+          See how we manage trust 🔒 {'->'}
+        </span>
+        <span
+          onClick={() => {
+            track('SEE_HOW_2023_WAS_FOR_TOP_DEVS_CLICKED');
+            document
+              .getElementById('popular-devs')
+              ?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="cursor-pointer text-purple-400 text-sm"
+        >
+          See how 2023 was for top devs 🧑‍💻 {'->'}
+        </span>
+      </div>
     </div>
   );
 };
