@@ -1,4 +1,4 @@
-import { ImageFile, ImagesWithBuffers } from '@/types/images';
+import { ImagesWithBuffers } from '@/types/images';
 import {
   deleteS3Directory,
   fetchFileFromS3Directory,
@@ -69,7 +69,7 @@ export const fetchSavedCard = async (
   userLogin: string,
   cardName: string,
   isPublic: boolean = true
-): Promise<ImageFile> => {
+): Promise<ImagesWithBuffers> => {
   if (awsCredentialExists && bucketName) {
     const prefix = isPublic
       ? `public/${userLogin}/${cardName}.png`

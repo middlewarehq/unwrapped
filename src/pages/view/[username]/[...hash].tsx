@@ -24,6 +24,11 @@ export default function StatsUnwrapped() {
   const hash = (router.query.hash as string[])?.join('/');
   const [images, setImages] = useState<UpdatedImageFile[] | null>(null);
 
+  const zipDownload = () => {
+    if (images) downloadImage({ images });
+    track('ZIP_DOWNLOAD_CLICKED');
+  };
+
   useEffect(() => {
     if (!userName || !hash || status === 'loading') return;
     setIsLoading(true);
@@ -114,6 +119,7 @@ export default function StatsUnwrapped() {
               userName={userName}
               images={images}
               singleImageSharingCallback={downloadImage}
+              zipDownload={zipDownload}
             />
           </div>
         )}

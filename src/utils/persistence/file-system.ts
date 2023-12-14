@@ -1,4 +1,4 @@
-import { ImageFile } from '@/types/images';
+import { ImagesWithBuffers } from '@/types/images';
 import fs from 'fs/promises';
 import path from 'path';
 import { logException } from '../logger';
@@ -29,7 +29,7 @@ async function ensureDirectoryExists(localDirectory: string) {
 
 export const saveImagesToLocalDirectory = async (
   localDirectory: string,
-  imageFiles: ImageFile[]
+  imageFiles: ImagesWithBuffers[]
 ): Promise<void> => {
   try {
     await ensureDirectoryExists(localDirectory);
@@ -50,11 +50,11 @@ export const saveImagesToLocalDirectory = async (
 
 export const fetchImagesFromLocalDirectory = async (
   localDirectory: string
-): Promise<ImageFile[]> => {
+): Promise<ImagesWithBuffers[]> => {
   try {
     await ensureDirectoryExists(localDirectory);
     const files = await fs.readdir(localDirectory);
-    const images: ImageFile[] = await Promise.all(
+    const images: ImagesWithBuffers[] = await Promise.all(
       files.map(async (fileName) => {
         const filePath = path.join(localDirectory, fileName);
         const data = await fs.readFile(filePath);
@@ -79,7 +79,7 @@ export const fetchImagesFromLocalDirectory = async (
 
 export const fetchImageFromLocalDirectory = async (
   filePath: string
-): Promise<ImageFile> => {
+): Promise<ImagesWithBuffers> => {
   try {
     const data = await fs.readFile(filePath);
     return {

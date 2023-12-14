@@ -44,11 +44,9 @@ const fetchAndDownloadImageBuffer = async (
       ? await fetchUserByLogin(token, req.query.username as string)
       : await fetchUser(token);
 
-    const cachedCardsBuffer = req.query.recache
+    let imageBuffer = req.query.recache
       ? []
       : await fetchSavedCards(user.login, isPublic);
-
-    let imageBuffer = cachedCardsBuffer;
 
     if (!imageBuffer?.length) {
       const data = await fetchGithubUnwrappedData(token, timezone, user);

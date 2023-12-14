@@ -5,7 +5,7 @@ import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
 import { useImageDownloader } from '@/hooks/useImageDownloader';
 import Confetti from 'react-confetti';
-import { ImageFile } from '@/types/images';
+import { ImageJson } from '@/types/images';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ export default function StatsUnwrapped() {
   const downloadImage = useImageDownloader();
 
   const userName = router.query.username as string;
-  const [images, setImages] = useState<ImageFile[] | null>(null);
+  const [images, setImages] = useState<ImageJson[] | null>(null);
   const [shareAll, setShareAll] = useState('');
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function StatsUnwrapped() {
     setIsLoading(true);
     handleRequest<{
       shareAllUrl: string;
-      data: ImageFile[];
+      data: ImageJson[];
     }>('/api/download', {
       method: 'GET',
       params: {
@@ -40,7 +40,7 @@ export default function StatsUnwrapped() {
           router.replace('/');
           return noImagesToast();
         }
-        const imageData: ImageFile[] = res.data.map((image) => ({
+        const imageData: ImageJson[] = res.data.map((image) => ({
           url: `${process.env.NEXT_PUBLIC_APP_URL}${image.url}`,
           fileName: image.fileName,
           data: image.data
