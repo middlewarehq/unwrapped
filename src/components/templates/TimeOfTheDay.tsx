@@ -53,7 +53,7 @@ export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
         <div tw="flex flex-col p-1">
           <CardSubtitle text="They say I catch the what?" />
           <CardTitle text="Early~Bird" />
-          <CardSubText text="You prefer a 9-5 job" />
+          <CardSubText text="Morning coffee + code  = ❤️" />
           <ProductiveTimes
             productiveHour={productiveHour}
             productiveDay={productiveDay}
@@ -61,7 +61,7 @@ export const TimeOfTheDay: FC<TimeOfTheDayData & Username> = ({
         </div>
         <img
           tw="absolute bottom-[-20px] right-[-20px]"
-          width={350}
+          width={300}
           src={dayHawk}
           alt=""
         />
