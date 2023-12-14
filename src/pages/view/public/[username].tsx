@@ -67,7 +67,7 @@ export default function StatsUnwrapped() {
           url: `${process.env.NEXT_PUBLIC_APP_URL}/view/public/${userName}`,
           images: [
             {
-              url: `${process.env.NEXT_PUBLIC_APP_URL}/api/get_cover/public${userName}`
+              url: `${process.env.NEXT_PUBLIC_APP_URL}/api/get_cover/public/${userName}`
             }
           ]
         }}
