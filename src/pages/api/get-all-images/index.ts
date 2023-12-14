@@ -7,7 +7,6 @@ import {
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchSavedCards } from '@/api-helpers/persistance';
 import { logException } from '@/utils/logger';
-import { fetchUserByLogin } from '@/api-helpers/exapi-sdk/github';
 
 const checkHash = async (req: NextApiRequest, res: NextApiResponse) => {
   let { username, hash } = req.query;
@@ -26,11 +25,6 @@ const checkHash = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (isValid) {
     try {
-      const user = await fetchUserByLogin(
-        process.env.GLOBAL_GH_PAT,
-        username as string
-      );
-      username = user.login;
       const imageData = await fetchSavedCards(username as string, isPublic);
       const imageDataWithURL = imageData.map((image) => {
         const filename = extractFilenameWithoutExtension(image.fileName);
