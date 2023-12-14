@@ -10,18 +10,22 @@ import { logException } from '@/utils/logger';
 
 const checkHash = async (req: NextApiRequest, res: NextApiResponse) => {
   const { username, hash } = req.query;
-  if (!username || !hash) {
+  if (!username) {
     return res.status(400).json({
       message: 'Username or hash not found.'
     });
   }
+  const isPublic = req.query.ispublic === 'true';
+  let isValid = isPublic;
 
-  const userNameHash = bcryptGen(username as string);
-  const isValid = userNameHash === (hash as string);
+  if (!isValid) {
+    const userNameHash = bcryptGen(username as string);
+    isValid = userNameHash === (hash as string);
+  }
 
   if (isValid) {
     try {
-      const imageData = await fetchSavedCards(username as string);
+      const imageData = await fetchSavedCards(username as string, isPublic);
       const imageDataWithURL = imageData.map((image) => {
         const filename = extractFilenameWithoutExtension(image.fileName);
         const hash = bcryptGen((username as string) + filename);
