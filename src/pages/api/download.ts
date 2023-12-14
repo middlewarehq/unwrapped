@@ -21,7 +21,7 @@ const fetchAndDownloadImageBuffer = async (
   let token = req.cookies.ghct;
   const timezone = (req.headers['x-timezone'] as string) || 'UTC';
 
-  const isPublic = !token || req.query.ispublic === 'true';
+  const isPublic = req.query.ispublic === 'true';
 
   if (!token && !req.query.username) {
     return res.status(403).json({
@@ -29,10 +29,14 @@ const fetchAndDownloadImageBuffer = async (
     });
   }
 
-  if (!token) {
+  if (isPublic) {
     token = process.env.GLOBAL_GH_PAT;
-  } else {
+  } else if (token) {
     token = dec(token);
+  } else {
+    return res.status(403).json({
+      message: 'GitHub Access token not found.'
+    });
   }
 
   try {
