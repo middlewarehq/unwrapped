@@ -18,7 +18,7 @@ import { AxiosError } from 'axios';
 import { signOut, useSession } from 'next-auth/react';
 import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
 
-const LINKEDIN_URL = 'https://www.linkedin.com/';
+const LINKEDIN_URL = 'https://www.linkedin.com/sharing/share-offsite/?url=';
 
 export default function StatsUnwrapped() {
   const { status } = useSession();
@@ -106,7 +106,12 @@ export default function StatsUnwrapped() {
               data-tooltip-id="carousel-action-menu"
               data-tooltip-content="Download as zip"
             />
-            <Link href={LINKEDIN_URL} target="_blank">
+            <Link
+              href={`${LINKEDIN_URL}${encodeURIComponent(
+                window.location.origin + shareUrl
+              )}`}
+              target="_blank"
+            >
               <FaLinkedin
                 size={36}
                 onClick={() => {
