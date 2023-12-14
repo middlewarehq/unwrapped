@@ -120,3 +120,23 @@ export const getRepoWiseOpensourceContributionsCount = (
       repoData2.contributions.totalCount - repoData1.contributions.totalCount
   );
 };
+
+export const getContributionPercentile = (
+  userContributionCount: number
+): number => {
+  const contributionCounts = [
+    153714, 76460, 40475, 19702, 10534, 6203, 4405, 3264, 2196, 1561, 1029, 765,
+    604, 490, 217, 76, 51, 36, 10, 6, 3, 2, 1
+  ];
+  const percentiles = [
+    0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 3, 4, 5, 10, 20,
+    25, 30, 50, 60, 70, 80, 90
+  ];
+  let percentile = 0.001;
+  for (let i in contributionCounts) {
+    if (userContributionCount > contributionCounts[i]) break;
+
+    percentile = percentiles[i];
+  }
+  return percentile;
+};

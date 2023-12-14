@@ -1,11 +1,11 @@
 import {
+  getContributionPercentile,
   getLongestContributionStreak,
   getMonthWiseContributionCount,
   getRepoWiseOpensourceContributionsCount,
   getWeekWiseContributionCount
 } from '@/analytics/contribution-analytics';
 import {
-  getCommitPercentile,
   getMostProductiveDayOfWeek,
   getMostProductiveHour,
   getPRListAndMonthlyCountsFromGqlResponse,
@@ -129,8 +129,8 @@ export const fetchGithubUnwrappedData = async (
     ),
     prs_opened_during_day: day.length,
     prs_opened_during_night: night.length,
-    contribution_percentile: getCommitPercentile(
-      contribution_summary?.totalCommitContributions || 0
+    contribution_percentile: getContributionPercentile(
+      user_daily_contributions?.totalContributions || 0
     ),
     total_commit_contributions: contribution_summary?.totalCommitContributions,
     total_pr_contributions: contribution_summary?.totalPullRequestContributions,

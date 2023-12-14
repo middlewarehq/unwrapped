@@ -2,7 +2,8 @@ import {
   getContributionDaysList,
   getMonthWiseContributionCount,
   getLongestContributionStreak,
-  getRepoWiseOpensourceContributionsCount
+  getRepoWiseOpensourceContributionsCount,
+  getContributionPercentile
 } from '../contribution-analytics';
 
 const contributionData = {
@@ -1585,4 +1586,10 @@ test('getRepoWiseOpensourceContributionsCount returns empty data for no contribu
       'samad-yar-khan'
     )
   ).toStrictEqual([]);
+});
+
+test('getContributionPercentile returns correct percentile', () => {
+  expect(getContributionPercentile(0)).toStrictEqual(90);
+  expect(getContributionPercentile(6140)).toStrictEqual(0.05);
+  expect(getContributionPercentile(6140000)).toStrictEqual(0.001);
 });
