@@ -2,6 +2,8 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { track } from '@/constants/events';
+import { handleRequest } from '@/utils/axios';
+import { ImageAPIResponse } from '@/types/images';
 
 /**
  * DISABLE_PUBLIC_ONLY_CONTRIBUTIONS
@@ -14,6 +16,7 @@ export const AuthActions = () => {
   const router = useRouter();
   const [showPrivate, setShowPrivate] = useState(true);
   const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="w-fit flex flex-col gap-2">
@@ -69,10 +72,18 @@ export const AuthActions = () => {
             <button
               className="bg-indigo-800 text-white px-4 py-2 rounded-md shrink-0"
               onClick={() => {
-                router.push(`/view/public/${username}`);
+                handleRequest<ImageAPIResponse>('/api/download', {
+                  params: { ispublic: true, username }
+                })
+                  .then((res) => {
+                    router.push(
+                      process.env.NEXT_PUBLIC_APP_URL + res.shareAllUrl
+                    );
+                  })
+                  .finally(() => setLoading(false));
               }}
             >
-              {'->'}
+              {loading ? '...' : '->'}
             </button>
           </form>
         </div>
