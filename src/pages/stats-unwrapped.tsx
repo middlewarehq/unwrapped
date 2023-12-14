@@ -88,6 +88,7 @@ export default function StatsUnwrapped() {
             userName={userName}
             images={images}
             singleImageSharingCallback={downloadImage}
+            shareAllUrl={shareUrl}
           />
           <div className="flex gap-2">
             <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">

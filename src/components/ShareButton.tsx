@@ -12,6 +12,7 @@ type ShareButtonProps = {
   className?: string;
   userName?: string;
   imageName?: string;
+  shareAllUrl?: string;
 };
 
 const defaultText = (text: string) =>
@@ -20,22 +21,34 @@ const defaultText = (text: string) =>
 export const ShareButton: React.FC<ShareButtonProps> = ({
   callBack,
   imageUrl,
-  className
+  className,
+  shareAllUrl = ''
 }) => {
   const domain = window.location.origin;
   const completeUrl = `${domain}${imageUrl}`;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [tweetText, setTweetText] = useState(defaultText(completeUrl));
+  const [tweetText, setTweetText] = useState(defaultText(shareAllUrl));
 
-  const shareToTwitter = () => {
+  const shareToTwitter = (type: ShareType) => {
     const encodedText = encodeURIComponent(
-      tweetText || defaultText(completeUrl)
+      tweetText ||
+        defaultText(type === ShareType.SINGLE ? completeUrl : shareAllUrl)
     );
-    const encodedImageUrl = encodeURIComponent(completeUrl);
+    const encodedImageUrl = encodeURIComponent(
+      type === ShareType.SINGLE ? completeUrl : shareAllUrl
+    );
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedImageUrl}`;
     window.open(twitterShareUrl, '_blank');
     closeMenu();
+  };
+
+  const setTweetTextForShareType = (type: ShareType) => {
+    setTweetText(
+      type === ShareType.SINGLE
+        ? defaultText(completeUrl)
+        : defaultText(shareAllUrl)
+    );
   };
 
   const handleClick = ({
@@ -58,9 +71,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
     return linkedInShareUrl;
   };
 
-  function shareOnLinkedIn() {
+  function shareOnLinkedIn(type: ShareType = ShareType.ALL) {
     const options = {
-      url: completeUrl,
+      url: type === ShareType.SINGLE ? completeUrl : shareAllUrl,
       title: 'Checkout my Unwrapped 2023',
       summary: tweetText || defaultText(completeUrl),
       source: 'Unwrapped by Middleware'
@@ -102,6 +115,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           setTweetText={setTweetText}
           shareOnLinkedIn={shareOnLinkedIn}
           shareToTwitter={shareToTwitter}
+          setTweetTextForShareType={setTweetTextForShareType}
         />
       )}
     </div>
@@ -194,15 +208,17 @@ const ShareMenu2 = ({
   tweetText,
   setTweetText,
   shareOnLinkedIn,
-  shareToTwitter
+  shareToTwitter,
+  setTweetTextForShareType
 }: {
   completeUrl: string;
   callBack?: () => void;
   toggleMenu: () => void;
   tweetText: string;
   setTweetText: (text: string) => void;
-  shareOnLinkedIn: () => void;
-  shareToTwitter: () => void;
+  shareOnLinkedIn: (e: ShareType) => void;
+  shareToTwitter: (e: ShareType) => void;
+  setTweetTextForShareType: (e: ShareType) => void;
 }) => {
   const [optionSelected, setOptionSelected] = useState<ShareOption>(
     ShareOption.NONE
@@ -211,11 +227,13 @@ const ShareMenu2 = ({
 
   const share = () => {
     if (optionSelected === ShareOption.TWEET) {
-      shareToTwitter();
+      shareToTwitter(shareType);
     } else if (optionSelected === ShareOption.LINKEDIN) {
-      shareOnLinkedIn();
+      shareOnLinkedIn(shareType);
     } else if (optionSelected === ShareOption.DOWNLOAD) {
-      callBack && callBack();
+      if (shareType === ShareType.SINGLE) {
+        callBack && callBack();
+      }
     }
   };
 
@@ -236,6 +254,7 @@ const ShareMenu2 = ({
 
   const selectPage = (e: ShareType) => {
     setShareType(e);
+    setTweetTextForShareType(e);
   };
 
   return (
@@ -285,7 +304,7 @@ const ShareMenu2 = ({
         <Tabs
           options={[
             { value: ShareType.SINGLE, label: 'Single Image' },
-            { value: ShareType.SINGLE, label: 'All Images' }
+            { value: ShareType.ALL, label: 'All Images' }
           ]}
           onSelect={selectPage}
         />
@@ -386,24 +405,26 @@ const Tabs: React.FC<TabsProps> = ({ options, onSelect }) => {
     selectedTab,
     options
   });
+
   return (
-    <div className="mt-4 flex justify-between center rounded-lg overflow-hidden">
+    <div className="mt-4 flex relative border border-[#2d3479] justify-between center rounded-lg overflow-hidden">
       <div
+        className="absolute w-[50%] top-0 bg-[#2d3479] flex h-full transform duration-200"
         style={{
-          backgroundColor: '#424db1'
+          left: selectedTab === ShareType.SINGLE ? '0%' : '50%'
         }}
-        className="p-1 flex-1"
-      >
-        {options[0].label}
-      </div>
-      <div
-        style={{
-          backgroundColor: '#2d3479'
-        }}
-        className="p-1 flex-1"
-      >
-        {options[1].label}
-      </div>
+      />
+      {options.map((item) => (
+        <div
+          key={item.value}
+          onClick={() => {
+            handleSelect(item.value);
+          }}
+          className="p-1 flex-1 z-10"
+        >
+          {item.label}
+        </div>
+      ))}
     </div>
   );
 };

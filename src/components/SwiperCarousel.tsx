@@ -26,6 +26,7 @@ interface SwiperCarouselProps {
   }) => void;
   hideShareButtons?: boolean;
   hideEmailInput?: boolean;
+  shareAllUrl?: string;
 }
 
 const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
@@ -33,7 +34,8 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
   userName,
   images,
   hideShareButtons = false,
-  hideEmailInput
+  hideEmailInput,
+  shareAllUrl
 }) => {
   const sliderRef = useRef<SwiperRef | null>(null);
 
@@ -102,6 +104,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
           <SwiperSlide key={index} className="swiper-slide-img">
             {!hideShareButtons && (
               <ShareButton
+                shareAllUrl={shareAllUrl}
                 userName={userName}
                 imageName={extractFilenameWithoutExtension(image.fileName)}
                 imageUrl={image.url}
