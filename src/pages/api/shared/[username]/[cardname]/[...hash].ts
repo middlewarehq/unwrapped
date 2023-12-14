@@ -26,7 +26,7 @@ const fetchAndDownloadImageBuffer = async (
   }
 
   try {
-    const cachedCardBuffer = await fetchSavedCard(username, cardName);
+    const cachedCardBuffer = await fetchSavedCard(username, cardName, false);
 
     if (!cachedCardBuffer) {
       return res.status(404).json({
