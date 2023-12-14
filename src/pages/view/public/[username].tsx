@@ -113,12 +113,12 @@ export default function StatsUnwrapped() {
             />
           </div>
         )}
-        <Link href={'/'} target="_blank">
+        <Link href={'/'}>
           <span
             className="font-semibold text-[#bc9aef] underline decoration-dashed"
             onClick={() => track('WISH_TO_CREATE_YOUR_OWN_CLICKED')}
           >
-            Wish to create your own? Click here {'->'}
+            Wish to create another? Click here {'->'}
           </span>
         </Link>
         <a

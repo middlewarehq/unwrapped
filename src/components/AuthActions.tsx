@@ -2,7 +2,6 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { track } from '@/constants/events';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 /**
  * DISABLE_PUBLIC_ONLY_CONTRIBUTIONS
@@ -15,7 +14,6 @@ export const AuthActions = () => {
   const router = useRouter();
   const [showPrivate, setShowPrivate] = useState(true);
   const [username, setUsername] = useState('');
-  const [loading, setLoading] = useState(false);
 
   return (
     <div className="w-fit flex flex-col gap-2">
@@ -74,13 +72,7 @@ export const AuthActions = () => {
                 router.push('/view/public/' + username);
               }}
             >
-              {loading ? (
-                <AiOutlineLoading3Quarters
-                  style={{ animation: 'spin 1s infinite' }}
-                />
-              ) : (
-                '->'
-              )}
+              {'->'}
             </button>
           </form>
         </div>
