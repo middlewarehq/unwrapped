@@ -136,6 +136,26 @@ export async function fetchUser(token: string) {
   }
 }
 
+export async function fetchUserByLogin(token: string, userLogin: string) {
+  try {
+    const response = await axios.get<GithubUser>(
+      `https://api.github.com/users/${userLogin}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const userData: GithubUser = response.data;
+    return userData;
+  } catch (error: any) {
+    logException(`Error fetching user data: ${error.message}`, {
+      originalException: error
+    });
+    throw new Error(`Error fetching user data: ${error.message}`);
+  }
+}
+
 async function fetchReviewedPRsForMonth(
   author: string,
   month: number,
