@@ -41,7 +41,7 @@ export default function Home() {
           position: 'fixed',
           right: '-150px',
           bottom: '-200px',
-          opacity: 0.3
+          opacity: 0.75
         }}
         className="scale-[2] md:scale-[3]"
       />
@@ -55,7 +55,7 @@ export default function Home() {
             UNWRAPPED
           </span>
           <span
-            className={`${major} text-8xl md:text-[7em] lg:text-[9em] text-purple-400`}
+            className={`${major} text-8xl md:text-[7em] lg:text-[9em] text-purple-600 font-bold`}
             style={{ position: 'relative', left: '-0.15em' }}
           >
             2023

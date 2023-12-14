@@ -102,7 +102,15 @@ export default function App({
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
       </Head>
-      <main className={`${inter} text-white`}>
+      <main
+        className={`${inter} text-white`}
+        style={{
+          background:
+            router.pathname === '/'
+              ? `linear-gradient(100deg, rgba(2,0,36,1) 38%, rgba(122,122,219,1) 100%)`
+              : `radial-gradient(circle, rgba(2,0,36,1) 25%, rgba(122,122,219,1) 100%)`
+        }}
+      >
         <SessionProvider session={session}>
           <AppStateProvider>
             <AppLoadingStateWrapper>

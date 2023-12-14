@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScatterBoxLoader } from 'react-awesome-loaders';
+import { WifiLoader } from 'react-awesome-loaders';
 import { randInt } from '@/utils/number';
 import { useIsClient } from 'usehooks-ts';
 
@@ -43,7 +43,14 @@ export const LoaderWithFacts = () => {
       <div>
         <h1>{currentText}</h1>
       </div>
-      <ScatterBoxLoader background="#14183B" />
+      <WifiLoader
+        duration={2.5}
+        background={'transparent'}
+        frontColor="#2DBA4B"
+        text="Unwrapping your 2023 GitHub journey"
+        className="h-1/2 !whitespace-nowrap "
+        style={{ whiteSpace: 'nowrap' }}
+      />
     </div>
   );
 };
