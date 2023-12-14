@@ -41,12 +41,8 @@ const remove_users_login = (list: Array<string>, user_login: string) => {
 export const fetchGithubUnwrappedData = async (
   token: string,
   timezone: string,
-  username?: string
+  user: GithubUser
 ): Promise<GitHubDataResponse> => {
-  const user = username
-    ? ({ login: username } as GithubUser)
-    : await fetchUser(token);
-
   const [
     pr_authored_data,
     pr_reviewed_data,
