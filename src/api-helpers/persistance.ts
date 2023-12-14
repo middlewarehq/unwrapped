@@ -1,4 +1,4 @@
-import { ImageFile } from '@/types/images';
+import { ImageFile, ImagesWithBuffers } from '@/types/images';
 import {
   deleteS3Directory,
   fetchFileFromS3Directory,
@@ -21,7 +21,7 @@ const bucketName = process.env.UNWRAPPED_PERSISTENCE_BUCKET_NAME;
 
 export const saveCards = async (
   userLogin: string,
-  imageFiles: ImageFile[],
+  imageFiles: ImagesWithBuffers[],
   isPublic: boolean = true
 ): Promise<void> => {
   if (awsCredentialExists && bucketName) {
@@ -38,7 +38,7 @@ export const saveCards = async (
 export const fetchSavedCards = async (
   userLogin: string,
   isPublic: boolean = true
-): Promise<ImageFile[]> => {
+): Promise<ImagesWithBuffers[]> => {
   if (awsCredentialExists && bucketName) {
     const prefix = isPublic ? `public/${userLogin}` : `${userLogin}`;
     return await fetchImagesFromS3Directory(bucketName, prefix);

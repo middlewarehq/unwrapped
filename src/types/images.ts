@@ -2,7 +2,14 @@ import { ImageResponse } from '@vercel/og';
 
 export type ImageFile = {
   fileName: string;
-  data: Buffer;
+  data: string;
+  image?: ImageResponse;
+  url: string;
+};
+
+export type ImagesWithBuffers = {
+  fileName: string;
+  data: string;
   image?: ImageResponse;
 };
 

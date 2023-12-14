@@ -82,7 +82,7 @@ const fetchAndDownloadImageBuffer = async (
         return {
           fileName,
           url: isPublic
-            ? `/shared/${username}/public/${file}`
+            ? `/shared/public/${username}/${file}`
             : `/shared/${username}/${file}/${hash}`,
           data: `data:image/png;base64,${data.toString('base64')}`
         };

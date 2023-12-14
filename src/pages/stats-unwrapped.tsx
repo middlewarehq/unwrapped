@@ -37,7 +37,12 @@ export default function StatsUnwrapped() {
     setIsLoading(true);
     handleRequest<ImageAPIResponse>('/api/download')
       .then((res) => {
-        setUnwrappedImages(res.data);
+        setUnwrappedImages(
+          res.data.map((image) => ({
+            ...image,
+            url: process.env.NEXT_PUBLIC_APP_URL + image.url
+          }))
+        );
         setShareUrl(process.env.NEXT_PUBLIC_APP_URL + res.shareAllUrl);
       })
       .catch(handleErr)

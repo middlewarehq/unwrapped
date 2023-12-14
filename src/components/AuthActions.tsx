@@ -2,8 +2,6 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { track } from '@/constants/events';
-import { handleRequest } from '@/utils/axios';
-import { ImageAPIResponse } from '@/types/images';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 /**
@@ -73,16 +71,7 @@ export const AuthActions = () => {
             <button
               className="bg-indigo-800 text-white px-4 py-2 rounded-md shrink-0"
               onClick={() => {
-                setLoading(true);
-                handleRequest<ImageAPIResponse>('/api/download', {
-                  params: { ispublic: true, username }
-                })
-                  .then((res) => {
-                    router.push(
-                      process.env.NEXT_PUBLIC_APP_URL + res.shareAllUrl
-                    );
-                  })
-                  .finally(() => setLoading(false));
+                router.push('/view/public/' + username);
               }}
             >
               {loading ? (

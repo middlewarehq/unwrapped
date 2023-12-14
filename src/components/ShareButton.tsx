@@ -26,19 +26,18 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   shareAllUrl = '',
   zipDownload
 }) => {
-  const domain = process.env.NEXT_PUBLIC_APP_URL;
-  const completeUrl = `${domain}${imageUrl}`;
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [tweetText, setTweetText] = useState(defaultText(shareAllUrl));
 
   const shareToTwitter = (type: ShareType) => {
+    if (!imageUrl) return;
+
     const encodedText = encodeURIComponent(
       tweetText ||
-        defaultText(type === ShareType.SINGLE ? completeUrl : shareAllUrl)
+        defaultText(type === ShareType.SINGLE ? imageUrl : shareAllUrl)
     );
     const encodedImageUrl = encodeURIComponent(
-      type === ShareType.SINGLE ? completeUrl : shareAllUrl
+      type === ShareType.SINGLE ? imageUrl : shareAllUrl
     );
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedImageUrl}`;
     window.open(twitterShareUrl, '_blank');
@@ -48,7 +47,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   const setTweetTextForShareType = (type: ShareType) => {
     setTweetText(
       type === ShareType.SINGLE
-        ? defaultText(completeUrl)
+        ? defaultText(imageUrl || '')
         : defaultText(shareAllUrl)
     );
   };
@@ -75,9 +74,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
 
   function shareOnLinkedIn(type: ShareType = ShareType.ALL) {
     const options = {
-      url: type === ShareType.SINGLE ? completeUrl : shareAllUrl,
+      url: type === ShareType.SINGLE ? imageUrl || '' : shareAllUrl,
       title: 'Checkout my Unwrapped 2023',
-      summary: tweetText || defaultText(completeUrl),
+      summary: tweetText || defaultText(imageUrl || ''),
       source: 'Unwrapped by Middleware'
     };
     const linkedInShareUrl = handleClick(options);
@@ -111,7 +110,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       {isMenuOpen && (
         <ShareMenu2
           callBack={callBack}
-          completeUrl={completeUrl}
+          completeUrl={imageUrl || ''}
           toggleMenu={toggleMenu}
           tweetText={tweetText}
           setTweetText={setTweetText}

@@ -5,7 +5,7 @@ import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
 import { useImageDownloader } from '@/hooks/useImageDownloader';
 import Confetti from 'react-confetti';
-import { UpdatedImageFile } from '@/types/images';
+import { ImageFile } from '@/types/images';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
@@ -19,15 +19,16 @@ export default function StatsUnwrapped() {
   const downloadImage = useImageDownloader();
 
   const userName = router.query.username as string;
-  const [images, setImages] = useState<UpdatedImageFile[] | null>(null);
+  const [images, setImages] = useState<ImageFile[] | null>(null);
+  const [shareAll, setShareAll] = useState('');
 
   useEffect(() => {
     if (!userName) return;
     setIsLoading(true);
     handleRequest<{
-      isValid: boolean;
-      data: UpdatedImageFile[];
-    }>('/api/get-all-images', {
+      shareAllUrl: string;
+      data: ImageFile[];
+    }>('/api/download', {
       method: 'GET',
       params: {
         username: userName,
@@ -35,18 +36,17 @@ export default function StatsUnwrapped() {
       }
     })
       .then((res) => {
-        if (res.isValid) {
-          const imageData: UpdatedImageFile[] = res.data.map((image) => ({
-            url: `${process.env.NEXT_PUBLIC_APP_URL}${image.url}`,
-            fileName: image.fileName,
-            data: image.data
-          }));
-          if (!imageData.length) {
-            router.replace('/');
-            return noImagesToast();
-          }
-          setImages(imageData);
+        if (!res.data.length) {
+          router.replace('/');
+          return noImagesToast();
         }
+        const imageData: ImageFile[] = res.data.map((image) => ({
+          url: `${process.env.NEXT_PUBLIC_APP_URL}${image.url}`,
+          fileName: image.fileName,
+          data: image.data
+        }));
+        setImages(imageData);
+        setShareAll(process.env.NEXT_PUBLIC_APP_URL + res.shareAllUrl);
       })
       .catch((_) => {
         router.replace('/');
@@ -109,6 +109,7 @@ export default function StatsUnwrapped() {
               userName={userName}
               images={images}
               singleImageSharingCallback={downloadImage}
+              shareAllUrl={shareAll}
             />
           </div>
         )}
