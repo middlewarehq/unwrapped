@@ -34,7 +34,8 @@ export default function StatsUnwrapped() {
       method: 'GET',
       params: {
         hash: hash,
-        username: userName
+        username: userName,
+        ispublic: false
       }
     })
       .then((res) => {
