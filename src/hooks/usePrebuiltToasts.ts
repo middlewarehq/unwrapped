@@ -18,11 +18,14 @@ export const usePrebuiltToasts = () => {
   );
   const noImagesToast = useCallback(
     () =>
-      toast.error('No images found', {
-        duration: 6000,
-        icon: '🤔',
-        id: 'no-images-found'
-      }),
+      toast.error(
+        'Looks like they had too little activity to show anything...',
+        {
+          duration: 6000,
+          icon: '🤔',
+          id: 'no-images-found'
+        }
+      ),
     []
   );
   const invalidUrlToast = useCallback(
