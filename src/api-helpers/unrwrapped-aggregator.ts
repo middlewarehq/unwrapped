@@ -6,7 +6,6 @@ import {
   getWeekWiseContributionCount
 } from '@/analytics/contribution-analytics';
 import {
-  getCommitPercentile,
   getMostProductiveDayOfWeek,
   getMostProductiveHour,
   getPRListAndMonthlyCountsFromGqlResponse,
