@@ -40,7 +40,7 @@ export default function StatsUnwrapped() {
       .then((res) => {
         if (res.isValid) {
           const imageData: UpdatedImageFile[] = res.data.map((image) => ({
-            url: `${window.location.origin}${image.url}`,
+            url: `${process.env.NEXT_PUBLIC_APP_URL}${image.url}`,
             fileName: image.fileName,
             data: image.data
           }));
