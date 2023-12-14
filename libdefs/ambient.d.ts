@@ -23,5 +23,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_MIXPANEL: string;
     ZAPIER_WEBHOOK_URL: string;
     NEXT_PUBLIC_GA: string;
+    GLOBAL_GH_PAT: string;
   }
 }
