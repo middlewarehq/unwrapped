@@ -2,15 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { handleRequest } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
-import { FaDownload } from 'react-icons/fa';
-import { FaShare } from 'react-icons/fa6';
 import { useImageDownloader } from '@/hooks/useImageDownloader';
 import Confetti from 'react-confetti';
 import { ImageAPIResponse, UpdatedImageFile } from '@/types/images';
 import { track } from '@/constants/events';
 import { GithubUser } from '@/api-helpers/exapi-sdk/types';
-import { copyToClipboard } from '@/components/ShareButton';
-import { Tooltip } from 'react-tooltip';
 import { AxiosError } from 'axios';
 import { signOut, useSession } from 'next-auth/react';
 import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
@@ -96,29 +92,6 @@ export default function StatsUnwrapped() {
             shareAllUrl={shareUrl}
             zipDownload={zipDownload}
           />
-          <div className="flex gap-2">
-            <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
-              <FaDownload
-                size={23}
-                onClick={zipDownload}
-                data-tooltip-id="carousel-action-menu"
-                data-tooltip-content="Download as zip"
-              />
-            </div>
-            <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
-              {shareUrl && (
-                <FaShare
-                  size={23}
-                  onClick={() => {
-                    copyToClipboard(shareUrl);
-                  }}
-                  data-tooltip-id="carousel-action-menu"
-                  data-tooltip-content="Share link"
-                />
-              )}
-            </div>
-            <Tooltip id="carousel-action-menu" />
-          </div>
         </div>
       )}
       <a

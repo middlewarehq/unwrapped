@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
 import { GiPaperClip, GiShare } from 'react-icons/gi';
 import {} from 'react-icons';
-import {
-  FaTwitter,
-  FaDownload,
-  FaLinkedin,
-  FaTimes,
-  FaCopy
-} from 'react-icons/fa';
-import { track } from '@/constants/events';
+import { FaTwitter, FaDownload, FaLinkedin, FaTimes } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { logException } from '@/utils/logger';
 
@@ -109,10 +102,6 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           className="cursor-pointer"
           onClick={toggleMenu}
         />
-        <CopyPaperClip
-          textToCopy={completeUrl}
-          onClick={() => setIsMenuOpen(false)}
-        />
       </div>
       {isMenuOpen && (
         <ShareMenu2
@@ -127,44 +116,6 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           zipDownload={zipDownload}
           shareAllUrl={shareAllUrl}
         />
-      )}
-    </div>
-  );
-};
-
-const CopyPaperClip: React.FC<{
-  textToCopy: string;
-  onClick?: () => void;
-}> = ({ textToCopy, onClick }) => {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const onCopy = () => {
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
-    track('SINGLE_IMAGE_PUBLIC_LINK_COPIED');
-  };
-
-  return (
-    <div
-      onClick={() => {
-        if (onClick) onClick();
-        copyToClipboard(textToCopy, onCopy);
-      }}
-      className="absolute flex items-center justify-center rounded-full -top-[6px] -left-14 w-10 h-10 bg-white"
-    >
-      <GiPaperClip
-        size={24}
-        fill="rgb(20, 24, 59)"
-        style={{
-          opacity: isCopied ? 0.5 : 1
-        }}
-      />
-      {isCopied && (
-        <div className="absolute text-sm top-12 -left-4 text-black bg-white rounded-md px-2 py-1">
-          Copied!
-        </div>
       )}
     </div>
   );
@@ -235,7 +186,7 @@ const ShareMenu2 = ({
   shareAllUrl: string;
 }) => {
   const [optionSelected, setOptionSelected] = useState<ShareOption>(
-    ShareOption.NONE
+    ShareOption.COPY
   );
   const [shareType, setShareType] = useState<ShareType>(ShareType.ALL);
 
@@ -283,6 +234,13 @@ const ShareMenu2 = ({
       <div className="w-full flex justify-between">
         <div className="flex gap-2">
           <Button
+            isSelected={optionSelected === ShareOption.COPY}
+            onClick={selectCopy}
+          >
+            <GiPaperClip size={20} />
+          </Button>
+
+          <Button
             isSelected={optionSelected === ShareOption.TWEET}
             onClick={selectTweet}
           >
@@ -301,13 +259,6 @@ const ShareMenu2 = ({
             onClick={selectDownload}
           >
             <FaDownload size={18} />
-          </Button>
-
-          <Button
-            isSelected={optionSelected === ShareOption.COPY}
-            onClick={selectCopy}
-          >
-            <FaCopy size={18} />
           </Button>
         </div>
         <button
@@ -342,7 +293,7 @@ const ShareMenu2 = ({
             placeholder={defaultText(completeUrl)}
             value={tweetText}
             onChange={(e) => setTweetText(e.target.value)}
-            className="mt-4 w-full border text-white outline-none rounded-lg p-2 mb-1 bg-[#14183B] border-[#2d3479] h-36 sm:h-32"
+            className="mt-4 w-full border text-white outline-none rounded-lg p-2 mb-1 bg-[#14183B] border-[#2d3479] h-32"
           />
         )}
       </div>
@@ -383,7 +334,7 @@ const Tabs: React.FC<TabsProps> = ({ options, onSelect, selectedTab }) => {
       <div
         className="absolute w-[50%] top-0 bg-[#2d3479] flex h-full transform duration-200"
         style={{
-          left: selectedTab === ShareType.SINGLE ? '0%' : '50%'
+          left: selectedTab === options[0].value ? '0%' : '50%'
         }}
       />
       {options.map((item) => (
