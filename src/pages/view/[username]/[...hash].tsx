@@ -17,7 +17,7 @@ export default function StatsUnwrapped() {
   const router = useRouter();
   const { status } = useSession();
   const { noImagesToast, invalidUrlToast } = usePrebuiltToasts();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const downloadImage = useImageDownloader();
 
   const userName = router.query.username as string;
