@@ -282,8 +282,8 @@ const ShareMenu2 = ({
       >
         <Tabs
           options={[
-            { value: ShareType.SINGLE, label: 'Single Image' },
-            { value: ShareType.ALL, label: 'All Images' }
+            { value: ShareType.ALL, label: 'All Images' },
+            { value: ShareType.SINGLE, label: 'Single Image' }
           ]}
           onSelect={selectPage}
           selectedTab={shareType}
