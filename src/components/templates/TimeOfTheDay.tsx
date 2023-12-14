@@ -129,8 +129,10 @@ const ProductiveTimes = ({
       {productiveHour !== -1 ? (
         <p tw="-mt-4 text-2xl">{getAmPm(productiveHour)}</p>
       ) : null}
-      <p tw="mt-0">Most Active Day</p>
-      <p tw="-mt-4 text-2xl capitalize">{productiveDay}</p>
+      {productiveDay ? <p tw="mt-0">Most Active Day</p> : null}
+      {productiveDay ? (
+        <p tw="-mt-4 text-2xl capitalize">{productiveDay}</p>
+      ) : null}
     </div>
   );
 };

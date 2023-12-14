@@ -57,13 +57,13 @@ export default fetchAndDownloadImageBuffer;
 
 const priority = [
   CardTypes.YOUR_CONTRIBUTIONS,
+  CardTypes.DAY_NIGHT_CYCLE,
   CardTypes.PR_REVIEWED_VS_AUTHORED,
   CardTypes.IT_TAKES_A_VILLAGE,
   CardTypes.TOP_REVIEWERS,
   CardTypes.CONTRIBUTION_STREAK,
   CardTypes.GUARDIAN_OF_PROD,
   CardTypes.ZEN_OR_NINJA,
-  CardTypes.DAY_NIGHT_CYCLE,
   CardTypes.OSS_CONTRIBUTION,
   CardTypes.PRODUCTION_BREAKING,
   CardTypes.UNWRAPPED_INTRO
