@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GiPaperClip, GiShare } from 'react-icons/gi';
 import {} from 'react-icons';
-import { FaTwitter, FaDownload, FaLinkedin } from 'react-icons/fa';
+import { FaTwitter, FaDownload, FaLinkedin, FaTimes } from 'react-icons/fa';
 import { track } from '@/constants/events';
 import toast from 'react-hot-toast';
 import { logException } from '@/utils/logger';
@@ -94,37 +94,15 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
         />
       </div>
       {isMenuOpen && (
-        <div className="absolute md:w-96 w-72 md:right-12 right-4 top-12 bg-[#11142e] rounded-lg shadow-lg p-4">
-          <textarea
-            placeholder={defaultText(completeUrl)}
-            value={tweetText}
-            onChange={(e) => setTweetText(e.target.value)}
-            className="w-full border text-white outline-none rounded-lg p-2 mb-1 bg-[#14183B] border-[#2d3479] h-36 sm:h-32"
-          />
-
-          <div className="w-full flex justify-between">
-            <div className="flex gap-2">
-              <Button onClick={shareToTwitter}>
-                <FaTwitter size={20} />
-              </Button>
-
-              <Button onClick={shareOnLinkedIn}>
-                <FaLinkedin size={18} />
-              </Button>
-
-              <Button onClick={callBack}>
-                <FaDownload size={18} />
-              </Button>
-            </div>
-            <button
-              type="button"
-              onClick={toggleMenu}
-              className="bg-[#a23333] text-white px-2 py-1 rounded hover:bg-[#cd4a4a] focus:outline-none focus:ring focus:border-red-300"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+        <ShareMenu2
+          callBack={callBack}
+          completeUrl={completeUrl}
+          toggleMenu={toggleMenu}
+          tweetText={tweetText}
+          setTweetText={setTweetText}
+          shareOnLinkedIn={shareOnLinkedIn}
+          shareToTwitter={shareToTwitter}
+        />
       )}
     </div>
   );
@@ -188,18 +166,256 @@ export const copyToClipboard = async (
 
 const Button = ({
   children,
-  onClick
+  onClick,
+  isSelected
 }: {
   children: React.ReactNode;
   onClick?: (e?: any) => void;
+  isSelected?: boolean;
 }) => {
   return (
     <button
       type="button"
       onClick={onClick}
+      style={{
+        filter: isSelected ? 'brightness(2)' : 'brightness(1)'
+      }}
       className="bg-[#2d3479] text-white px-3 py-2 rounded-lg hover:bg-[#424db1] focus:outline-none focus:ring focus:border-blue-300"
     >
       {children}
     </button>
   );
 };
+
+const ShareMenu2 = ({
+  completeUrl,
+  callBack,
+  toggleMenu,
+  tweetText,
+  setTweetText,
+  shareOnLinkedIn,
+  shareToTwitter
+}: {
+  completeUrl: string;
+  callBack?: () => void;
+  toggleMenu: () => void;
+  tweetText: string;
+  setTweetText: (text: string) => void;
+  shareOnLinkedIn: () => void;
+  shareToTwitter: () => void;
+}) => {
+  const [optionSelected, setOptionSelected] = useState<ShareOption>(
+    ShareOption.NONE
+  );
+  const [shareType, setShareType] = useState<ShareType>(ShareType.SINGLE);
+
+  const share = () => {
+    if (optionSelected === ShareOption.TWEET) {
+      shareToTwitter();
+    } else if (optionSelected === ShareOption.LINKEDIN) {
+      shareOnLinkedIn();
+    } else if (optionSelected === ShareOption.DOWNLOAD) {
+      callBack && callBack();
+    }
+  };
+
+  const selectTweet = () => {
+    setOptionSelected(ShareOption.TWEET);
+    setShareType(ShareType.SINGLE);
+  };
+
+  const selectLinkedIn = () => {
+    setOptionSelected(ShareOption.LINKEDIN);
+    setShareType(ShareType.SINGLE);
+  };
+
+  const selectDownload = () => {
+    setOptionSelected(ShareOption.DOWNLOAD);
+    setShareType(ShareType.SINGLE);
+  };
+
+  const selectPage = (e: ShareType) => {
+    setShareType(e);
+  };
+
+  return (
+    <div className="absolute md:w-96 w-72 md:right-12 right-4 top-12 bg-[#11142e] rounded-lg shadow-lg p-4">
+      <div className="w-full flex justify-between">
+        <div className="flex gap-2">
+          <Button
+            isSelected={optionSelected === ShareOption.TWEET}
+            onClick={selectTweet}
+          >
+            <FaTwitter size={20} />
+          </Button>
+
+          <Button
+            isSelected={optionSelected === ShareOption.LINKEDIN}
+            onClick={selectLinkedIn}
+          >
+            <FaLinkedin size={18} />
+          </Button>
+
+          <Button
+            isSelected={optionSelected === ShareOption.DOWNLOAD}
+            onClick={selectDownload}
+          >
+            <FaDownload size={18} />
+          </Button>
+        </div>
+        <button
+          type="button"
+          onClick={toggleMenu}
+          className="bg-[#a23333] text-white px-2 py-1 rounded hover:bg-[#cd4a4a] focus:outline-none focus:ring focus:border-red-300"
+        >
+          <FaTimes />
+        </button>
+      </div>
+      <div
+        className="overflow-hidden transform duration-200"
+        style={{
+          height:
+            optionSelected === ShareOption.NONE
+              ? '0px'
+              : optionSelected === ShareOption.TWEET
+                ? '194px'
+                : '50px'
+        }}
+      >
+        <Tabs
+          options={[
+            { value: ShareType.SINGLE, label: 'Single Image' },
+            { value: ShareType.SINGLE, label: 'All Images' }
+          ]}
+          onSelect={selectPage}
+        />
+        {optionSelected === ShareOption.TWEET && (
+          <textarea
+            placeholder={defaultText(completeUrl)}
+            value={tweetText}
+            onChange={(e) => setTweetText(e.target.value)}
+            className="mt-4 w-full border text-white outline-none rounded-lg p-2 mb-1 bg-[#14183B] border-[#2d3479] h-36 sm:h-32"
+          />
+        )}
+      </div>
+      {optionSelected !== ShareOption.NONE && (
+        <div className="flex w-full justify-center mt-4">
+          <Button onClick={share}>
+            {optionSelected === ShareOption.TWEET ||
+            optionSelected === ShareOption.LINKEDIN
+              ? 'Share'
+              : 'Download'}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ShareMenu = ({
+  completeUrl,
+  callBack,
+  toggleMenu,
+  tweetText,
+  setTweetText,
+  shareOnLinkedIn,
+  shareToTwitter
+}: {
+  completeUrl: string;
+  callBack?: () => void;
+  toggleMenu: () => void;
+  tweetText: string;
+  setTweetText: (text: string) => void;
+  shareOnLinkedIn: () => void;
+  shareToTwitter: () => void;
+}) => {
+  return (
+    <div className="absolute md:w-96 w-72 md:right-12 right-4 top-12 bg-[#11142e] rounded-lg shadow-lg p-4">
+      <textarea
+        placeholder={defaultText(completeUrl)}
+        value={tweetText}
+        onChange={(e) => setTweetText(e.target.value)}
+        className="w-full border text-white outline-none rounded-lg p-2 mb-1 bg-[#14183B] border-[#2d3479] h-36 sm:h-32"
+      />
+
+      <div className="w-full flex justify-between">
+        <div className="flex gap-2">
+          <Button onClick={shareToTwitter}>
+            <FaTwitter size={20} />
+          </Button>
+
+          <Button onClick={shareOnLinkedIn}>
+            <FaLinkedin size={18} />
+          </Button>
+
+          <Button onClick={callBack}>
+            <FaDownload size={18} />
+          </Button>
+        </div>
+        <button
+          type="button"
+          onClick={toggleMenu}
+          className="bg-[#a23333] text-white px-2 py-1 rounded hover:bg-[#cd4a4a] focus:outline-none focus:ring focus:border-red-300"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+};
+
+interface TabProps {
+  value: ShareType;
+  label: string;
+}
+
+interface TabsProps {
+  options: TabProps[];
+  onSelect: (value: ShareType) => void;
+}
+
+const Tabs: React.FC<TabsProps> = ({ options, onSelect }) => {
+  const [selectedTab, setSelectedTab] = useState(options[1].value);
+
+  const handleSelect = (value: ShareType) => {
+    setSelectedTab(value);
+    onSelect(value);
+  };
+
+  console.log({
+    selectedTab,
+    options
+  });
+  return (
+    <div className="mt-4 flex justify-between center rounded-lg overflow-hidden">
+      <div
+        style={{
+          backgroundColor: '#424db1'
+        }}
+        className="p-1 flex-1"
+      >
+        {options[0].label}
+      </div>
+      <div
+        style={{
+          backgroundColor: '#2d3479'
+        }}
+        className="p-1 flex-1"
+      >
+        {options[1].label}
+      </div>
+    </div>
+  );
+};
+
+enum ShareType {
+  SINGLE = 'single',
+  ALL = 'all'
+}
+
+enum ShareOption {
+  TWEET = 'tweet',
+  LINKEDIN = 'linkedin',
+  DOWNLOAD = 'download',
+  NONE = 'none'
+}
