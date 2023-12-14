@@ -42,7 +42,7 @@ export default function StatsUnwrapped() {
     handleRequest<ImageAPIResponse>('/api/download')
       .then((res) => {
         setUnwrappedImages(res.data);
-        setShareUrl(res.shareAllUrl);
+        setShareUrl(window.location.origin + res.shareAllUrl);
       })
       .catch(handleErr)
       .finally(() => setIsLoading(false));
@@ -110,7 +110,7 @@ export default function StatsUnwrapped() {
                 <FaShare
                   size={23}
                   onClick={() => {
-                    copyToClipboard(window.location.origin + shareUrl);
+                    copyToClipboard(shareUrl);
                   }}
                   data-tooltip-id="carousel-action-menu"
                   data-tooltip-content="Share link"

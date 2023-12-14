@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { GiPaperClip, GiShare } from 'react-icons/gi';
 import {} from 'react-icons';
-import { FaTwitter, FaDownload, FaLinkedin, FaTimes } from 'react-icons/fa';
+import {
+  FaTwitter,
+  FaDownload,
+  FaLinkedin,
+  FaTimes,
+  FaCopy
+} from 'react-icons/fa';
 import { track } from '@/constants/events';
 import toast from 'react-hot-toast';
 import { logException } from '@/utils/logger';
@@ -119,6 +125,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           shareToTwitter={shareToTwitter}
           setTweetTextForShareType={setTweetTextForShareType}
           zipDownload={zipDownload}
+          shareAllUrl={shareAllUrl}
         />
       )}
     </div>
@@ -213,7 +220,8 @@ const ShareMenu2 = ({
   shareOnLinkedIn,
   shareToTwitter,
   setTweetTextForShareType,
-  zipDownload
+  zipDownload,
+  shareAllUrl
 }: {
   completeUrl: string;
   callBack?: () => void;
@@ -224,6 +232,7 @@ const ShareMenu2 = ({
   shareToTwitter: (e: ShareType) => void;
   setTweetTextForShareType: (e: ShareType) => void;
   zipDownload?: () => void;
+  shareAllUrl: string;
 }) => {
   const [optionSelected, setOptionSelected] = useState<ShareOption>(
     ShareOption.NONE
@@ -241,22 +250,27 @@ const ShareMenu2 = ({
       } else {
         zipDownload && zipDownload();
       }
+    } else if (optionSelected === ShareOption.COPY) {
+      if (shareType === ShareType.SINGLE) {
+        copyToClipboard(completeUrl);
+      } else copyToClipboard(shareAllUrl);
     }
   };
 
   const selectTweet = () => {
     setOptionSelected(ShareOption.TWEET);
-    setShareType(ShareType.SINGLE);
   };
 
   const selectLinkedIn = () => {
     setOptionSelected(ShareOption.LINKEDIN);
-    setShareType(ShareType.SINGLE);
   };
 
   const selectDownload = () => {
     setOptionSelected(ShareOption.DOWNLOAD);
-    setShareType(ShareType.SINGLE);
+  };
+
+  const selectCopy = () => {
+    setOptionSelected(ShareOption.COPY);
   };
 
   const selectPage = (e: ShareType) => {
@@ -288,6 +302,13 @@ const ShareMenu2 = ({
           >
             <FaDownload size={18} />
           </Button>
+
+          <Button
+            isSelected={optionSelected === ShareOption.COPY}
+            onClick={selectCopy}
+          >
+            <FaCopy size={18} />
+          </Button>
         </div>
         <button
           type="button"
@@ -314,6 +335,7 @@ const ShareMenu2 = ({
             { value: ShareType.ALL, label: 'All Images' }
           ]}
           onSelect={selectPage}
+          selectedTab={shareType}
         />
         {optionSelected === ShareOption.TWEET && (
           <textarea
@@ -330,7 +352,9 @@ const ShareMenu2 = ({
             {optionSelected === ShareOption.TWEET ||
             optionSelected === ShareOption.LINKEDIN
               ? 'Share'
-              : 'Download'}
+              : optionSelected === ShareOption.DOWNLOAD
+                ? 'Download'
+                : 'Copy'}
           </Button>
         </div>
       )}
@@ -346,13 +370,11 @@ interface TabProps {
 interface TabsProps {
   options: TabProps[];
   onSelect: (value: ShareType) => void;
+  selectedTab: ShareType;
 }
 
-const Tabs: React.FC<TabsProps> = ({ options, onSelect }) => {
-  const [selectedTab, setSelectedTab] = useState(ShareType.ALL);
-
+const Tabs: React.FC<TabsProps> = ({ options, onSelect, selectedTab }) => {
   const handleSelect = (value: ShareType) => {
-    setSelectedTab(value);
     onSelect(value);
   };
 
@@ -388,5 +410,6 @@ enum ShareOption {
   TWEET = 'tweet',
   LINKEDIN = 'linkedin',
   DOWNLOAD = 'download',
+  COPY = 'copy',
   NONE = 'none'
 }
