@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { handleRequest } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
-import { GoShare, GoDownload } from 'react-icons/go';
+import { GoDownload } from 'react-icons/go';
+import { MdShare } from 'react-icons/md';
 import { useImageDownloader } from '@/hooks/useImageDownloader';
 import Confetti from 'react-confetti';
 import { ImageAPIResponse, UpdatedImageFile } from '@/types/images';
@@ -111,7 +112,7 @@ export default function StatsUnwrapped() {
             </div>
             <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
               {shareUrl && (
-                <GoShare
+                <MdShare
                   size={23}
                   onClick={() => {
                     copyToClipboard(shareUrl);

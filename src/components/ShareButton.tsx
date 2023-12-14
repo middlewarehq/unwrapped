@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CiLinkedin, CiTwitter } from 'react-icons/ci';
-import {} from 'react-icons';
-import { GoCopy, GoDownload, GoShare, GoX } from 'react-icons/go';
+import { MdShare } from 'react-icons/md';
+import { GoCopy, GoDownload, GoX } from 'react-icons/go';
 import { track } from '@/constants/events';
 import toast from 'react-hot-toast';
 import { logException } from '@/utils/logger';
@@ -96,7 +96,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   return (
     <div className={'relative inline-block ' + className}>
       <div className="relative">
-        <GoShare
+        <MdShare
           size={28}
           fill="rgb(20, 24, 59)"
           className="cursor-pointer"
