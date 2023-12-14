@@ -4,6 +4,7 @@ import {} from 'react-icons';
 import { FaTwitter, FaDownload, FaLinkedin, FaTimes } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { logException } from '@/utils/logger';
+import { track } from '@/constants/events';
 
 type ShareButtonProps = {
   imageUrl?: string;
@@ -101,6 +102,10 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           fill="rgb(20, 24, 59)"
           className="cursor-pointer"
           onClick={toggleMenu}
+        />
+        <CopyPaperClip
+          textToCopy={shareAllUrl}
+          onClick={() => setIsMenuOpen(false)}
         />
       </div>
       {isMenuOpen && (
@@ -364,3 +369,41 @@ enum ShareOption {
   COPY = 'copy',
   NONE = 'none'
 }
+
+const CopyPaperClip: React.FC<{
+  textToCopy: string;
+  onClick?: () => void;
+}> = ({ textToCopy, onClick }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const onCopy = () => {
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+    track('SINGLE_IMAGE_PUBLIC_LINK_COPIED');
+  };
+
+  return (
+    <div
+      onClick={() => {
+        if (onClick) onClick();
+        copyToClipboard(textToCopy, onCopy);
+      }}
+      className="absolute flex items-center justify-center rounded-full -top-[6px] -left-14 w-10 h-10 bg-white"
+    >
+      <GiPaperClip
+        size={24}
+        fill="rgb(20, 24, 59)"
+        style={{
+          opacity: isCopied ? 0.5 : 1
+        }}
+      />
+      {isCopied && (
+        <div className="absolute text-sm top-12 -left-4 text-black bg-white rounded-md px-2 py-1">
+          Copied!
+        </div>
+      )}
+    </div>
+  );
+};
