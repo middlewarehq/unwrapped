@@ -6,8 +6,7 @@ import { archiveFiles } from '@/api-helpers/archive';
 import { fetchGithubUnwrappedData } from '@/api-helpers/unrwrapped-aggregator';
 import { dec } from '@/api-helpers/auth-supplementary';
 import { fetchSavedCards, saveCards } from '@/api-helpers/persistance';
-import { fetchUser } from '@/api-helpers/exapi-sdk/github';
-import { GithubUser } from '@/api-helpers/exapi-sdk/types';
+import { fetchUser, fetchUserByLogin } from '@/api-helpers/exapi-sdk/github';
 import {
   bcryptGen,
   extractFilenameWithoutExtension
@@ -22,17 +21,21 @@ const fetchAndDownloadImageBuffer = async (
   let token = req.cookies.ghct;
   const timezone = (req.headers['x-timezone'] as string) || 'UTC';
 
-  if (!token) {
+  if (!token && !req.query.username) {
     return res.status(403).json({
       message: 'GitHub Access token not found.'
     });
   }
 
-  token = dec(token);
+  if (!token) {
+    token = process.env.GLOBAL_GH_PAT;
+  } else {
+    token = dec(token);
+  }
 
   try {
     const user = req.query.username
-      ? ({ login: req.query.username } as GithubUser)
+      ? await fetchUserByLogin(token, req.query.username as string)
       : await fetchUser(token);
 
     const cachedCardsBuffer = req.query.recache
