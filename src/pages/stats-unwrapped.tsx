@@ -74,6 +74,11 @@ export default function StatsUnwrapped() {
     );
   }
 
+  const zipDownload = () => {
+    if (images) downloadImage({ images });
+    track('ZIP_DOWNLOAD_CLICKED');
+  };
+
   return (
     <div className="items-center justify-center p-4 min-h-screen w-full flex flex-col gap-10 text-center">
       <div>
@@ -89,15 +94,13 @@ export default function StatsUnwrapped() {
             images={images}
             singleImageSharingCallback={downloadImage}
             shareAllUrl={shareUrl}
+            zipDownload={zipDownload}
           />
           <div className="flex gap-2">
             <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
               <FaDownload
                 size={23}
-                onClick={() => {
-                  downloadImage({ images });
-                  track('ZIP_DOWNLOAD_CLICKED');
-                }}
+                onClick={zipDownload}
                 data-tooltip-id="carousel-action-menu"
                 data-tooltip-content="Download as zip"
               />

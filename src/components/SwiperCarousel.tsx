@@ -27,6 +27,7 @@ interface SwiperCarouselProps {
   hideShareButtons?: boolean;
   hideEmailInput?: boolean;
   shareAllUrl?: string;
+  zipDownload?: () => void;
 }
 
 const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
@@ -35,7 +36,8 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
   images,
   hideShareButtons = false,
   hideEmailInput,
-  shareAllUrl
+  shareAllUrl,
+  zipDownload
 }) => {
   const sliderRef = useRef<SwiperRef | null>(null);
 
@@ -113,6 +115,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
                   singleImageSharingCallback({ images: image });
                   track('SINGLE_IMAGE_SHARE_CLICKED');
                 }}
+                zipDownload={zipDownload}
               />
             )}
             {index !== 0 && (

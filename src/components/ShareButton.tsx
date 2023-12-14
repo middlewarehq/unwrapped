@@ -13,6 +13,7 @@ type ShareButtonProps = {
   userName?: string;
   imageName?: string;
   shareAllUrl?: string;
+  zipDownload?: () => void;
 };
 
 const defaultText = (text: string) =>
@@ -22,7 +23,8 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   callBack,
   imageUrl,
   className,
-  shareAllUrl = ''
+  shareAllUrl = '',
+  zipDownload
 }) => {
   const domain = window.location.origin;
   const completeUrl = `${domain}${imageUrl}`;
@@ -116,6 +118,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           shareOnLinkedIn={shareOnLinkedIn}
           shareToTwitter={shareToTwitter}
           setTweetTextForShareType={setTweetTextForShareType}
+          zipDownload={zipDownload}
         />
       )}
     </div>
@@ -209,7 +212,8 @@ const ShareMenu2 = ({
   setTweetText,
   shareOnLinkedIn,
   shareToTwitter,
-  setTweetTextForShareType
+  setTweetTextForShareType,
+  zipDownload
 }: {
   completeUrl: string;
   callBack?: () => void;
@@ -219,11 +223,12 @@ const ShareMenu2 = ({
   shareOnLinkedIn: (e: ShareType) => void;
   shareToTwitter: (e: ShareType) => void;
   setTweetTextForShareType: (e: ShareType) => void;
+  zipDownload?: () => void;
 }) => {
   const [optionSelected, setOptionSelected] = useState<ShareOption>(
     ShareOption.NONE
   );
-  const [shareType, setShareType] = useState<ShareType>(ShareType.SINGLE);
+  const [shareType, setShareType] = useState<ShareType>(ShareType.ALL);
 
   const share = () => {
     if (optionSelected === ShareOption.TWEET) {
@@ -233,6 +238,8 @@ const ShareMenu2 = ({
     } else if (optionSelected === ShareOption.DOWNLOAD) {
       if (shareType === ShareType.SINGLE) {
         callBack && callBack();
+      } else {
+        zipDownload && zipDownload();
       }
     }
   };
@@ -331,58 +338,6 @@ const ShareMenu2 = ({
   );
 };
 
-const ShareMenu = ({
-  completeUrl,
-  callBack,
-  toggleMenu,
-  tweetText,
-  setTweetText,
-  shareOnLinkedIn,
-  shareToTwitter
-}: {
-  completeUrl: string;
-  callBack?: () => void;
-  toggleMenu: () => void;
-  tweetText: string;
-  setTweetText: (text: string) => void;
-  shareOnLinkedIn: () => void;
-  shareToTwitter: () => void;
-}) => {
-  return (
-    <div className="absolute md:w-96 w-72 md:right-12 right-4 top-12 bg-[#11142e] rounded-lg shadow-lg p-4">
-      <textarea
-        placeholder={defaultText(completeUrl)}
-        value={tweetText}
-        onChange={(e) => setTweetText(e.target.value)}
-        className="w-full border text-white outline-none rounded-lg p-2 mb-1 bg-[#14183B] border-[#2d3479] h-36 sm:h-32"
-      />
-
-      <div className="w-full flex justify-between">
-        <div className="flex gap-2">
-          <Button onClick={shareToTwitter}>
-            <FaTwitter size={20} />
-          </Button>
-
-          <Button onClick={shareOnLinkedIn}>
-            <FaLinkedin size={18} />
-          </Button>
-
-          <Button onClick={callBack}>
-            <FaDownload size={18} />
-          </Button>
-        </div>
-        <button
-          type="button"
-          onClick={toggleMenu}
-          className="bg-[#a23333] text-white px-2 py-1 rounded hover:bg-[#cd4a4a] focus:outline-none focus:ring focus:border-red-300"
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-  );
-};
-
 interface TabProps {
   value: ShareType;
   label: string;
@@ -394,17 +349,12 @@ interface TabsProps {
 }
 
 const Tabs: React.FC<TabsProps> = ({ options, onSelect }) => {
-  const [selectedTab, setSelectedTab] = useState(options[1].value);
+  const [selectedTab, setSelectedTab] = useState(ShareType.ALL);
 
   const handleSelect = (value: ShareType) => {
     setSelectedTab(value);
     onSelect(value);
   };
-
-  console.log({
-    selectedTab,
-    options
-  });
 
   return (
     <div className="mt-4 flex relative border border-[#2d3479] justify-between center rounded-lg overflow-hidden">
