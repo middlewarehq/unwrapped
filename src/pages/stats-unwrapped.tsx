@@ -18,7 +18,7 @@ import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
 export default function StatsUnwrapped() {
   const { status } = useSession();
   const { somethingWentWrongToast, unauthenticatedToast } = usePrebuiltToasts();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const downloadImage = useImageDownloader();
   const [images, setUnwrappedImages] = useState<UpdatedImageFile[] | null>(
     null
