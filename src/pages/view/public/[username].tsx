@@ -5,57 +5,48 @@ import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
 import { useImageDownloader } from '@/hooks/useImageDownloader';
 import Confetti from 'react-confetti';
-import { UpdatedImageFile } from '@/types/images';
+import { ImageJson } from '@/types/images';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import { track } from '@/constants/events';
 import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
-import { useSession } from 'next-auth/react';
 
 export default function StatsUnwrapped() {
   const router = useRouter();
-  const { status } = useSession();
   const { noImagesToast, invalidUrlToast } = usePrebuiltToasts();
   const [isLoading, setIsLoading] = useState(true);
   const downloadImage = useImageDownloader();
 
   const userName = router.query.username as string;
-  const hash = (router.query.hash as string[])?.join('/');
-  const [images, setImages] = useState<UpdatedImageFile[] | null>(null);
-
-  const zipDownload = () => {
-    if (images) downloadImage({ images });
-    track('ZIP_DOWNLOAD_CLICKED');
-  };
+  const [images, setImages] = useState<ImageJson[] | null>(null);
+  const [shareAll, setShareAll] = useState('');
 
   useEffect(() => {
-    if (!userName || !hash || status === 'loading') return;
+    if (!userName) return;
     setIsLoading(true);
     handleRequest<{
-      isValid: boolean;
-      data: UpdatedImageFile[];
-    }>('/api/get-all-images', {
+      shareAllUrl: string;
+      data: ImageJson[];
+    }>('/api/download', {
       method: 'GET',
       params: {
-        hash: hash,
         username: userName,
-        ispublic: false
+        ispublic: true
       }
     })
       .then((res) => {
-        if (res.isValid) {
-          const imageData: UpdatedImageFile[] = res.data.map((image) => ({
-            url: `${process.env.NEXT_PUBLIC_APP_URL}${image.url}`,
-            fileName: image.fileName,
-            data: image.data
-          }));
-          if (!imageData.length) {
-            router.replace('/');
-            return noImagesToast();
-          }
-          setImages(imageData);
+        if (!res.data.length) {
+          router.replace('/');
+          return noImagesToast();
         }
+        const imageData: ImageJson[] = res.data.map((image) => ({
+          url: `${process.env.NEXT_PUBLIC_APP_URL}${image.url}`,
+          fileName: image.fileName,
+          data: image.data
+        }));
+        setImages(imageData);
+        setShareAll(process.env.NEXT_PUBLIC_APP_URL + res.shareAllUrl);
       })
       .catch((_) => {
         router.replace('/');
@@ -64,7 +55,7 @@ export default function StatsUnwrapped() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [userName, hash, router, noImagesToast, invalidUrlToast, status]);
+  }, [userName, router, noImagesToast, invalidUrlToast]);
 
   const Header = () => (
     <>
@@ -73,16 +64,16 @@ export default function StatsUnwrapped() {
         description={`${userName}'s 2023 on GitHub Unwrapped, by Middleware. It's like Spotify Wrapped, but for developers. You'll love it.`}
         openGraph={{
           type: 'website',
-          url: `${process.env.NEXT_PUBLIC_APP_URL}/view/${userName}/${hash}`,
+          url: `${process.env.NEXT_PUBLIC_APP_URL}/view/public/${userName}`,
           images: [
             {
-              url: `${process.env.NEXT_PUBLIC_APP_URL}/api/get_cover/${userName}/${hash}`
+              url: `${process.env.NEXT_PUBLIC_APP_URL}/api/get_cover/public/${userName}`
             }
           ]
         }}
         twitter={{
           cardType: 'summary_large_card',
-          site: `${process.env.NEXT_PUBLIC_APP_URL}/view/${userName}/${hash}`,
+          site: `${process.env.NEXT_PUBLIC_APP_URL}/view/public/${userName}`,
           handle: 'middlewarehq'
         }}
       />
@@ -115,20 +106,19 @@ export default function StatsUnwrapped() {
           <div className="flex flex-col items-center gap-4 w-full ">
             <SwiperCarousel
               hideEmailInput
-              hideShareButtons
               userName={userName}
               images={images}
               singleImageSharingCallback={downloadImage}
-              zipDownload={zipDownload}
+              shareAllUrl={shareAll}
             />
           </div>
         )}
-        <Link href={'/'} target="_blank">
+        <Link href={'/'}>
           <span
             className="font-semibold text-[#bc9aef] underline decoration-dashed"
             onClick={() => track('WISH_TO_CREATE_YOUR_OWN_CLICKED')}
           >
-            Wish to create your own? Click here {'->'}
+            Wish to create another? Click here {'->'}
           </span>
         </Link>
         <a

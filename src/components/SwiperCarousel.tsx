@@ -11,19 +11,15 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { ShareButton } from './ShareButton';
-import { UpdatedImageFile } from '@/types/images';
+import { ImageJson } from '@/types/images';
 import { CardTypes, sequence } from '@/types/cards';
 import { track } from '@/constants/events';
 import { extractFilenameWithoutExtension } from '@/utils/stringHelpers';
 
 interface SwiperCarouselProps {
-  images: UpdatedImageFile[];
+  images: ImageJson[];
   userName: string;
-  singleImageSharingCallback: ({
-    images
-  }: {
-    images: UpdatedImageFile;
-  }) => void;
+  singleImageSharingCallback: ({ images }: { images: ImageJson }) => void;
   hideShareButtons?: boolean;
   hideEmailInput?: boolean;
   shareAllUrl?: string;
@@ -152,7 +148,7 @@ const SwiperCarousel: React.FC<SwiperCarouselProps> = ({
 
 export default SwiperCarousel;
 
-const sortImageCards = (imageA: UpdatedImageFile, imageB: UpdatedImageFile) => {
+const sortImageCards = (imageA: ImageJson, imageB: ImageJson) => {
   const indexOfA = sequence.indexOf(
     extractFilenameWithoutExtension(imageA.fileName).toUpperCase() as CardTypes
   );

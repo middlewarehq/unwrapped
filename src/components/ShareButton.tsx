@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { GiPaperClip, GiShare } from 'react-icons/gi';
+import { CiLinkedin, CiTwitter } from 'react-icons/ci';
 import {} from 'react-icons';
-import { FaTwitter, FaDownload, FaLinkedin, FaTimes } from 'react-icons/fa';
+import { GoCopy, GoDownload, GoShare, GoX } from 'react-icons/go';
+import { track } from '@/constants/events';
 import toast from 'react-hot-toast';
 import { logException } from '@/utils/logger';
-import { track } from '@/constants/events';
 
 type ShareButtonProps = {
   imageUrl?: string;
@@ -26,19 +26,18 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   shareAllUrl = '',
   zipDownload
 }) => {
-  const domain = process.env.NEXT_PUBLIC_APP_URL;
-  const completeUrl = `${domain}${imageUrl}`;
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [tweetText, setTweetText] = useState(defaultText(shareAllUrl));
 
   const shareToTwitter = (type: ShareType) => {
+    if (!imageUrl) return;
+
     const encodedText = encodeURIComponent(
       tweetText ||
-        defaultText(type === ShareType.SINGLE ? completeUrl : shareAllUrl)
+        defaultText(type === ShareType.SINGLE ? imageUrl : shareAllUrl)
     );
     const encodedImageUrl = encodeURIComponent(
-      type === ShareType.SINGLE ? completeUrl : shareAllUrl
+      type === ShareType.SINGLE ? imageUrl : shareAllUrl
     );
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedImageUrl}`;
     window.open(twitterShareUrl, '_blank');
@@ -48,7 +47,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   const setTweetTextForShareType = (type: ShareType) => {
     setTweetText(
       type === ShareType.SINGLE
-        ? defaultText(completeUrl)
+        ? defaultText(imageUrl || '')
         : defaultText(shareAllUrl)
     );
   };
@@ -75,9 +74,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
 
   function shareOnLinkedIn(type: ShareType = ShareType.ALL) {
     const options = {
-      url: type === ShareType.SINGLE ? completeUrl : shareAllUrl,
+      url: type === ShareType.SINGLE ? imageUrl || '' : shareAllUrl,
       title: 'Checkout my Unwrapped 2023',
-      summary: tweetText || defaultText(completeUrl),
+      summary: tweetText || defaultText(imageUrl || ''),
       source: 'Unwrapped by Middleware'
     };
     const linkedInShareUrl = handleClick(options);
@@ -97,7 +96,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   return (
     <div className={'relative inline-block ' + className}>
       <div className="relative">
-        <GiShare
+        <GoShare
           size={28}
           fill="rgb(20, 24, 59)"
           className="cursor-pointer"
@@ -111,7 +110,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       {isMenuOpen && (
         <ShareMenu2
           callBack={callBack}
-          completeUrl={completeUrl}
+          completeUrl={imageUrl || ''}
           toggleMenu={toggleMenu}
           tweetText={tweetText}
           setTweetText={setTweetText}
@@ -121,6 +120,44 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           zipDownload={zipDownload}
           shareAllUrl={shareAllUrl}
         />
+      )}
+    </div>
+  );
+};
+
+const CopyPaperClip: React.FC<{
+  textToCopy: string;
+  onClick?: () => void;
+}> = ({ textToCopy, onClick }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const onCopy = () => {
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+    track('SINGLE_IMAGE_PUBLIC_LINK_COPIED');
+  };
+
+  return (
+    <div
+      onClick={() => {
+        if (onClick) onClick();
+        copyToClipboard(textToCopy, onCopy);
+      }}
+      className="absolute flex items-center justify-center rounded-full -top-[6px] -left-14 w-10 h-10 bg-white"
+    >
+      <GoCopy
+        size={24}
+        fill="rgb(20, 24, 59)"
+        style={{
+          opacity: isCopied ? 0.5 : 1
+        }}
+      />
+      {isCopied && (
+        <div className="absolute text-sm top-12 -left-4 text-black bg-white rounded-md px-2 py-1">
+          Copied!
+        </div>
       )}
     </div>
   );
@@ -202,9 +239,9 @@ const ShareMenu2 = ({
       shareOnLinkedIn(shareType);
     } else if (optionSelected === ShareOption.DOWNLOAD) {
       if (shareType === ShareType.SINGLE) {
-        callBack && callBack();
+        callBack?.();
       } else {
-        zipDownload && zipDownload();
+        zipDownload?.();
       }
     } else if (optionSelected === ShareOption.COPY) {
       if (shareType === ShareType.SINGLE) {
@@ -242,28 +279,35 @@ const ShareMenu2 = ({
             isSelected={optionSelected === ShareOption.COPY}
             onClick={selectCopy}
           >
-            <GiPaperClip size={20} />
+            <GoCopy size={20} />
           </Button>
 
           <Button
             isSelected={optionSelected === ShareOption.TWEET}
             onClick={selectTweet}
           >
-            <FaTwitter size={20} />
+            <CiTwitter size={20} />
           </Button>
 
           <Button
             isSelected={optionSelected === ShareOption.LINKEDIN}
             onClick={selectLinkedIn}
           >
-            <FaLinkedin size={18} />
+            <CiLinkedin size={18} />
           </Button>
 
           <Button
             isSelected={optionSelected === ShareOption.DOWNLOAD}
             onClick={selectDownload}
           >
-            <FaDownload size={18} />
+            <GoDownload size={18} />
+          </Button>
+
+          <Button
+            isSelected={optionSelected === ShareOption.COPY}
+            onClick={selectCopy}
+          >
+            <GoCopy size={18} />
           </Button>
         </div>
         <button
@@ -271,7 +315,7 @@ const ShareMenu2 = ({
           onClick={toggleMenu}
           className="bg-[#a23333] text-white px-2 py-1 rounded hover:bg-[#cd4a4a] focus:outline-none focus:ring focus:border-red-300"
         >
-          <FaTimes />
+          <GoX />
         </button>
       </div>
       <div
@@ -369,41 +413,3 @@ enum ShareOption {
   COPY = 'copy',
   NONE = 'none'
 }
-
-const CopyPaperClip: React.FC<{
-  textToCopy: string;
-  onClick?: () => void;
-}> = ({ textToCopy, onClick }) => {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const onCopy = () => {
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
-    track('SINGLE_IMAGE_PUBLIC_LINK_COPIED');
-  };
-
-  return (
-    <div
-      onClick={() => {
-        if (onClick) onClick();
-        copyToClipboard(textToCopy, onCopy);
-      }}
-      className="absolute flex items-center justify-center rounded-full -top-[6px] -left-14 w-10 h-10 bg-white"
-    >
-      <GiPaperClip
-        size={24}
-        fill="rgb(20, 24, 59)"
-        style={{
-          opacity: isCopied ? 0.5 : 1
-        }}
-      />
-      {isCopied && (
-        <div className="absolute text-sm top-12 -left-4 text-black bg-white rounded-md px-2 py-1">
-          Copied!
-        </div>
-      )}
-    </div>
-  );
-};

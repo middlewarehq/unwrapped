@@ -6,8 +6,7 @@ import { archiveFiles } from '@/api-helpers/archive';
 import { fetchGithubUnwrappedData } from '@/api-helpers/unrwrapped-aggregator';
 import { dec } from '@/api-helpers/auth-supplementary';
 import { fetchSavedCards, saveCards } from '@/api-helpers/persistance';
-import { fetchUser } from '@/api-helpers/exapi-sdk/github';
-import { GithubUser } from '@/api-helpers/exapi-sdk/types';
+import { fetchUser, fetchUserByLogin } from '@/api-helpers/exapi-sdk/github';
 import {
   bcryptGen,
   extractFilenameWithoutExtension
@@ -22,33 +21,37 @@ const fetchAndDownloadImageBuffer = async (
   let token = req.cookies.ghct;
   const timezone = (req.headers['x-timezone'] as string) || 'UTC';
 
-  if (!token) {
+  const isPublic = req.query.ispublic === 'true';
+
+  if (!token && !req.query.username) {
     return res.status(403).json({
       message: 'GitHub Access token not found.'
     });
   }
 
-  token = dec(token);
+  if (isPublic) {
+    token = process.env.GLOBAL_GH_PAT;
+  } else if (token) {
+    token = dec(token);
+  } else {
+    return res.status(403).json({
+      message: 'GitHub Access token not found.'
+    });
+  }
 
   try {
     const user = req.query.username
-      ? ({ login: req.query.username } as GithubUser)
+      ? await fetchUserByLogin(token, req.query.username as string)
       : await fetchUser(token);
 
-    const cachedCardsBuffer = req.query.recache
+    let imageBuffer = req.query.recache
       ? []
-      : await fetchSavedCards(user.login);
-
-    let imageBuffer = cachedCardsBuffer;
+      : await fetchSavedCards(user.login, isPublic);
 
     if (!imageBuffer?.length) {
-      const data = await fetchGithubUnwrappedData(
-        token,
-        timezone,
-        req.query.username as string
-      );
+      const data = await fetchGithubUnwrappedData(token, timezone, user);
       imageBuffer = await generateImages(data);
-      saveCards(user.login, imageBuffer);
+      saveCards(user.login, imageBuffer, isPublic);
     }
 
     if (req.query.format === 'archive') {
@@ -66,7 +69,9 @@ const fetchAndDownloadImageBuffer = async (
     } else {
       const username = user.login;
       const userNameHash = bcryptGen(username);
-      const shareUrl = `/view/${user.login}/${userNameHash}`;
+      const shareUrl = isPublic
+        ? `/view/public/${user.login}`
+        : `/view/${user.login}/${userNameHash}`;
 
       const imageData = imageBuffer.map(({ data, fileName }) => {
         const file = extractFilenameWithoutExtension(fileName);
@@ -74,7 +79,9 @@ const fetchAndDownloadImageBuffer = async (
 
         return {
           fileName,
-          url: `/shared/${username}/${file}/${hash}`,
+          url: isPublic
+            ? `/shared/public/${username}/${file}`
+            : `/shared/${username}/${file}/${hash}`,
           data: `data:image/png;base64,${data.toString('base64')}`
         };
       });

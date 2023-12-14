@@ -1,4 +1,4 @@
-import { ImageFile } from '@/types/images';
+import { ImagesWithBuffers } from '@/types/images';
 import { S3 } from 'aws-sdk';
 import { logException } from '../logger';
 
@@ -11,7 +11,7 @@ const s3 = new S3({
 export const uploadImagesToS3 = async (
   bucketName: string,
   prefix: string,
-  imageFiles: ImageFile[]
+  imageFiles: ImagesWithBuffers[]
 ): Promise<void> => {
   const uploadPromises = imageFiles.map(async (imageFile) => {
     const uploadParams = {
@@ -37,7 +37,7 @@ export const uploadImagesToS3 = async (
 export const fetchImagesFromS3Directory = async (
   bucketName: string,
   directory: string
-): Promise<ImageFile[]> => {
+): Promise<ImagesWithBuffers[]> => {
   const listObjectsParams = {
     Bucket: bucketName,
     Prefix: directory
@@ -46,7 +46,7 @@ export const fetchImagesFromS3Directory = async (
   try {
     const data = await s3.listObjectsV2(listObjectsParams).promise();
 
-    const images: ImageFile[] = await Promise.all(
+    const images: ImagesWithBuffers[] = await Promise.all(
       (data.Contents || []).map(async (item) => {
         const imageBuffer = await s3
           .getObject({ Bucket: bucketName, Key: item.Key || '' })
@@ -70,7 +70,7 @@ export const fetchImagesFromS3Directory = async (
 export const fetchFileFromS3Directory = async (
   bucketName: string,
   key: string
-): Promise<ImageFile> => {
+): Promise<ImagesWithBuffers> => {
   try {
     const imageBuffer = await s3
       .getObject({ Bucket: bucketName, Key: key })

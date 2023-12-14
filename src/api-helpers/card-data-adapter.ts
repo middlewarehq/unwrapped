@@ -18,11 +18,6 @@ import { Username } from '@/components/templates/index';
 import { DependantsData } from '@/components/templates/Dependants';
 
 export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
-  const intro: IntroCardProps | null = {
-    username: data.user.login,
-    year: new Date().getFullYear()
-  };
-
   const guardian: GuardianData | null =
     data.reviewed_prs_with_requested_changes_count > 2
       ? {
@@ -30,10 +25,13 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
         }
       : null;
 
-  const contributions: ContributionsData | null = {
-    contributions: data.total_contributions,
-    percentile: data.contribution_percentile
-  };
+  const contributions: ContributionsData | null =
+    data.total_contributions > 0
+      ? {
+          contributions: data.total_contributions,
+          percentile: data.contribution_percentile
+        }
+      : null;
 
   const totalAuthored = data.authored_monthly_pr_counts.reduce(
     (acc, curr) => acc + curr,
@@ -54,12 +52,14 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
         }
       : null;
 
-  const timeBasedData: TimeOfTheDayData | null = {
-    prsDuringDay: data.prs_opened_during_day,
-    totalPrs: data.prs_opened_during_day + data.prs_opened_during_night,
-    productiveDay: data.weekday_with_max_opened_prs as string,
-    productiveHour: data.hour_with_max_opened_prs as number
-  };
+  const timeBasedData: TimeOfTheDayData | null = data.total_contributions
+    ? {
+        prsDuringDay: data.prs_opened_during_day,
+        totalPrs: data.prs_opened_during_day + data.prs_opened_during_night,
+        productiveDay: data.weekday_with_max_opened_prs as string,
+        productiveHour: data.hour_with_max_opened_prs as number
+      }
+    : null;
 
   const zenOrNinja: ZenNinjaData | null =
     data.total_contributions > 50
@@ -100,9 +100,7 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
         }
       : null;
 
-  return {
-    username: data.user.login,
-    [CardTypes.UNWRAPPED_INTRO]: intro,
+  const nonIntroCardData = {
     [CardTypes.GUARDIAN_OF_PROD]: guardian,
     [CardTypes.YOUR_CONTRIBUTIONS]: contributions,
     [CardTypes.PR_REVIEWED_VS_AUTHORED]: authoredVsReviewedPRs,
@@ -112,6 +110,21 @@ export const getDataFromGithubResponse = (data: GitHubDataResponse) => {
     [CardTypes.TOP_REVIEWERS]: codeReviewerStats,
     [CardTypes.OSS_CONTRIBUTION]: ossContribsData,
     [CardTypes.IT_TAKES_A_VILLAGE]: userReviewers
+  };
+
+  const hasAnyData = !!Object.values(nonIntroCardData).filter(Boolean).length;
+
+  const intro: IntroCardProps | null = hasAnyData
+    ? {
+        username: data.user.login,
+        year: new Date().getFullYear()
+      }
+    : null;
+
+  return {
+    username: data.user.login,
+    [CardTypes.UNWRAPPED_INTRO]: intro,
+    ...nonIntroCardData
   } as Record<
     CardTypes,
     | IntroCardProps

@@ -1,4 +1,4 @@
-import { ImageFile } from '@/types/images';
+import { ImagesWithBuffers } from '@/types/images';
 import {
   deleteS3Directory,
   fetchFileFromS3Directory,
@@ -21,52 +21,64 @@ const bucketName = process.env.UNWRAPPED_PERSISTENCE_BUCKET_NAME;
 
 export const saveCards = async (
   userLogin: string,
-  imageFiles: ImageFile[]
+  imageFiles: ImagesWithBuffers[],
+  isPublic: boolean = true
 ): Promise<void> => {
   if (awsCredentialExists && bucketName) {
-    await uploadImagesToS3(bucketName, userLogin, imageFiles);
+    const prefix = isPublic ? `public/${userLogin}` : `${userLogin}`;
+    await uploadImagesToS3(bucketName, prefix, imageFiles);
   } else {
-    await saveImagesToLocalDirectory(
-      `${process.cwd()}/unwrapped-cards/${userLogin}/`,
-      imageFiles
-    );
+    const prefix = isPublic
+      ? `${process.cwd()}/unwrapped-cards/public/${userLogin}/`
+      : `${process.cwd()}/unwrapped-cards/${userLogin}/`;
+    await saveImagesToLocalDirectory(prefix, imageFiles);
   }
 };
 
 export const fetchSavedCards = async (
-  userLogin: string
-): Promise<ImageFile[]> => {
+  userLogin: string,
+  isPublic: boolean = true
+): Promise<ImagesWithBuffers[]> => {
   if (awsCredentialExists && bucketName) {
-    return await fetchImagesFromS3Directory(bucketName, userLogin);
+    const prefix = isPublic ? `public/${userLogin}` : `${userLogin}`;
+    return await fetchImagesFromS3Directory(bucketName, prefix);
   } else {
-    return await fetchImagesFromLocalDirectory(
-      `${process.cwd()}/unwrapped-cards/${userLogin}/`
-    );
+    const prefix = isPublic
+      ? `${process.cwd()}/unwrapped-cards/public/${userLogin}/`
+      : `${process.cwd()}/unwrapped-cards/${userLogin}/`;
+    return await fetchImagesFromLocalDirectory(prefix);
   }
 };
 
-export const deleteSaveCards = async (userLogin: string): Promise<void> => {
+export const deleteSaveCards = async (
+  userLogin: string,
+  isPublic: boolean = true
+): Promise<void> => {
   if (awsCredentialExists && bucketName) {
-    await deleteS3Directory(bucketName, userLogin);
+    const prefix = isPublic ? `public/${userLogin}` : `${userLogin}`;
+    await deleteS3Directory(bucketName, prefix);
   } else {
-    await deleteLocalDirectory(
-      `${process.cwd()}/unwrapped-cards/${userLogin}/`
-    );
+    const prefix = isPublic
+      ? `${process.cwd()}/unwrapped-cards/public/${userLogin}/`
+      : `${process.cwd()}/unwrapped-cards/${userLogin}/`;
+    await deleteLocalDirectory(prefix);
   }
 };
 
 export const fetchSavedCard = async (
   userLogin: string,
-  cardName: string
-): Promise<ImageFile> => {
+  cardName: string,
+  isPublic: boolean = true
+): Promise<ImagesWithBuffers> => {
   if (awsCredentialExists && bucketName) {
-    return await fetchFileFromS3Directory(
-      bucketName,
-      `${userLogin}/${cardName}.png`
-    );
+    const prefix = isPublic
+      ? `public/${userLogin}/${cardName}.png`
+      : `${userLogin}/${cardName}.png`;
+    return await fetchFileFromS3Directory(bucketName, prefix);
   } else {
-    return await fetchImageFromLocalDirectory(
-      `${process.cwd()}/unwrapped-cards/${userLogin}/${cardName}.png`
-    );
+    const prefix = isPublic
+      ? `${process.cwd()}/unwrapped-cards/public/${userLogin}/${cardName}.png`
+      : `${process.cwd()}/unwrapped-cards/${userLogin}/${cardName}.png`;
+    return await fetchImageFromLocalDirectory(prefix);
   }
 };

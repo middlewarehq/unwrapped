@@ -89,6 +89,7 @@ Welcome to **Unwrapped - by Middleware**! This application is designed to provid
     NEXT_PUBLIC_MIXPANEL=NEXT_PUBLIC_MIXPANEL
     TOKEN_ENC_PUB_KEY=TOKEN_ENC_PUB_KEY
     TOKEN_ENC_PRI_KEY=TOKEN_ENC_PRI_KEY
+    GLOBAL_GH_PAT=GLOBAL_GH_PAT
     ```
 
 ## Optional Keys and Behaviors

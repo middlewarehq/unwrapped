@@ -1,4 +1,4 @@
-import { ImageFile } from '@/types/images';
+import { ImagesWithBuffers } from '@/types/images';
 import { ImageResponse } from '@vercel/og';
 import { arrayBufferToBuffer } from '@/api-helpers/general';
 
@@ -17,7 +17,7 @@ export const createImageUsingVercel = async (
   data: CardTemplateData['data'],
   cardType: CardTypes,
   env: 'node' | 'browser' = 'node'
-): Promise<ImageFile> => {
+): Promise<ImagesWithBuffers> => {
   const fileName = `${cardType.toLowerCase()}.png`;
   try {
     const interFonts = await getInterFonts(env);

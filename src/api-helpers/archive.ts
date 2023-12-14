@@ -1,8 +1,10 @@
 import archiver from 'archiver';
-import { ImageFile } from '../types/images';
 import chalk from 'chalk';
+import { ImagesWithBuffers } from '@/types/images';
 
-export async function archiveFiles(fileBuffers: ImageFile[]): Promise<Buffer> {
+export async function archiveFiles(
+  fileBuffers: Omit<ImagesWithBuffers, 'image'>[]
+): Promise<Buffer> {
   console.info(chalk.yellow('Archiving images...'));
   return new Promise((resolve, reject) => {
     const archive = archiver('zip', { zlib: { level: 9 } });
