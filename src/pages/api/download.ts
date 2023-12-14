@@ -21,7 +21,7 @@ const fetchAndDownloadImageBuffer = async (
   let token = req.cookies.ghct;
   const timezone = (req.headers['x-timezone'] as string) || 'UTC';
 
-  const isPublic = !token;
+  const isPublic = !token || req.query.ispublic === 'true';
 
   if (!token && !req.query.username) {
     return res.status(403).json({
@@ -68,7 +68,7 @@ const fetchAndDownloadImageBuffer = async (
       const username = user.login;
       const userNameHash = bcryptGen(username);
       const shareUrl = isPublic
-        ? `/view/public/${user.login}/${userNameHash}`
+        ? `/view/public/${user.login}`
         : `/view/${user.login}/${userNameHash}`;
 
       const imageData = imageBuffer.map(({ data, fileName }) => {
@@ -77,7 +77,9 @@ const fetchAndDownloadImageBuffer = async (
 
         return {
           fileName,
-          url: `/shared/${username}/${file}/${hash}`,
+          url: isPublic
+            ? `/shared/${username}/public/${file}`
+            : `/shared/${username}/${file}/${hash}`,
           data: `data:image/png;base64,${data.toString('base64')}`
         };
       });
