@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { track } from '@/constants/events';
 import { handleRequest } from '@/utils/axios';
 import { ImageAPIResponse } from '@/types/images';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 /**
  * DISABLE_PUBLIC_ONLY_CONTRIBUTIONS
@@ -72,6 +73,7 @@ export const AuthActions = () => {
             <button
               className="bg-indigo-800 text-white px-4 py-2 rounded-md shrink-0"
               onClick={() => {
+                setLoading(true);
                 handleRequest<ImageAPIResponse>('/api/download', {
                   params: { ispublic: true, username }
                 })
@@ -83,29 +85,37 @@ export const AuthActions = () => {
                   .finally(() => setLoading(false));
               }}
             >
-              {loading ? '...' : '->'}
+              {loading ? (
+                <AiOutlineLoading3Quarters
+                  style={{ animation: 'spin 1s infinite' }}
+                />
+              ) : (
+                '->'
+              )}
             </button>
           </form>
         </div>
       )}
-      <div>
-        <div className="flex items-center">
-          <input
-            id="private-contribs"
-            type="checkbox"
-            checked={showPrivate}
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            onChange={() => setShowPrivate(!showPrivate)}
-            disabled={DISABLE_PUBLIC_ONLY_CONTRIBUTIONS}
-          />
-          <label
-            htmlFor="private-contribs"
-            className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          >
-            Include private contributions?
-          </label>
+      {status !== 'authenticated' && (
+        <div>
+          <div className="flex items-center">
+            <input
+              id="private-contribs"
+              type="checkbox"
+              checked={showPrivate}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              onChange={() => setShowPrivate(!showPrivate)}
+              disabled={DISABLE_PUBLIC_ONLY_CONTRIBUTIONS}
+            />
+            <label
+              htmlFor="private-contribs"
+              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Include private contributions?
+            </label>
+          </div>
         </div>
-      </div>
+      )}
       <div className="flex flex-col gap-1 mt-2">
         <span className="text-slate-100 text-sm font-semibold">
           What&apos;s stopping you?
