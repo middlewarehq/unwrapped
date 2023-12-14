@@ -3,12 +3,9 @@ import { handleRequest } from '@/utils/axios';
 import { LoaderWithFacts } from '@/components/LoaderWithFacts';
 import SwiperCarousel from '@/components/SwiperCarousel';
 import { FaDownload } from 'react-icons/fa';
-import { FaFilePdf, FaShare } from 'react-icons/fa6';
-import { FaLinkedin } from 'react-icons/fa';
+import { FaShare } from 'react-icons/fa6';
 import { useImageDownloader } from '@/hooks/useImageDownloader';
-import { useImageDownloaderAsPdf } from '@/hooks/useImageDownloaderAsPdfHook';
 import Confetti from 'react-confetti';
-import Link from 'next/link';
 import { ImageAPIResponse, UpdatedImageFile } from '@/types/images';
 import { track } from '@/constants/events';
 import { GithubUser } from '@/api-helpers/exapi-sdk/types';
@@ -18,14 +15,11 @@ import { AxiosError } from 'axios';
 import { signOut, useSession } from 'next-auth/react';
 import { usePrebuiltToasts } from '@/hooks/usePrebuiltToasts';
 
-const LINKEDIN_URL = 'https://www.linkedin.com/';
-
 export default function StatsUnwrapped() {
   const { status } = useSession();
   const { somethingWentWrongToast, unauthenticatedToast } = usePrebuiltToasts();
   const [isLoading, setIsLoading] = useState(false);
   const downloadImage = useImageDownloader();
-  const downloadImagesAsPdf = useImageDownloaderAsPdf();
   const [images, setUnwrappedImages] = useState<UpdatedImageFile[] | null>(
     null
   );
@@ -95,47 +89,32 @@ export default function StatsUnwrapped() {
             images={images}
             singleImageSharingCallback={downloadImage}
           />
-
-          <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
-            <FaDownload
-              size={36}
-              onClick={() => {
-                downloadImage({ images });
-                track('ZIP_DOWNLOAD_CLICKED');
-              }}
-              data-tooltip-id="carousel-action-menu"
-              data-tooltip-content="Download as zip"
-            />
-            <Link href={LINKEDIN_URL} target="_blank">
-              <FaLinkedin
-                size={36}
+          <div className="flex gap-2">
+            <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
+              <FaDownload
+                size={23}
                 onClick={() => {
-                  track('LINKEDIN_SHARE_CLICKED');
+                  downloadImage({ images });
+                  track('ZIP_DOWNLOAD_CLICKED');
                 }}
                 data-tooltip-id="carousel-action-menu"
-                data-tooltip-content="Share on LinkedIn"
+                data-tooltip-content="Download as zip"
               />
-            </Link>
-
-            <FaFilePdf
-              size={36}
-              onClick={async () => {
-                downloadImagesAsPdf({ images });
-                track('PDF_DOWNLOAD_CLICKED');
-              }}
-              data-tooltip-id="carousel-action-menu"
-              data-tooltip-content="Download as PDF"
-            />
-            {shareUrl && (
-              <FaShare
-                size={36}
-                onClick={() => {
-                  copyToClipboard(window.location.origin + shareUrl);
-                }}
-              />
-            )}
+            </div>
+            <div className="flex gap-4  p-3 rounded-lg bg-indigo-900 bg-opacity-60 cursor-pointer">
+              {shareUrl && (
+                <FaShare
+                  size={23}
+                  onClick={() => {
+                    copyToClipboard(window.location.origin + shareUrl);
+                  }}
+                  data-tooltip-id="carousel-action-menu"
+                  data-tooltip-content="Share link"
+                />
+              )}
+            </div>
+            <Tooltip id="carousel-action-menu" />
           </div>
-          <Tooltip id="carousel-action-menu" />
         </div>
       )}
     </div>

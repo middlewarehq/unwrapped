@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GiPaperClip, GiShare } from 'react-icons/gi';
 import {} from 'react-icons';
-import { FaTwitter, FaDownload } from 'react-icons/fa';
+import { FaTwitter, FaDownload, FaLinkedin } from 'react-icons/fa';
 import { track } from '@/constants/events';
 import toast from 'react-hot-toast';
 import { logException } from '@/utils/logger';
@@ -14,29 +14,61 @@ type ShareButtonProps = {
   imageName?: string;
 };
 
-const defaultText =
-  "Here's a sneak peek of my 2023 in code! https://unwrapped.dev #MyUnwrappedIsBetterThanYours #UnwrappedByMiddleware";
+const defaultText = (text: string) =>
+  `Here's a sneak peek of my 2023 in code! ${text} #MyUnwrappedIsBetterThanYours #UnwrappedByMiddleware`;
 
 export const ShareButton: React.FC<ShareButtonProps> = ({
   callBack,
   imageUrl,
   className
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [tweetText, setTweetText] = useState(defaultText);
-
   const domain = window.location.origin;
-
   const completeUrl = `${domain}${imageUrl}`;
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [tweetText, setTweetText] = useState(defaultText(completeUrl));
+
   const shareToTwitter = () => {
-    const encodedText = encodeURIComponent(tweetText || defaultText);
+    const encodedText = encodeURIComponent(
+      tweetText || defaultText(completeUrl)
+    );
     const encodedImageUrl = encodeURIComponent(completeUrl);
-
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedImageUrl}`;
-
     window.open(twitterShareUrl, '_blank');
     closeMenu();
   };
+
+  const handleClick = ({
+    url,
+    title,
+    summary,
+    source
+  }: {
+    url: string;
+    title: string;
+    summary: string;
+    source: string;
+  }) => {
+    const linkedInShareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+      url
+    )}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(
+      summary
+    )}&source=${encodeURIComponent(source)}`;
+
+    return linkedInShareUrl;
+  };
+
+  function shareOnLinkedIn() {
+    const options = {
+      url: completeUrl,
+      title: 'Checkout my Unwrapped 2023',
+      summary: tweetText || defaultText(completeUrl),
+      source: 'Unwrapped by Middleware'
+    };
+    const linkedInShareUrl = handleClick(options);
+    window.open(linkedInShareUrl, '_blank');
+    closeMenu();
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -56,33 +88,33 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           className="cursor-pointer"
           onClick={toggleMenu}
         />
-        <CopyPaperClip textToCopy={completeUrl} />
+        <CopyPaperClip
+          textToCopy={completeUrl}
+          onClick={() => setIsMenuOpen(false)}
+        />
       </div>
       {isMenuOpen && (
-        <div className="absolute md:w-96 w-72 md:right-12 right-4 top-12 bg-[#11142e] rounded-md shadow-lg p-4">
+        <div className="absolute md:w-96 w-72 md:right-12 right-4 top-12 bg-[#11142e] rounded-lg shadow-lg p-4">
           <textarea
-            placeholder={defaultText}
+            placeholder={defaultText(completeUrl)}
             value={tweetText}
             onChange={(e) => setTweetText(e.target.value)}
-            className="w-full border text-white outline-none rounded-md p-2 mb-2 bg-[#1c2045] border-[#2d3479]"
+            className="w-full border text-white outline-none rounded-lg p-2 mb-1 bg-[#14183B] border-[#2d3479] h-36 sm:h-32"
           />
 
           <div className="w-full flex justify-between">
             <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={shareToTwitter}
-                className="bg-[#2d3479] text-[#fff] px-2 py-1 rounded hover:bg-[#424db1] focus:outline-none focus:ring focus:border-blue-300"
-              >
+              <Button onClick={shareToTwitter}>
                 <FaTwitter size={20} />
-              </button>
-              <button
-                type="button"
-                onClick={callBack}
-                className="bg-[#2d3479] text-white px-2 py-1 rounded hover:bg-[#424db1] focus:outline-none focus:ring focus:border-blue-300"
-              >
+              </Button>
+
+              <Button onClick={shareOnLinkedIn}>
+                <FaLinkedin size={18} />
+              </Button>
+
+              <Button onClick={callBack}>
                 <FaDownload size={18} />
-              </button>
+              </Button>
             </div>
             <button
               type="button"
@@ -98,7 +130,10 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   );
 };
 
-const CopyPaperClip: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
+const CopyPaperClip: React.FC<{
+  textToCopy: string;
+  onClick?: () => void;
+}> = ({ textToCopy, onClick }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const onCopy = () => {
@@ -112,6 +147,7 @@ const CopyPaperClip: React.FC<{ textToCopy: string }> = ({ textToCopy }) => {
   return (
     <div
       onClick={() => {
+        if (onClick) onClick();
         copyToClipboard(textToCopy, onCopy);
       }}
       className="absolute flex items-center justify-center rounded-full -top-[6px] -left-14 w-10 h-10 bg-white"
@@ -148,4 +184,22 @@ export const copyToClipboard = async (
     });
     onFailure && onFailure(err);
   }
+};
+
+const Button = ({
+  children,
+  onClick
+}: {
+  children: React.ReactNode;
+  onClick?: (e?: any) => void;
+}) => {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="bg-[#2d3479] text-white px-3 py-2 rounded-lg hover:bg-[#424db1] focus:outline-none focus:ring focus:border-blue-300"
+    >
+      {children}
+    </button>
+  );
 };
