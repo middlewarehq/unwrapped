@@ -21,6 +21,8 @@ const fetchAndDownloadImageBuffer = async (
   let token = req.cookies.ghct;
   const timezone = (req.headers['x-timezone'] as string) || 'UTC';
 
+  const isPublic = !token;
+
   if (!token && !req.query.username) {
     return res.status(403).json({
       message: 'GitHub Access token not found.'
@@ -40,18 +42,14 @@ const fetchAndDownloadImageBuffer = async (
 
     const cachedCardsBuffer = req.query.recache
       ? []
-      : await fetchSavedCards(user.login);
+      : await fetchSavedCards(user.login, isPublic);
 
     let imageBuffer = cachedCardsBuffer;
 
     if (!imageBuffer?.length) {
-      const data = await fetchGithubUnwrappedData(
-        token,
-        timezone,
-        req.query.username as string
-      );
+      const data = await fetchGithubUnwrappedData(token, timezone, user);
       imageBuffer = await generateImages(data);
-      saveCards(user.login, imageBuffer);
+      saveCards(user.login, imageBuffer, isPublic);
     }
 
     if (req.query.format === 'archive') {
@@ -69,7 +67,9 @@ const fetchAndDownloadImageBuffer = async (
     } else {
       const username = user.login;
       const userNameHash = bcryptGen(username);
-      const shareUrl = `/view/${user.login}/${userNameHash}`;
+      const shareUrl = isPublic
+        ? `/view/public/${user.login}/${userNameHash}`
+        : `/view/${user.login}/${userNameHash}`;
 
       const imageData = imageBuffer.map(({ data, fileName }) => {
         const file = extractFilenameWithoutExtension(fileName);
