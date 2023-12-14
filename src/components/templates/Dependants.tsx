@@ -10,7 +10,7 @@ export type DependantsData = {
   username: string;
 };
 
-const DEFAULT_AVATAR = 'https://github.com/github.png?size=80';
+const DEFAULT_AVATAR = `${websiteUrl}/assets/images/default-avatar.png`;
 
 export const Dependants: FC<DependantsData & Username> = ({
   username,
