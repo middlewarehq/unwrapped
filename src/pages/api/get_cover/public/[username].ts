@@ -33,7 +33,7 @@ const fetchAndDownloadImageBuffer = async (
     .map((image) => {
       const file = extractFilenameWithoutExtension(image.fileName);
       const domain = process.env.NEXTAUTH_URL;
-      return `${domain}/public/shared/${username}/${file}`;
+      return `${domain}/shared/public/${username}/${file}`;
     });
 
   const getCoverImage = await createCoverUsingVercel(username, images);
