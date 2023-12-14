@@ -32,7 +32,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   shareAllUrl = '',
   zipDownload
 }) => {
-  const domain = window.location.origin;
+  const domain = process.env.NEXT_PUBLIC_APP_URL;
   const completeUrl = `${domain}${imageUrl}`;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
