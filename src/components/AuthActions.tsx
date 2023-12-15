@@ -12,7 +12,7 @@ const DISABLE_PUBLIC_ONLY_CONTRIBUTIONS = false;
 export const AuthActions = () => {
   const { status } = useSession();
   const router = useRouter();
-  const [showPrivate, setShowPrivate] = useState(true);
+  const [showPrivate, setShowPrivate] = useState(false);
   const [username, setUsername] = useState('');
 
   return (
