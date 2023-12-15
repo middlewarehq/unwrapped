@@ -84,13 +84,13 @@ export const AuthActions = () => {
               id="private-contribs"
               type="checkbox"
               checked={showPrivate}
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              className="w-4 h-4 text-blue-400 bg-gray-100 border-gray-300 rounded focus:ring-blue-600"
               onChange={() => setShowPrivate(!showPrivate)}
               disabled={DISABLE_PUBLIC_ONLY_CONTRIBUTIONS}
             />
             <label
               htmlFor="private-contribs"
-              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="ms-2 text-sm font-medium text-gray-300"
             >
               Include private contributions?
             </label>
