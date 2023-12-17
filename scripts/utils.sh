@@ -20,7 +20,7 @@ function is_project_root() {
 }
 
 function install_yarn_cmd_if_not_exists() {
-  if !command -v yarn; then
+  if ! command -v yarn; then
     sudo npm i -g yarn
   fi
 
@@ -31,7 +31,7 @@ function install_yarn_cmd_if_not_exists() {
       if ! command -v $1; then echo "$1 command not found. exiting..."; fi
     fi
   else
-    echo "$1 command exists"
+    echo "Command check for \"$1\" passed"
   fi
 }
 
