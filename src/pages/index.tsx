@@ -31,6 +31,7 @@ export default function Home() {
       () => setShowTrackingBanner(true),
       TRACKING_CONSENT_BANNER_DELAY
     );
+
     return () => clearTimeout(timeoutId);
   }, []);
 
