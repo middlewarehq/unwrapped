@@ -8,7 +8,7 @@
       <br/>
       Showcase your contributions just like you flex your music!
       <br />
-      Check it out at [middlewarehq.com/unwrapped](https://www.middlewarehq.com/unwrapped)
+      Check it out at <a href="https://www.middlewarehq.com/unwrapped">middlewarehq.com/unwrapped</a>
     </i>
   </h3>
 </blockquote>
