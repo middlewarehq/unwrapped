@@ -8,7 +8,7 @@
       <br/>
       Showcase your contributions just like you flex your music!
       <br />
-      Check it out at https://unwrapped.dev
+      Check it out at [middlewarehq.com/unwrapped](https://www.middlewarehq.com/unwrapped)
     </i>
   </h3>
 </blockquote>
@@ -27,7 +27,7 @@ Welcome to **Unwrapped - by Middleware**! This application is designed to provid
 
 ---
 
-<a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/year-in-review/assets/7949047/8984725a-dcd0-4568-9922-9e50db20313f)](https://unwrapped.dev" width="100%" align='center' /></a>
+<a href="https://www.middlewarehq.com/unwrapped"><img src="https://github.com/middlewarehq/year-in-review/assets/7949047/8984725a-dcd0-4568-9922-9e50db20313f)](https://unwrapped.dev" width="100%" align='center' /></a>
 
 <h1 align='center'>🚀 Features 🚀</h1>
 
@@ -40,7 +40,7 @@ Welcome to **Unwrapped - by Middleware**! This application is designed to provid
 - **And Much More 🚀**
 
 
-<a href="https://unwrapped.dev"><img src="https://github.com/middlewarehq/unwrapped/assets/7949047/390e9d7a-183e-41c6-bcde-599d91df732f" width="100%" /></a>
+<a href="https://www.middlewarehq.com/unwrapped"><img src="https://github.com/middlewarehq/unwrapped/assets/7949047/390e9d7a-183e-41c6-bcde-599d91df732f" width="100%" /></a>
 
 <h1 align='center'>🧑‍💻 Project Setup 🧑‍💻</h1>
 
