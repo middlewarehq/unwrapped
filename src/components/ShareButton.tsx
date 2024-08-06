@@ -319,7 +319,7 @@ const ShareMenu2 = ({
             <Tooltip id="go-download" />
             <GoDownload
               data-tooltip-id="go-download"
-              data-tooltip-content="Downlaod Image"
+              data-tooltip-content="Download Image"
               size={18}
             />
           </Button>
