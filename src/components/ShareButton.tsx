@@ -5,6 +5,7 @@ import { GoCopy, GoDownload, GoX } from 'react-icons/go';
 import { track } from '@/constants/events';
 import toast from 'react-hot-toast';
 import { logException } from '@/utils/logger';
+import { Tooltip } from 'react-tooltip';
 
 type ShareButtonProps = {
   imageUrl?: string;
@@ -279,35 +280,59 @@ const ShareMenu2 = ({
             isSelected={optionSelected === ShareOption.COPY}
             onClick={selectCopy}
           >
-            <GoCopy size={20} />
+            <Tooltip id="go-copy" />
+            <GoCopy
+              data-tooltip-id="go-copy"
+              data-tooltip-content="Copy"
+              size={20}
+            />
           </Button>
 
           <Button
             isSelected={optionSelected === ShareOption.TWEET}
             onClick={selectTweet}
           >
-            <CiTwitter size={20} />
+            <Tooltip id="ci-twitter" />
+            <CiTwitter
+              data-tooltip-id="ci-twitter"
+              data-tooltip-content="Share on X"
+              size={20}
+            />
           </Button>
 
           <Button
             isSelected={optionSelected === ShareOption.LINKEDIN}
             onClick={selectLinkedIn}
           >
-            <CiLinkedin size={18} />
+            <Tooltip id="ci-linkedIn" />
+            <CiLinkedin
+              data-tooltip-id="ci-linkedIn"
+              data-tooltip-content="Share on LinkedIn"
+              size={18}
+            />
           </Button>
 
           <Button
             isSelected={optionSelected === ShareOption.DOWNLOAD}
             onClick={selectDownload}
           >
-            <GoDownload size={18} />
+            <Tooltip id="go-download" />
+            <GoDownload
+              data-tooltip-id="go-download"
+              data-tooltip-content="Download Image"
+              size={18}
+            />
           </Button>
 
           <Button
             isSelected={optionSelected === ShareOption.COPY}
             onClick={selectCopy}
           >
-            <GoCopy size={18} />
+            <GoCopy
+              data-tooltip-id="go-copy"
+              data-tooltip-content="Copy"
+              size={18}
+            />
           </Button>
         </div>
         <button
